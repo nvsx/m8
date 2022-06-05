@@ -1,0 +1,19 @@
+#!env bash
+
+FILENAME='m8/setup/install'
+
+if [ "$0" != "$FILENAME" ]; then
+	echo "error: must be called as ${FILENAME} from project directory"
+	echo "exiting"
+	exit
+fi
+
+clear
+
+for x in `ls m8/setup/tasks`; do
+	echo
+	echo -n "### TASK: "
+	echo $x	
+	m8/setup/tasks/$x
+	echo "  ...done."
+done

@@ -1,0 +1,23 @@
+FILENAME='m8/setup/tasks/001-directories'
+
+if [ "$0" != "$FILENAME" ]; then
+	echo "error: must be called as ${FILENAME} from project directory"
+	echo "exiting"
+	exit
+fi
+
+echo "  installing missing directories..."
+
+# these directories need to be existen, but are git-ignored
+for dir in ext files site public; do
+	echo -n "  "
+	echo -n $dir
+	echo -n ": 	"
+	if [ -d $dir ] ; then
+		echo "directory already exists"
+	else
+		echo "creating directory"
+		mkdir $dir
+	fi
+done
+
