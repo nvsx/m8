@@ -1,4 +1,4 @@
-FILENAME='m8/setup/tasks/001-directories'
+FILENAME='m8/setup/tasks/003-filesdir'
 
 if [ "$0" != "$FILENAME" ]; then
 	echo "error: must be called as ${FILENAME} from project directory"
@@ -6,17 +6,17 @@ if [ "$0" != "$FILENAME" ]; then
 	exit
 fi
 
-echo "  creating directories..."
+echo "  [FILESDIR] creating files and directories..."
 
-for dir in do ejspages ejslayouts ext files site public "public/cfg"; do
+for dir in `ls m8/setup/filesdir/`; do
 	echo -n "  "
 	echo -n $dir
 	echo -n ": 	"
 	if [ -d $dir ] ; then
 		echo "directory already exists"
 	else
-		echo "creating directory"
-		mkdir $dir
+		echo "copying recursive directory"
+		cp -r m8/setup/files/$dir $dir
 	fi
 done
 

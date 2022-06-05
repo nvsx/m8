@@ -1,0 +1,11 @@
+#!env bash
+
+FILENAME="do/import"
+
+if [ "$0" != "$FILENAME" ]; then
+	echo "error: must be called as ${FILENAME} from project directory"
+	echo "exiting"
+	exit
+fi
+
+rsync -avz ./import/ ./public

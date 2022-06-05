@@ -1,4 +1,4 @@
-FILENAME='m8/setup/tasks/002-install-server'
+FILENAME='do/dev'
 
 if [ "$0" != "$FILENAME" ]; then
 	echo "error: must be called as ${FILENAME} from project directory"
@@ -6,8 +6,5 @@ if [ "$0" != "$FILENAME" ]; then
 	exit
 fi
 
-echo "  installing server modules..."
+cd m8 && npm run dev
 
-cd m8
-npm install 
-cd -

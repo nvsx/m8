@@ -1,0 +1,28 @@
+FILENAME='m8/setup/tasks/002-files'
+
+if [ "$0" != "$FILENAME" ]; then
+	echo "error: must be called as ${FILENAME} from project directory"
+	echo "exiting"
+	exit
+fi
+
+echo "  creating files..."
+
+echo "    FILE: .env"
+if [ -f $".env" ] ; then
+	echo "    file already exists"
+else
+	echo "    creating file"
+	cp m8/setup/files/env_default .env
+fi
+
+echo "    +++"
+echo "    FILE: .gitignore"
+if [ -f $".gitignore" ] ; then
+	echo "    file already exists"
+else
+	echo "    creating file"
+	cp m8/setup/files/git_ignore .gitignore
+fi
+
+# EOF

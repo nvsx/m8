@@ -1,0 +1,11 @@
+FILENAME='do/server'
+
+if [ "$0" !== "$FILENAME" ]; then
+	echo "error: must be called as ${FILENAME} from project directory"
+	echo "exiting"
+	exit
+fi
+
+cd m8 && npm run start &
+cd -
+

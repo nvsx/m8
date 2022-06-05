@@ -1,0 +1,13 @@
+FILENAME='m8/setup/tasks/004-install-server'
+
+if [ "$0" != "$FILENAME" ]; then
+	echo "error: must be called as ${FILENAME} from project directory"
+	echo "exiting"
+	exit
+fi
+
+echo "  installing server modules..."
+
+cd m8
+npm install 
+cd -

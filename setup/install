@@ -8,12 +8,21 @@ if [ "$0" != "$FILENAME" ]; then
 	exit
 fi
 
-clear
+echo 
+echo
 
 for x in `ls m8/setup/tasks`; do
 	echo
+	echo "---------------------------------------------------"
 	echo -n "### TASK: "
 	echo $x	
-	m8/setup/tasks/$x
+	bash m8/setup/tasks/$x
 	echo "  ...done."
 done
+
+
+echo
+echo "---------------------------------------------------"
+date
+echo "setup finished"
+echo
