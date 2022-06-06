@@ -8,7 +8,7 @@ fi
 
 echo "  creating directories..."
 
-for dir in do ejspages ejslayouts ext files site public "public/cfg"; do
+for dir in ext files site public "public/cfg"; do
 	echo -n "  "
 	echo -n $dir
 	echo -n ": 	"
