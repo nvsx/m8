@@ -37,6 +37,7 @@ const generator = {
       text: 'Hello and welcome says the Generator!',
       date: new Date()
     };
+    console.log(req.path + ' _ ' + new Date())
     res.render('m8/cd/generator', locals)
   }
 }
