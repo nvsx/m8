@@ -17,9 +17,9 @@ global.__context = process.env.NODE_ENV || 'undefined_context'
 
 // app
 const app = express()
-app.use(expressLayouts)
 app.use(express.static('../public'))
 app.set('view engine', 'ejs')
+app.use(expressLayouts)
 app.set('views', '../site/ejspages')
 app.set('layout', '../ejslayouts/default')
 

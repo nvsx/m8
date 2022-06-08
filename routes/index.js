@@ -6,7 +6,7 @@ const router = express.Router()
 // Default exports:
 // export default myfunction
 
-router.get('/test/123', (req, res) => { res.redirect('/') })
+// router.get('/test/123', (req, res) => { res.redirect('/') })
 
 // generator
 import generatorRouter from './generator.js'
