@@ -1,0 +1,19 @@
+<%- include('includes/header', { title: "Test-1"}); %>
+
+<h1><%- locals.title %></h1>
+<h3>This is the ce ejs page</h3>
+
+<div class="activity-bar">
+	<button>
+		<a href="/" target="localhost">open homepage</a>
+	</button>
+	<button class="activity-button">
+		build all pages
+	</button>
+	<button class="activity-button">
+		force build all pages
+		(only if SRV=local)
+	</button>
+</div>
+
+<%- include('includes/footer') %>

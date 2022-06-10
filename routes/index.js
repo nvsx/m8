@@ -8,7 +8,12 @@ const router = express.Router()
 
 // router.get('/test/123', (req, res) => { res.redirect('/') })
 
-// generator
+
+// m8/ce/
+import ceRouter from './ce.js'
+router.use(ceRouter)
+
+// fallback all URLs: generator
 import generatorRouter from './generator.js'
 router.use(generatorRouter)
 

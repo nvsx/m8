@@ -6,6 +6,5 @@ if [ "$0" !== "$FILENAME" ]; then
 	exit
 fi
 
-cd m8 && npm run start &
-cd -
-
+cd m8
+npm run start

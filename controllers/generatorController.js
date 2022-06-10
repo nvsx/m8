@@ -1,6 +1,7 @@
 import fs from 'fs'
 
 const file_root_dir = '../public'
+const ejs_dir = 'site/'
 
 const generator = {
   generate: function (req, res) {
@@ -31,8 +32,6 @@ const generator = {
       res.redirect(redirect_path)
     }
     else {
-      // let ejs_file = ejspages_dir + req_path + 'index.ejs'
-      // let ejs_file = 'm8/cd/generator'
       let file_path = file_root_dir + req_path
       let html_file = file_path + 'index.html'
       const rxa = /\/$/
@@ -42,8 +41,7 @@ const generator = {
       console.log("    file_path: " + file_path)
       console.log("    html_file: " + html_file)
 
-
-      let ejs_file = req_path + 'index.ejs'
+      let ejs_file = ejs_dir + req_path + 'index.ejs'
       const rx = /^\//
       ejs_file = ejs_file.replace(rx, '')
       console.log("    ejs_file: " + ejs_file)
@@ -74,13 +72,13 @@ const generator = {
       // console.log(req.originalUrl)  // "/articles?filter=something"
       // console.log(req.subdomains)   // "['www4']"
       
-      let locals = {
-        title: 'title by generator ' + req_path,
-        description: 'description by generator',
-        header: 'Page Header by generator',
-        text: 'Hello and welcome says the Generator!',
-        date: new Date()
-      };
+      // let locals = {
+      //   title: 'title by generator ' + req_path,
+      //   description: 'description by generator',
+      //   header: 'Page Header by generator',
+      //   text: 'Hello and welcome says the Generator!',
+      //   date: new Date()
+      // };
 
       res.render(ejs_file, {}, function(err, output) {
         res.send(output)
@@ -88,7 +86,7 @@ const generator = {
           console.error(err);
         }
         fs.writeFile(html_file, output, err => {
-          console.log("    TODO! writing to file", html_file)
+          console.log("    writing to file", html_file)
           if (err) {
             console.error(err);
           }

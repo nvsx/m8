@@ -2,8 +2,7 @@ import express           from 'express'
 import path              from 'path'
 import dotenv            from 'dotenv'
 import { fileURLToPath } from 'url'
-// import ejs               from 'ejs'
-import expressLayouts    from 'express-ejs-layouts'
+import ejs               from 'ejs'
 
 // config
 const env_file   = '../.env'
@@ -18,10 +17,9 @@ global.__context = process.env.NODE_ENV || 'undefined_context'
 // app
 const app = express()
 app.use(express.static('../public'))
+app.use(express.static('public'))
 app.set('view engine', 'ejs')
-app.use(expressLayouts)
-app.set('views', '../site/ejspages')
-app.set('layout', '../ejslayouts/default')
+app.set('views','../views');
 
 // routing
 import router from './routes/index.js'
