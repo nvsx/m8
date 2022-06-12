@@ -1,4 +1,0 @@
-UserAgent: *
-
-Disallow: /m8
-

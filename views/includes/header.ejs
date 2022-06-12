@@ -4,94 +4,97 @@
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>ce <%- locals.title %></title>
+		<title><%- locals.title || 'CE' %></title>
 		<link rel="stylesheet" href="/m8/ce/cfg/main.css" type="text/css" />
 	</head>
 	<body>
-		<%- include('ceheader') %>
+		<%- include('headerrow') %>
 		<div class="lower-part">
-			<div class="content-part">
-				<div class="col1">
-
-				</div>
-				<div class="col2">
-
-				</div>
-				<div class="main-content">
+			<div class="col1">
+				COL 1
+			</div>
+			<div class="col2">
+				COL 2
+			</div>
+			<div class="main-content">
 
 <style>
-body {
-	position: relative;
-}
-.ceHeader {
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-.lower-part {
-	position: absolute;
-	top: 45px;
-	left: 0;
-}
-
-
-
-
-
-* {
-	box-sizing: border-box;
-}
-html, body {
-	margin: 0;
-	padding: 0;
-    color: #dfdfdf;
-    background-color: #333;
-}
-a {
-    color: #aaf;
-}
-.col1{
-	height:100%;
-	width: 250px;
-}
-.ceHeader {
-	margin: 0;
-	padding: 0;
-	height:45px;
-	background-color: lightsteelblue;
-    text-align:center;
-    border-bottom: 1px solid #335588;
-}
-.activity-bar {
-    width: 280px;
-}
-.activity-button {
-    display: block;
-    color: white;
-    background-color: darkgreen;
-    padding: 5px;
-    margin: 5px;
-    border: 1px solid #ffc;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-
-
-
-
-
-
-
-
-	
-	html {
-		background-color: #335;
-		color: #ccf;
+	/* +++++++++++++++++++++++++++++++++++ */
+	* {
+		box-sizing: border-box;
+	}
+	html, body {
+		margin: 0;
+		padding: 0;
+		color: #444;
+		background-color: #fafafa;
 	}
 	body {
-		color: #444;
-		background-color: #ddd;
+		position: relative;
 	}
-
+	a {
+		color: #05a;
+	}
+	/* +++++++++++++++++++++++++++++++++++ */
+	.ceHeader {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		margin: 0;
+		padding: 5px;
+		height:45px;
+		background-color: lightsteelblue;
+		border-bottom: 1px solid #335588;
+	}
+	.lower-part {
+		position: fixed;
+		top: 45px;
+		left: 0;
+		width:100%;
+		height:100%;
+		background-color: #fff;
+	}
+	.col1{
+		position: fixed;
+		top: 45px;
+		left: 0;
+		overflow: hidden;
+		height:100%;
+		width: 200px;
+		background-color: #5588aa;
+		color: #fff;
+	}
+	.col2 {
+		position: fixed;
+		top: 45px;
+		left: 200px;
+		overflow: hidden;
+		height:100%;
+		width: 200px;
+		background-color: #ccc;
+		color: #333;
+	}
+	.main-content {
+		position:fixed;
+		top:45;
+		left:400px;
+		padding:0;
+		margin:0;
+		background-color: transparent;
+	}
+	.activity-bar {
+		width: 280px;
+	}
+	.activity-button {
+		display: block;
+		color: white;
+		background-color: darkgreen;
+		padding: 5px;
+		margin: 5px;
+		border: 1px solid #ffc;
+		border-radius: 5px;
+		cursor: pointer;
+	}
+	/* +++++++++++++++++++++++++++++++++++ */
 </style>

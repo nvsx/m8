@@ -8,7 +8,6 @@ const generator = {
     const req_path = req.path
     console.log(req_path)
 
-
     // -----------------------------------------
     // 1. build redirect?
     let redirect_path = ''
@@ -61,35 +60,9 @@ const generator = {
         res.sendStatus(404)
       }
       else {
-        // if ! ejs_file: -> error 404
-
-        // 4. deliver file
-        // --- 2 ---
-        // read and set all data
-        // use layout to generate html
-        // -- SELECT * FROM m8_nodes WHERE full_path = req_path
-        // --- 3 ---
-        // if cache_mode === 1
-        // generate a file and place it in public dir
-        // --- 4 ---
-        // send response
-        // (1)
-        // https://www4.example.com/articles?filter=something
-        // console.log(req.protocol)     // "https"
-        // console.log(req.hostname)     // "example.com"
-        // console.log(req.path)         // "/articles"
-        // console.log(req.originalUrl)  // "/articles?filter=something"
-        // console.log(req.subdomains)   // "['www4']"
-        
-        // let locals = {
-        //   title: 'title by generator ' + req_path,
-        //   description: 'description by generator',
-        //   header: 'Page Header by generator',
-        //   text: 'Hello and welcome says the Generator!',
-        //   date: new Date()
-        // };
 
         // -----------------------------------------
+        // 4. Respond and save file
         res.render(ejs_file, {}, function(err, output) {
           res.send(output)
           if (err) {
