@@ -8,38 +8,60 @@
 		<link rel="stylesheet" href="/m8/ce/cfg/main.css" type="text/css" />
 	</head>
 	<body>
-		<div class="ceHeader">
-			CE - Content Entry
-		</div>
-		<div style="border:1px solid #333; margin:20px; padding:20px;">
+		<%- include('ceheader') %>
+		<div class="lower-part">
+			<div class="content-part">
+				<div class="col1">
 
+				</div>
+				<div class="col2">
+
+				</div>
+				<div class="main-content">
 
 <style>
-	* {
-		box-sizing: border-box;
-	}
-	html, body {
-		margin: 0;
-		padding: 0;
-	}
+body {
+	position: relative;
+}
+.ceHeader {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.lower-part {
+	position: absolute;
+	top: 45px;
+	left: 0;
+}
 
 
-	html, body {
+
+
+
+* {
+	box-sizing: border-box;
+}
+html, body {
+	margin: 0;
+	padding: 0;
     color: #dfdfdf;
     background-color: #333;
 }
 a {
     color: #aaf;
 }
+.col1{
+	height:100%;
+	width: 250px;
+}
 .ceHeader {
+	margin: 0;
+	padding: 0;
+	height:45px;
+	background-color: lightsteelblue;
     text-align:center;
     border-bottom: 1px solid #335588;
 }
-.ceFooter {
-    text-align:center;
-    border-top: 1px solid #000;
-}
-
 .activity-bar {
     width: 280px;
 }
@@ -63,7 +85,7 @@ a {
 
 
 	
-	html, .ceHeader {
+	html {
 		background-color: #335;
 		color: #ccf;
 	}
