@@ -1,9 +1,19 @@
-<%- include('includes/header', { title: "CE"}); %>
-
+<%- include('includes/header', { title: locals.title}); %>
 <h1><%- locals.title %></h1>
-<h3>This is the ce ejs page</h3>
 
-<div class="activity-bar">
+<div>
+	<%- locals.body %>
+</div>
+
+<style>
+	table tr td, table tr th {
+		padding:10px;
+		margin: 0;
+		border: 1px solid #c0c0c0;
+	}
+</style>
+
+<div class="activity-bar" style="margin-top:50px;">
 	<button>
 		<a href="/" target="localhost">open homepage</a>
 	</button>

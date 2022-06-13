@@ -14,6 +14,10 @@ const serverfile = fileURLToPath(import.meta.url)
 global.__basedir = path.dirname(serverfile)
 global.__context = process.env.NODE_ENV || 'undefined_context'
 
+
+
+
+
 // app
 const app = express()
 app.use(express.static('../public'))
