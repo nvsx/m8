@@ -1,58 +1,26 @@
 import fs from 'fs'
-import { Sequelize, Model, DataTypes } from 'sequelize';
-
-// database
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: '../db/start.db'
-});
-const Page = sequelize.define('pages', {
-	id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true
-  },
-	parentid: DataTypes.INTEGER,
-	status: DataTypes.INTEGER,
-	layout: DataTypes.STRING,
-	layout_current: DataTypes.STRING,
-	title: DataTypes.STRING,
-	description: DataTypes.STRING,
-	notes: DataTypes.STRING,
-	type: DataTypes.STRING,
-	slug: DataTypes.STRING, 
-	path: DataTypes.STRING,
-	robots_index: DataTypes.INTEGER,
-	robots_follow: DataTypes.INTEGER,
-	in_sitemap: DataTypes.INTEGER,
-	in_search: DataTypes.INTEGER,
-	in_menu: DataTypes.INTEGER,
-	link_target: DataTypes.STRING,
-	caching: DataTypes.STRING,
-	image: DataTypes.STRING,
-	language: DataTypes.STRING,
-	date_start: DataTypes.STRING,
-	date_end: DataTypes.STRING,
-	date_recurisve: DataTypes.INTEGER,
-	categories: DataTypes.STRING, 
-	tags: DataTypes.STRING,
-});
-const pages = await Page.findAll();
+import { Sequelize, Model, DataTypes } from 'sequelize'
+import sequelize from '../modules/database.js'
+import Page from '../models/Page.js'
 
 const output_dir = '../public'
 const input_dir  = '../site/views'
+const ce_template = 'm8/ce.ejs'
+const page_template = 'site/m8/layouts/default.ejs'
 
+const all_pages = await Page.findAll();
 
 const ceController = {
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   ce: function (req, res) {
     let output_table = '<table>\n<tr><th>ID</th><th>Path</th><th>Title</th><th>Generate</th><th>Edit</th></tr>'
-    for(let i=0; i<pages.length; i++) {
+    for(let i=0; i<all_pages.length; i++) {
       // console.log(i)
       output_table = output_table + '\n\n<tr>'
       // output_table = output_table + '\n<td>'
       // output_table = output_table + pages.i['path']
       // output_table = output_table + JSON.stringify(pages[i])
-      let thispage = pages[i]
+      let thispage = all_pages[i]
       output_table = output_table + '\n<td>' + thispage.id + '</td>'
       output_table = output_table + '\n<td>'
       output_table = output_table + `<a href="${thispage.path}" target="localhost">${thispage.path}</a>`
@@ -71,8 +39,8 @@ const ceController = {
 
     let locals = {}
     locals.title = 'List of pages'
-    locals.body = output_table
-    res.render('m8/ce.ejs', locals)
+    locals.content = output_table
+    res.render(ce_template, locals)
     // console.log(req.layout)
     // res.sendStatus(200)
   },
@@ -161,6 +129,10 @@ const ceController = {
       output_table = output_table + '\n<td>' + result.title + '</td>'
       output_table = output_table + '\n</tr>'
       output_table = output_table + '\n\n</table>'
+
+      output_table = output_table + '\n\n<div style="border:1px solid black;">'
+      output_table = output_table + '\n\n#######'
+      output_table = output_table + '\n\n</div>'
       
       // if ! ejs_file: -> error 404
       // 4. deliver file
@@ -190,9 +162,9 @@ const ceController = {
         //   text: 'Hello and welcome says the Generator!',
         //   date: new Date()
         // };
-        myData.body = '<div class="sector"><div class="container">hello test generating from data' + output_table + '</div></div>'
+        myData.content = '<div class="sector"><div class="container">hello test generating from data' + output_table + '</div></div>'
 
-        res.render('site/m8/layouts/default.ejs', myData, function(err, output) {
+        res.render(page_template, myData, function(err, output) {
           res.send(output)
           if (err) {
             console.error(err);
@@ -204,12 +176,6 @@ const ceController = {
             }
           })
         })
-
-
-
-
-
-
       }
   }
 }
