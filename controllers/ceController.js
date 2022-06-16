@@ -1,6 +1,6 @@
 import fs from 'fs'
-import { Sequelize, Model, DataTypes } from 'sequelize'
-import sequelize from '../modules/database.js'
+// import { Sequelize, Model, DataTypes } from 'sequelize'
+// import sequelize from '../modules/database.js'
 import Page from '../models/Page.js'
 
 const output_dir = '../public'
@@ -8,38 +8,12 @@ const input_dir  = '../site/views'
 const ce_template = 'm8/ce.ejs'
 const page_template = 'site/m8/layouts/default.ejs'
 
-const all_pages = await Page.findAll();
-
 const ceController = {
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   ce: function (req, res) {
-    let output_table = '<table>\n<tr><th>ID</th><th>Path</th><th>Title</th><th>Generate</th><th>Edit</th></tr>'
-    for(let i=0; i<all_pages.length; i++) {
-      // console.log(i)
-      output_table = output_table + '\n\n<tr>'
-      // output_table = output_table + '\n<td>'
-      // output_table = output_table + pages.i['path']
-      // output_table = output_table + JSON.stringify(pages[i])
-      let thispage = all_pages[i]
-      output_table = output_table + '\n<td>' + thispage.id + '</td>'
-      output_table = output_table + '\n<td>'
-      output_table = output_table + `<a href="${thispage.path}" target="localhost">${thispage.path}</a>`
-      output_table = output_table + '</td>'
-      output_table = output_table + '\n<td>' + thispage.title + '</td>'
-      output_table = output_table + '<td>'
-      output_table = output_table + `<a href="/m8/dbgen/?page=${thispage.path}" target="localhost">${thispage.path}</a>`
-      output_table = output_table + '</td>'
-      output_table = output_table + '<td>'
-      output_table = output_table + `<a href="/m8/ce/page/?action=edit&id=${thispage.id}">${thispage.id}</a>`
-      output_table = output_table + '</td>'
-      output_table = output_table + '\n</tr>'
-    }
-    output_table = output_table + '\n\n</table>'
-    // console.log(output_table)
-
     let locals = {}
-    locals.title = 'List of pages'
-    locals.content = output_table
+    locals.title = 'CE: Start'
+    locals.content = 'Welcome to CE'
     res.render(ce_template, locals)
     // console.log(req.layout)
     // res.sendStatus(200)
@@ -117,66 +91,22 @@ const ceController = {
         console.log(`    Creating directory ${output_path}.`);
         fs.mkdirSync(output_path, { recursive: true });
       }
-      // console.log(result instanceof Page); // true
-      // console.log("id", result.id)
-      // console.log("title", result.title)
       myData.title = result.title
-      
-      let output_table = '<table>\n<tr><th>id</th><th>path</th><th>title</th></tr>'
-      output_table = output_table + '\n\n<tr>'
-      output_table = output_table + '\n<td>' + result.id + '</td>'
-      output_table = output_table + '\n<td>' + result.path + '</td>'
-      output_table = output_table + '\n<td>' + result.title + '</td>'
-      output_table = output_table + '\n</tr>'
-      output_table = output_table + '\n\n</table>'
-
-      output_table = output_table + '\n\n<div style="border:1px solid black;">'
-      output_table = output_table + '\n\n#######'
-      output_table = output_table + '\n\n</div>'
-      
-      // if ! ejs_file: -> error 404
-      // 4. deliver file
-      
-      // --- 2 ---
-      // read and set all data
-      // use layout to generate html
-      // -- SELECT * FROM m8_nodes WHERE full_path = req_path
-      
-      // --- 3 ---
-      // if cache_mode === 1
-      // generate a file and place it in public dir
-      
-      // --- 4 ---
-      // send response
-      // (1)
-      // https://www4.example.com/articles?filter=something
-      // console.log(req.protocol)     // "https"
-      // console.log(req.hostname)     // "example.com"
-      // console.log(req.path)         // "/articles"
-      // console.log(req.originalUrl)  // "/articles?filter=something"
-      // console.log(req.subdomains)   // "['www4']"
-      // let locals = {
-        //   title: 'title by generator ' + req_path,
-        //   description: 'description by generator',
-        //   header: 'Page Header by generator',
-        //   text: 'Hello and welcome says the Generator!',
-        //   date: new Date()
-        // };
-        myData.content = '<div class="sector"><div class="container">hello test generating from data' + output_table + '</div></div>'
-
-        res.render(page_template, myData, function(err, output) {
-          res.send(output)
+      myData.content = result.content
+      // myData.content = '<div class="sector"><div class="container">' + output_table + '</div></div>'
+      res.render(page_template, myData, function(err, output) {
+        res.send(output)
+        if (err) {
+          console.error(err);
+        }
+        fs.writeFile(html_file, output, err => {
+          console.log("    writing to file", html_file)
           if (err) {
             console.error(err);
           }
-          fs.writeFile(html_file, output, err => {
-            console.log("    writing to file", html_file)
-            if (err) {
-              console.error(err);
-            }
-          })
         })
-      }
+      })
+    }
   }
 }
 

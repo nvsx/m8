@@ -1,8 +1,9 @@
+// import ejs               from 'ejs'
 import express           from 'express'
 import path              from 'path'
 import dotenv            from 'dotenv'
 import { fileURLToPath } from 'url'
-import ejs               from 'ejs'
+import bodyParser        from 'body-parser'
 
 // config
 const env_file   = '../.env'
@@ -14,16 +15,13 @@ const serverfile = fileURLToPath(import.meta.url)
 global.__basedir = path.dirname(serverfile)
 global.__context = process.env.NODE_ENV || 'undefined_context'
 
-
-
-
-
 // app
 const app = express()
 app.use(express.static('../public'))
 app.use(express.static('public'))
 app.set('view engine', 'ejs')
 app.set('views','../views');
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // routing
 import router from './routes/index.js'

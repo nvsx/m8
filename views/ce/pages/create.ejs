@@ -1,0 +1,48 @@
+<%- include('../../includes/header', { title: locals.title}); %>
+
+<div style="text-align:center;">
+	<a href="/m8/ce/pages/">back</a>
+</div>
+
+<h1><%- locals.title || 'Edit Page' %></h1>
+<%- locals.content %>
+
+<form method="POST" action="<%- locals.formaction %>">
+	<div class="valueedit">
+		<span class="name">
+			ID
+		</span>
+		<span class="value">
+			Create New Page
+		</span>
+	</div>
+	<div class="valueedit">
+		<span class="name">
+			Title
+		</span>
+		<span class="value">
+			<input name="title" type="text" value="<%- locals.page.title %>" />
+		</span>
+	</div>
+	<div class="valueedit">
+		<span class="name">
+			Path
+		</span>
+		<span class="value">
+			<input name="path" type="text" value="<%- locals.page.path %>" />
+		</span>
+	</div>
+	<div class="valueedit">
+		<span class="name">
+			Content
+		</span><br>
+		<span class="value">
+			<textarea name="content" rows="10" cols="30"><%- locals.page.content %></textarea>
+		</span>
+	</div>
+	<div class="formcontrol">
+		<button>Save</button>
+	</div>
+</form>
+
+<%- include('../../includes/footer'); %>

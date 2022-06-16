@@ -11,13 +11,14 @@
 		<%- include('headerrow') %>
 		<div class="lower-part">
 			<div class="col1">
-				COL 1
+				<%- include('col1') %>
 			</div>
 			<div class="col2">
 				COL 2
 			</div>
 			<div class="main-content">
 
+<!-- --------------------------------------------------------------------- -->
 <style>
 	/* +++++++++++++++++++++++++++++++++++ */
 	* {
@@ -65,6 +66,16 @@
 		background-color: #5588aa;
 		color: #fff;
 	}
+	.col1div {
+		margin:0;
+		padding: 10px;
+		color: white;
+		border-bottom: 1px solid #ddd;
+	}
+	.col1div a {
+		display: block;
+		color: white;
+	}
 	.col2 {
 		position: fixed;
 		top: 45px;
@@ -96,5 +107,30 @@
 		border-radius: 5px;
 		cursor: pointer;
 	}
-	/* +++++++++++++++++++++++++++++++++++ */
+
+	div.button {
+		display: inline-block;
+		margin:5px;
+		padding:5px;
+		border: 1px solid gray;
+		border-radius: 5px;
+		background-color: #58a;
+	}
+	div.button a {
+		display: block;
+		color: #fff;
+	}
+	a.button {
+		display: inline-block;
+	}
+
+	table tr td, table tr th {
+		background-color: #cdd;
+		padding:10px;
+		margin: 0;
+		border: 1px solid #c0c0c0;
+	}
+	table.ce-pages-list a {
+		display: block;
+	}
 </style>

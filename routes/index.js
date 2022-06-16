@@ -8,7 +8,9 @@ const router = express.Router()
 
 // router.get('/test/123', (req, res) => { res.redirect('/') })
 
-
+// m8/ce/pages/
+import cepagesRouter from './cepages.js'
+router.use(cepagesRouter)
 // m8/ce/
 import ceRouter from './ce.js'
 router.use(ceRouter)
