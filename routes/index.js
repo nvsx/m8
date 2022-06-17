@@ -5,13 +5,21 @@ const router = express.Router()
 // module.exports.name = "something"
 // Default exports:
 // export default myfunction
-
 // router.get('/test/123', (req, res) => { res.redirect('/') })
 
-// m8/ce/pages/
+// m8/ce/files/
+import cefilesRouter from './cefiles.js'
+router.use(cefilesRouter)
+
+// /m8/ce/pages/
 import cepagesRouter from './cepages.js'
 router.use(cepagesRouter)
-// m8/ce/
+
+// /m8/ce/users/
+import ceusersRouter from './ceusers.js'
+router.use(ceusersRouter)
+
+// /m8/ce/
 import ceRouter from './ce.js'
 router.use(ceRouter)
 

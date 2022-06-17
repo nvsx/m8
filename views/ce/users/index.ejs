@@ -1,0 +1,12 @@
+<%- include('../../includes/header', { title: locals.title}); %>
+
+<div class="button">
+	<a href="/m8/ce/users/create">Create new user</a>
+</div>
+
+<h1><%- locals.title || 'CE: Pages' %></h1>
+<div style="margin:0;padding: 20px 0;">
+	<%- locals.content %>
+</div>
+
+<%- include('../../includes/footer'); %>

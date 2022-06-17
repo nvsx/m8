@@ -5,7 +5,7 @@ import Page from '../models/Page.js'
 
 const output_dir = '../public'
 const input_dir  = '../site/views'
-const ce_template = 'm8/ce.ejs'
+const ce_template = 'm8/ce/index.ejs'
 const page_template = 'site/m8/layouts/default.ejs'
 
 const ceController = {
@@ -13,7 +13,7 @@ const ceController = {
   ce: function (req, res) {
     let locals = {}
     locals.title = 'CE: Start'
-    locals.content = 'Welcome to CE'
+    locals.content = 'Welcome here!'
     res.render(ce_template, locals)
     // console.log(req.layout)
     // res.sendStatus(200)

@@ -1,8 +1,8 @@
-import { resolveInclude } from 'ejs'
+// import { resolveInclude } from 'ejs'
 import Page from '../models/Page.js'
 
 const public_dir = '../public'
-let ce_template = 'm8/ce.ejs'
+let ce_template = 'm8/ce/index.ejs'
 
 const cePages = {
 

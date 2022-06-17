@@ -1,0 +1,19 @@
+<%- include('../includes/header', { title: locals.title}); %>
+<h1><%- locals.title %></h1>
+
+<div>
+	<%- locals.content %>
+</div>
+
+<ul>
+	<li>
+		<div class="activity-bar" style="margin-top:50px;">
+			<button>
+				<a href="/" target="localhost">open homepage</a>
+			</button>
+			(new named window)
+		</div>
+	</li>
+</ul>
+
+<%- include('../includes/footer') %>
