@@ -1,12 +1,12 @@
 import fs from 'fs'
 // import { Sequelize, Model, DataTypes } from 'sequelize'
 // import sequelize from '../modules/database.js'
-import Page from '../models/Page.js'
+import Node from '../models/Node.js'
 
 const output_dir = '../public'
 const input_dir  = '../site/views'
 const ce_template = 'm8/ce/index.ejs'
-const page_template = 'site/m8/layouts/default.ejs'
+const node_template = 'site/m8/layouts/default.ejs'
 
 const ceController = {
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -69,20 +69,20 @@ const ceController = {
     console.log(req.originalUrl)
     let myData = {}
 
-    let page = req.query.page
-    if( !page  ) { page = '' }
-    let searchpath = page.replace(/\/+/g, '/')
+    let node = req.query.node
+    if( !node ) { node = '' }
+    let searchpath = node.replace(/\/+/g, '/')
     searchpath = searchpath.replace(/\/$/, '')
     if(searchpath === '') { searchpath = '/' }
     console.log("    search_path: _" + searchpath + '_')
 
-    const result = await Page.findOne({ where: { path: searchpath } })
+    const result = await Node.findOne({ where: { path: searchpath } })
     if (result === null) {
       console.log('Not found!')
       res.sendStatus(404)
     } 
     else {
-      let output_path = output_dir + page
+      let output_path = output_dir + node
       let html_file   = output_path + '/index.html'
       console.log("    output_path:", output_path)
       console.log("    html_file:", html_file)
@@ -94,7 +94,7 @@ const ceController = {
       myData.title = result.title
       myData.content = result.content
       // myData.content = '<div class="sector"><div class="container">' + output_table + '</div></div>'
-      res.render(page_template, myData, function(err, output) {
+      res.render(node_template, myData, function(err, output) {
         res.send(output)
         if (err) {
           console.error(err);

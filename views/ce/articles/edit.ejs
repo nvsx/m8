@@ -1,0 +1,70 @@
+<%- include('../../includes/header', { title: locals.title}); %>
+
+<h1>Edit article</h1>
+<%- locals.content %>
+
+<div class="button">
+	<a href="/m8/ce/articles">Close</a>
+</div>
+
+<form method="POST" action="<%- locals.formaction %>">
+	<input type="hidden" name="articleid" value="<%- locals.article.id %>" />
+	<div class="valueedit">
+		<span class="name">
+			ID
+		</span>
+		<span class="value">
+			<input name="id" type="text" value="<%- locals.article.id %>" readonly />
+		</span>
+	</div>
+	<div class="valueedit">
+		<span class="name">Title</span>
+		<span class="value">
+			<input name="title" type="text" value="<%- locals.article.title %>" />
+		</span>
+	</div>
+	<div class="valueedit">
+		<span class="name">
+			Channel
+		</span>
+		<span class="value">
+			<input name="path" type="text" value="<%- locals.article.channel %>" />
+		</span>
+	</div>
+	<div class="valueedit">
+		<span class="name">
+			Path
+		</span>
+		<span class="value">
+			<input name="path" type="text" value="<%- locals.article.path %>" />
+		</span>
+	</div>
+	<div class="valueedit">
+		<span class="name">
+			Type
+		</span>
+		<span class="value">
+			<input name="type" type="text" value="<%- locals.article.type %>" />
+		</span>
+	</div>
+	<div class="valueedit">
+		<span class="name">
+			Content
+		</span><br>
+		<span class="value">
+			<textarea name="content" rows="30" cols="90"><%- locals.article.content %></textarea>
+		</span>
+	</div>
+	<div class="formcontrol">
+		<button>Save</button>
+	</div>
+</form>
+
+<form name="delete_form" method="POST" action="/m8/ce/articles/delete">
+	<input type="hidden" name="articleid" value="<%- locals.article.id %>" />
+	<div class="formcontrol">
+		<button>DELETE</button>
+	</div>
+</form>
+
+<%- include('../../includes/footer'); %>

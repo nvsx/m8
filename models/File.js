@@ -1,5 +1,5 @@
 import { Sequelize, Model, DataTypes } from 'sequelize'
-import sequelize from '../modules/database.js'
+import sequelize from '../lib/database.js'
 
 const File = sequelize.define('files', {
 	id: {

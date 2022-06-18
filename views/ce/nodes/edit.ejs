@@ -1,0 +1,68 @@
+<%- include('../../includes/header', { title: locals.title}); %>
+
+<div style="text-align:center;">
+	<a href="/m8/ce/nodes/">back</a>
+</div>
+
+<h1><%- locals.title || 'Edit Node' %></h1>
+<%- locals.content %>
+
+<div class="button">
+	<a href="/m8/ce/nodes">Close</a>
+</div>
+
+<form method="POST" action="<%- locals.formaction %>">
+	<input type="hidden" name="nodeid" value="<%- locals.node.id %>" />
+	<div class="valueedit">
+		<span class="name">
+			ID
+		</span>
+		<span class="value">
+			<input name="id" type="text" value="<%- locals.node.id %>" readonly />
+		</span>
+	</div>
+	<div class="valueedit">
+		<span class="name">
+			Title
+		</span>
+		<span class="value">
+			<input name="title" type="text" value="<%- locals.node.title %>" />
+		</span>
+	</div>
+	<div class="valueedit">
+		<span class="name">
+			Path
+		</span>
+		<span class="value">
+			<input name="path" type="text" value="<%- locals.node.path %>" />
+		</span>
+	</div>
+	<div class="valueedit">
+		<span class="name">
+			Type
+		</span>
+		<span class="value">
+			<input name="type" type="text" value="<%- locals.node.type %>" />
+		</span>
+	</div>
+	<div class="valueedit">
+		<span class="name">
+			Content
+		</span><br>
+		<span class="value">
+			<textarea name="content" rows="30" cols="90"><%- locals.node.content %></textarea>
+		</span>
+	</div>
+	<div class="formcontrol">
+		<button>Save</button>
+	</div>
+</form>
+
+<form name="delete_form" method="POST" action="/m8/ce/nodes/delete">
+	<input type="hidden" name="nodeid" value="<%- locals.node.id %>" />
+	<div class="formcontrol">
+		<button>DELETE</button>
+	</div>
+</form>
+
+<%- include('../../includes/footer'); %>

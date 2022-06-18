@@ -1,0 +1,62 @@
+<%- include('../../includes/header', { title: locals.title}); %>
+
+<div class="button">
+	<a href="/m8/ce/articles/">cancel</a>
+</div>
+
+<h1><%- locals.title || 'Edit Article' %></h1>
+<%- locals.content %>
+
+<form method="POST" action="/m8/ce/articles/createsave">
+	<div class="valueedit">
+		<span class="name">
+			ID
+		</span>
+		<span class="value">
+			Create New Article
+		</span>
+	</div>
+	<div class="valueedit">
+		<span class="name">Topic</span>
+		<span class="value">
+			<input name="topic" type="text" value="" />
+		</span>
+	</div>
+	<div class="valueedit">
+		<span class="name">
+			Title
+		</span>
+		<span class="value">
+			<input name="title" type="text" value="" />
+		</span>
+	</div>
+	<div class="valueedit">
+		<span class="name">
+			Channel
+		</span>
+		<span class="value">
+			<input name="channel" type="text" value="" />
+		</span>
+	</div>
+	<div class="valueedit">
+		<span class="name">
+			Slug
+		</span>
+		<span class="value">
+			<input name="slug" type="text" value="<%- locals.article.slug %>" />
+		</span>
+	</div>
+	<div class="valueedit">
+		<span class="name">
+			Content
+		</span><br>
+		<span class="value">
+			<textarea name="content" rows="30" cols="90"><%- locals.article.content %></textarea>
+		</span>
+	</div>
+	<div class="formcontrol">
+		<button>Save</button>
+	</div>
+</form>
+
+<%- include('../../includes/footer'); %>

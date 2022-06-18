@@ -5,21 +5,21 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"no test specified yet\" && exit 1",
     "lint": "npm run lint:js",
     "lint:js": "standard **/*.js",
     "dev": "nodemon server.js",
     "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "nvsx@gmx.net",
+  "license": "MIT License",
   "devDependencies": {
     "nodemon": "^2.0.16",
     "nvsx-helo": "^3.0.7",
+    "sequelize-cli": "^6.4.1",
     "standard": "^17.0.0"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "body-parser": "^1.20.0",
     "dotenv": "^16.0.1",
     "ejs": "^3.1.8",

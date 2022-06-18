@@ -1,0 +1,20 @@
+<%- include('../../includes/header', { title: locals.title}); %>
+
+<h1>Article created</h1>
+
+
+<div style="text-align:center;">
+	<a href="/m8/ce/articles/read?articleid=<%- locals.id %>">Edit article</a>
+</div>
+
+<div style="text-align:center;">
+	<a href="/m8/ce/articles/">List all Articles</a>
+</div>
+
+<hr>
+
+<div style="margin: 20px;">
+	<%- locals.content %>
+</div>
+
+<%- include('../../includes/footer'); %>

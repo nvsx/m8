@@ -1,12 +1,30 @@
 <%- include('../../includes/header', { title: locals.title}); %>
 
-<div class="button">
-	<a href="/m8/ce/users/create">Create new user</a>
-</div>
-
 <h1><%- locals.title || 'CE: Pages' %></h1>
-<div style="margin:0;padding: 20px 0;">
+<div>
 	<%- locals.content %>
 </div>
+
+<div class="ceCard">
+	<div class="button">
+		<a href="/m8/ce/users/create">Create new user</a>
+	</div>
+</div>
+
+<table class="ce-users-list">
+	<tr>
+		<th><a href="/m8/ce/users/?order=asc&by=id">ID</a></th>
+		<th><a href="/m8/ce/users/?order=asc&by=loginname">Loginname</a></th>
+		<th>Edit</th>
+	</tr>
+
+	<% for(let i=0; i<all_users.length; i++) { %>
+		<tr>
+			<td><%- all_users[i].id %></td>
+			<td><%- all_users[i].loginname %></td>
+			<td><a href="/m8/ce/articles/read?id=<%- all_users[i].id %>"><%- all_users[i].id %></a></td>
+		</tr>
+	<% } %>
+</table>
 
 <%- include('../../includes/footer'); %>

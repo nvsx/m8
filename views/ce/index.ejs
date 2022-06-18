@@ -5,15 +5,32 @@
 	<%- locals.content %>
 </div>
 
-<ul>
-	<li>
-		<div class="activity-bar" style="margin-top:50px;">
-			<button>
-				<a href="/" target="localhost">open homepage</a>
-			</button>
-			(new named window)
-		</div>
-	</li>
-</ul>
+<div class="ceCard">
+	<div class="button">
+		<a href="/m8/ce/articles/create">Create new article</a>
+	</div>
+</div>
+
+<div class="ceCard">
+	<input type="number" name="articleid" />
+	<div class="button">	
+		<a href="/m8/ce/articles/create">Open article</a>
+	</div>
+</div>
+
+<div class="ceCard">
+	<div class="button">
+		<a href="/" target="m8preview">Display homepage</a>
+	</div>
+	(new named window)
+</div>
+
+<div class="ceCard">
+	<h5>Infos</h5>
+	<ul>
+		<li>Documentation <a href="https://www.m8web.net/doc/" target="_blank">www.m8web.net/doc/</a></li>
+	</ul>
+</div>
+
 
 <%- include('../includes/footer') %>

@@ -1,13 +1,16 @@
 <%- include('../../includes/header', { title: locals.title}); %>
 
-<div class="button">
-	<a href="/m8/ce/files/create">Upload new file</a>
+<h1>Files</h1>
+
+<div>
+	<%- locals.content %>
 </div>
 
-<h1><%- locals.title %></h1>
-<h2>url_prefix: <%- locals.url_prefix %></h2>
-<div style="margin:0;padding: 20px 0;">
-	<%- locals.content %>
+<div class="ceCard">
+	<h2>url_prefix: <%- locals.url_prefix %></h2>
+	<div class="button">
+		<a href="/m8/ce/files/create">Upload new file</a>
+	</div>
 </div>
 
 <%- include('../../includes/footer'); %>

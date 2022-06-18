@@ -9,11 +9,22 @@ const ceUsers = {
 
   list: function (req, res) {
     // GET list
+    let users_list = [
+      {
+        id: 1,
+        loginname: "admin"
+      },
+      {
+        id: 2,
+        loginname: "test"
+      }
+    ]
     let locals = {}
     locals.title = 'BE Users'
     locals.content = '<!-- +++ list of backend users +++ -->'
     User.findAll().then(all_users => {
-      locals.all_users = all_users
+      // locals.all_users = all_users
+      locals.all_users = users_list
       res.render(ce_template, locals)
     })
   }
