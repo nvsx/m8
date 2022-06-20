@@ -33,6 +33,7 @@
 		<th>Channel</th>
 		<th>Slug</th>
 		<th>Path</th>
+		<th>Generate</th>
 		<th>Edit</th>
 	</tr>
 	<% for(let i=0; i<all_articles.length; i++) { %>
@@ -45,7 +46,16 @@
 			<td><%- all_articles[i].description %></td>
 			<td><%- all_articles[i].channel %></td>
 			<td><%- all_articles[i].slug %></td>
-			<td><%- all_articles[i].path %></td>
+			<td>
+				<a href="<%- all_articles[i].path %>" target="m8preview">
+					<%- all_articles[i].path %>
+				</a>
+			</td>
+			<td>
+				<a href="/m8/generate/article?path=<%- all_articles[i].path %>" target="m8preview">
+					<%- all_articles[i].path %>
+				</a>
+			</td>
 			<td>
 				<a href="./read?articleid=<%- all_articles[i].id %>">
 					<%- all_articles[i].id %>

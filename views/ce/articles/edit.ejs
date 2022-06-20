@@ -8,7 +8,6 @@
 </div>
 
 <form method="POST" action="<%- locals.formaction %>">
-	<input type="hidden" name="articleid" value="<%- locals.article.id %>" />
 	<div class="valueedit">
 		<span class="name">
 			ID
@@ -28,7 +27,7 @@
 			Channel
 		</span>
 		<span class="value">
-			<input name="path" type="text" value="<%- locals.article.channel %>" />
+			<input name="channel" type="text" value="<%- locals.article.channel %>" />
 		</span>
 	</div>
 	<div class="valueedit">

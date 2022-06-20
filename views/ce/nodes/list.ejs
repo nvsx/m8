@@ -26,7 +26,7 @@
 			<td><%- all_nodes[i].id %></td>
 			<td><%- all_nodes[i].title %></td>
 			<td><%- all_nodes[i].type %></td>
-			<td><a href="/m8/dbgen/?node=<%- all_nodes[i].path %>" target="m8preview"><%- all_nodes[i].path %></a></td>
+			<td><a href="/m8/generate/node/?path=<%- all_nodes[i].path %>" target="m8preview"><%- all_nodes[i].path %></a></td>
 			<td><a href="/m8/ce/nodes/read?id=<%- all_nodes[i].id %>"><%- all_nodes[i].id %></a></td>
 		</tr>
 	<% } %>
