@@ -14,6 +14,7 @@ const ceFiles = {
     // GET list
     let ce_template = 'm8/ce/files/list.ejs'
     let locals = {}
+    locals.nav_active_files = 'active'
     locals.title = 'List of files'
     locals.content = '<!-- +++ list of files +++ -->'
     locals.url_prefix = url_prefix

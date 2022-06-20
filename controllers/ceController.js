@@ -13,12 +13,13 @@ const ceController = {
   ce: function (req, res) {
     let locals = {}
     locals.title = 'CE: Start'
-    locals.content = 'Welcome here!'
+    locals.content = 'Welcome to the m8 backend!'
     res.render(ce_template, locals)
     // console.log(req.layout)
     // res.sendStatus(200)
   },
 
+  
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   staticgen: function (req, res) {
     console.log(req.originalUrl)

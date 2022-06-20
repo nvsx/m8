@@ -20,6 +20,7 @@ const ceUsers = {
       }
     ]
     let locals = {}
+    locals.nav_active_users = 'active'
     locals.title = 'BE Users'
     locals.content = '<!-- +++ list of backend users +++ -->'
     User.findAll().then(all_users => {

@@ -6,6 +6,7 @@ const ceNodes = {
     // GET list
     let ce_template = 'm8/ce/nodes/list.ejs'
     let locals = {}
+    locals.nav_active_nodes = 'active'
     locals.title = 'List of nodes'
     locals.content = '<!-- +++ list of nodes +++ -->'
     Node.findAll({
@@ -22,6 +23,7 @@ const ceNodes = {
     // GET create form
     let locals = {}
     locals.node = {}
+    locals.nav_active_nodes = 'active'
     locals.node.title = 'new page title'
     locals.title = 'create node'
     locals.formaction = '/m8/ce/nodes/createsave'
@@ -32,6 +34,7 @@ const ceNodes = {
   createsave: function (req, res) {
     // POST new
     let locals = {}
+    locals.nav_active_nodes = 'active'
     locals.node = {}
     locals.title = 'save new node'
     locals.node.id = req.body.nodeid;
@@ -48,6 +51,7 @@ const ceNodes = {
     if(! nodeid) { nodeid = 0}
     Node.findByPk(nodeid).then(thisNode => {
       let locals = {}
+      locals.nav_active_nodes = 'active'
       locals.node = thisNode
       locals.title  = `edit node ${nodeid}`
       locals.formaction = '/m8/ce/nodes/update'
@@ -59,6 +63,7 @@ const ceNodes = {
   update: function (req, res) {
     // POST update
     let locals = {}
+    locals.nav_active_nodes = 'active'
     locals.node = {}
     locals.title = 'update node'
     let nodeid = req.body.nodeid;
@@ -74,6 +79,7 @@ const ceNodes = {
   delete: function (req, res) {
     // POST delete
     let locals = {}
+    locals.nav_active_nodes = 'active'
     locals.node = {}
     locals.title = 'delete node'
     locals.node.id = req.body.nodeid;

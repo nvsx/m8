@@ -6,6 +6,7 @@ const ceArticles = {
     // GET list
     let ce_template = 'm8/ce/articles/list.ejs'
     let locals = {}
+    locals.nav_active_articles = 'active'
     locals.title = 'List of articles'
     locals.content = '<!-- +++ list of articles +++ -->'
     Article.findAll({
@@ -23,6 +24,7 @@ const ceArticles = {
     // GET create form
     let locals = {}
     locals.article = {}
+    locals.nav_active_articles = 'active'
     locals.article.title = 'new article title'
     locals.title = 'create article'
     locals.formaction = '/m8/ce/articles/createsave'
@@ -33,6 +35,7 @@ const ceArticles = {
   createsave: function (req, res) {
     // POST new
     let locals = {}
+    locals.nav_active_articles = 'active'
     locals.title = 'save new article'
     req.body.id = undefined
     Article.create(req.body).then(result => {
@@ -47,6 +50,7 @@ const ceArticles = {
     if(! articleid) { articleid = 0}
     Article.findByPk(articleid).then(thisArticle => {
       let locals = {}
+      locals.nav_active_articles = 'active'
       locals.article = thisArticle
       locals.title  = `edit node ${articleid}`
       locals.formaction = '/m8/ce/articles/update'

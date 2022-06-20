@@ -14,7 +14,7 @@ const Article = sequelize.define('articles', {
 	topic: DataTypes.STRING,
 	title: DataTypes.STRING,
 	description: DataTypes.STRING,
-	notes: DataTypes.STRING,
+	notes: DataTypes.STRING, 
 	slug: DataTypes.STRING, 
 	path: DataTypes.STRING,
 	robots_index: DataTypes.INTEGER,
@@ -40,7 +40,7 @@ const Article = sequelize.define('articles', {
 
 // 1/3 
 // This creates the table if it doesn't exist (and does nothing if it already exists)
-// Article.sync()
+Article.sync()
 
 // 2/3
 // This creates the table, dropping it first if it already existed
@@ -48,6 +48,6 @@ const Article = sequelize.define('articles', {
 
 // 3/3
 // This checks what is the current state of the table in the database (which columns it has, what are their data types, etc), and then performs the necessary changes in the table to make it match the model:
-Article.sync({ alter: true }) 
+// Article.sync({ alter: true }) 
 
 export default Article

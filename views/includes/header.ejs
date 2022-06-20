@@ -8,13 +8,6 @@
 		<link rel="stylesheet" href="/m8/ce/cfg/main.css" type="text/css" />
 	</head>
 	<body>
-		<%- include('headerrow') %>
-		<div class="lower-part">
-			<div class="col1">
-				<%- include('col1') %>
-			</div>
-			<%# - include('col2') %>
-			<div class="main-content">
 
 <!-- --------------------------------------------------------------------- -->
 <style>
@@ -95,10 +88,10 @@
 		background-color: transparent;
 	}
 	.ceCard {
+		display: inline-block;
 		border: 1px solid #333;
-		min-width: 250px;
+		max-width: 360px;
 		border-radius: 10px;
-		min-height: 100px;
 		padding: 10px;
 		margin: 10px;
 		background-color: antiquewhite;
@@ -144,11 +137,21 @@
 		margin: 0;
 		border: 1px solid #c0c0c0;
 	}
+	table tr th {
+		background-color: #ccd;
+	}
 	table.ce-pages-list a {
 		display: block;
 	}
 	.col1div {
 		overflow: auto;
+	}
+	.col1div.active {
+		background-color: #e55;
+	}
+	.col1div.active a {
+		background-color: #e55;
+		color: yellow;
 	}
 	.col1div a img {
 		max-width: 32px;
@@ -156,3 +159,10 @@
 		vertical-align: middle;
 	}
 </style>
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<%- include('headerrow') %>
+<div class="lower-part">
+	<%- include('col1') %>
+	<%# - include('col2') %>
+	<div class="main-content">
