@@ -11,6 +11,7 @@ const ceArticles = {
     locals.content = '<!-- +++ list of articles +++ -->'
     Article.findAll({
       order: [
+        ['updatedAt', 'DESC'],
         ['createdAt', 'DESC'],
         ['id', 'DESC']
     ],
@@ -61,11 +62,17 @@ const ceArticles = {
 
   update: function (req, res) {
     // POST update
+    console.log("-------------------------")
+    console.log("saving article")
     let locals = {}
     locals.nav_active_articles = 'active'
     locals.node = {}
     locals.title = 'update article'
     let article_id = req.body.id;
+
+    console.log("    channel:", req.body.channel)
+    console.log("    channel_old:", req.body.channel_old)
+
     Article.findByPk(article_id).then( thisArticle => {
       console.log(JSON.stringify(req.body, null, 2))
       thisArticle.set(req.body)

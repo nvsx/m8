@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","mappings":"mBAAAA,QAAQC,IAAI,O","sources":["webpack://m8/./javascript/index.js"],"sourcesContent":["console.log(\"m8\")\n"],"names":["console","log"],"sourceRoot":""}

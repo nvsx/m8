@@ -32,8 +32,8 @@
 		<th>Description</th>
 		<th>Channel</th>
 		<th>Slug</th>
-		<th>Path</th>
-		<th>Generate</th>
+		<th>View</th>
+		<th>Build</th>
 		<th>Edit</th>
 	</tr>
 	<% for(let i=0; i<all_articles.length; i++) { %>
@@ -43,22 +43,26 @@
 			</td>
 			<td><%- all_articles[i].topic %></td>
 			<td><%- all_articles[i].title %></td>
-			<td><%- all_articles[i].description %></td>
-			<td><%- all_articles[i].channel %></td>
+			<td style="font-size:0.75rem;"><%- all_articles[i].description %></td>
+			<td>
+				<b>
+					<%- all_articles[i].channel %>
+				</b>
+			</td>
 			<td><%- all_articles[i].slug %></td>
 			<td>
 				<a href="<%- all_articles[i].path %>" target="m8preview">
-					<%- all_articles[i].path %>
+					<img src="/img/icon-view.svg" alt="view article" />
 				</a>
 			</td>
 			<td>
 				<a href="/m8/generate/article?path=<%- all_articles[i].path %>" target="m8preview">
-					<%- all_articles[i].path %>
+					<img src="/img/icon-generate.svg" style="height:28px;width:auto;" alt="edit node <%- all_articles[i].id %>" />
 				</a>
 			</td>
 			<td>
-				<a href="./read?articleid=<%- all_articles[i].id %>">
-					<%- all_articles[i].id %>
+				<a href="/m8/ce/articles/read?articleid=<%- all_articles[i].id %>">
+					<img src="/img/icon-edit.svg" alt="edit article_<%- all_articles[i].id %>" />
 				</a>
 			</td>
 		</tr>

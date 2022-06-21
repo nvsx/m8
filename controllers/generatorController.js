@@ -1,10 +1,39 @@
 import fs      from 'fs'
+import path    from 'path'
 import Node    from '../models/Node.js'
 import Article from '../models/Article.js'
 
 const input_dir    = '../site/views'
 const output_dir   = '../public'
 const ejs_template = 'site/m8/layouts/default.ejs'
+
+function build_node (req, res, next, data) {
+  console.log(JSON.stringify(data))
+  let write_dir  = output_dir + data.path
+  let write_file = write_dir + 'index.html'
+  if (! fs.existsSync(write_dir)) {
+    console.log(`    Directory ${write_dir} not found. Try to create...`);
+    fs.mkdirSync(write_dir, { recursive: true });
+  }
+  let myData = {}
+  myData.title = data.title
+  myData.content = data.content
+  res.render(ejs_template, myData, function(err, output) {
+    res.send(output)
+    if (err) {
+      console.error(err);
+    }
+    fs.writeFile(write_file, output, err => {
+      console.log("    writing to file", write_file)
+      if (err) {
+        console.error(err);
+      }
+    })
+  })
+  // next()
+  return
+}
+
 
 const generator = {
 
@@ -91,21 +120,69 @@ const generator = {
       // res.sendStatus(200)
     }
     else {
+      console.log("--------------------")
       console.log("    TESTing for node")
       Node.findOne({ where: { path: searchpath } }).then(noderesult => {
         if(noderesult){
           source_node = noderesult
           resource_type = 'node'
-          console.log("resource_type === node")
-          res.sendStatus(200)
+          console.log("    --> resource_type === node")
+          // build_node(req, res, null, noderesult)
+          // res.sendStatus(200)
+          let write_dir  = output_dir + noderesult.path
+          let write_file = write_dir + 'index.html'
+          if (! fs.existsSync(write_dir)) {
+            console.log(`    Directory ${write_dir} not found. Try to create...`);
+            fs.mkdirSync(write_dir, { recursive: true });
+          }
+          let myData = {}
+          myData.title = noderesult.title
+          myData.content = noderesult.content
+          res.render(ejs_template, myData, function(err, output) {
+            res.send(output)
+            if (err) {
+              console.error(err);
+            }
+            console.log("    write_dir", write_dir)
+            console.log("    write_file", write_file)
+            fs.writeFile(write_file, output, err => {
+              console.log("    writing to file", write_file)
+              if (err) {
+                console.error(err);
+              }
+            })
+          })
         } else {
+          console.log("-----------------------")
           console.log("    testing for article")
           Article.findOne({ where: { path: searchpath } }).then(articleresult => {
             if(articleresult) {
               source_article = articleresult
               resource_type = 'article'
-              console.log("resource_type === node")
-              res.sendStatus(200)
+              console.log("resource_type === article")
+              let write_dir  = output_dir + path.dirname(articleresult.path)
+              let write_file = output_dir + articleresult.path
+              console.log("    write_dir", write_dir)
+              console.log("    write_file", write_file)
+              if (! fs.existsSync(write_dir)) {
+                console.log(`    Directory ${write_dir} not found. Try to create...`);
+                fs.mkdirSync(write_dir, { recursive: true });
+              }
+              let myData = {}
+              myData.title = articleresult.title
+              myData.content = articleresult.content
+              res.render(ejs_template, myData, function(err, output) {
+                res.send(output)
+                if (err) {
+                  console.error(err);
+                }
+                fs.writeFile(write_file, output, err => {
+                  console.log("    writing to file", write_file)
+                  if (err) {
+                    console.error(err);
+                  }
+                })
+              })
             } 
             else {
               // no match of any kind
@@ -174,7 +251,7 @@ const generator = {
     let node = req.query.path
     if( !node ) { node = '' }
     let searchpath = node.replace(/\/+/g, '/')
-    searchpath = searchpath.replace(/\/$/, '')
+    // searchpath = searchpath.replace(/\/$/, '')
     if(searchpath === '') { searchpath = '/' }
     console.log('    search_path: [' + searchpath + ']')
 
@@ -195,6 +272,7 @@ const generator = {
       }
       myData.title = result.title
       myData.content = result.content
+      myData.pageData = {}
       // myData.content = '<div class="sector"><div class="container">' + output_table + '</div></div>'
       res.render(ejs_template, myData, function(err, output) {
         res.send(output)
@@ -246,6 +324,7 @@ const generator = {
 
       myData.title = result.title
       myData.content = result.content
+      myData.pageData = result
       res.render(ejs_template, myData, function(err, output) {
         res.sendStatus(200)
         if (err) {
