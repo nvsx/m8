@@ -10,25 +10,22 @@ const router = express.Router()
 // m8/ce/articles/
 import ceArticlesRouter from './cearticles.js'
 router.use(ceArticlesRouter)
-
+// m8/ce/elements/
+import ceElementRouter from './ceelements.js'
+router.use(ceElementRouter)
 // m8/ce/files/
 import cefilesRouter from './cefiles.js'
 router.use(cefilesRouter)
-
 // /m8/ce/pages/
 import cenodesRouter from './cenodes.js'
 router.use(cenodesRouter)
-
 // /m8/ce/users/
 import ceusersRouter from './ceusers.js'
 router.use(ceusersRouter)
-
 // /m8/ce/
 import ceRouter from './ce.js'
 router.use(ceRouter)
-
 // fallback all URLs: generator
 import generatorRouter from './generator.js'
 router.use(generatorRouter)
-
 export default router

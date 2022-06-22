@@ -3,50 +3,48 @@ import path    from 'path'
 import Node    from '../models/Node.js'
 import Article from '../models/Article.js'
 
-const input_dir    = '../site/views'
-const output_dir   = '../public'
-const ejs_template = 'site/m8/layouts/default.ejs'
-
-function build_node (req, res, next, data) {
-  console.log(JSON.stringify(data))
-  let write_dir  = output_dir + data.path
-  let write_file = write_dir + 'index.html'
-  if (! fs.existsSync(write_dir)) {
-    console.log(`    Directory ${write_dir} not found. Try to create...`);
-    fs.mkdirSync(write_dir, { recursive: true });
-  }
-  let myData = {}
-  myData.title = data.title
-  myData.content = data.content
-  res.render(ejs_template, myData, function(err, output) {
-    res.send(output)
-    if (err) {
-      console.error(err);
-    }
-    fs.writeFile(write_file, output, err => {
-      console.log("    writing to file", write_file)
-      if (err) {
-        console.error(err);
-      }
-    })
-  })
-  // next()
-  return
-}
-
+const input_dir      = '../site/views'
+const output_dir     = '../public'
+const ejs_template   = 'site/m8/layouts/default.ejs'
+const article_layout = 'site/m8/layouts/article_default.ejs'
 
 const generator = {
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  delete: function (req, res) {
+    console.log("DELETE FILE FROM PUBLIC DIR")
+    const req_path = req.path
+    console.log("    delete request:", req_path)
+    // replace "/m8/generate/delete" with output_dir
+    const calc_path = req_path.replace(/^\/m8\/generate\/delete/, output_dir)
+    const delete_path = calc_path.replace(/\/$/, '/index.html')
+    console.log("    delete file:", delete_path)
+    res.sendStatus(200)
+    fs.unlink(delete_path, (err) => {
+      if (err) {
+        console.error(err)
+      }
+    })
+  },
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   generate: function (req, res) {
     const req_path = req.path
-    let searchpath = req_path.replace(/\/+/g, '/')
-    // file or dir?
-    const slashRegex = /\/$/g
-    const slashEnd   = searchpath.match(slashRegex)
-
+    const clean_path = req_path.replace(/^\/m8\/generate\/build/, '')
+    let searchpath = clean_path.replace(/\/+/g, '/')
+    console.log("--------------------")
     console.log("GENERATOR GENERATE")
-    console.log('    path', searchpath)
+    console.log('    req_path', req_path)
+    console.log('    clean_path', clean_path)
+    console.log('    searchpath', searchpath)
+    console.log('    build_path', req.build_path)
+
+    // is this request file or dir?
+    const slashRegex = /\/$/g
+    const htmlRegex  = /\.html$/g
+    const slashEnd = searchpath.match(slashRegex)? true : false
+    const htmlEnd  = searchpath.match(htmlRegex)? true :false
+    console.log('    slashEnd', slashEnd)
+    console.log('    htmlEnd', htmlEnd)
 
     // ----------------------------------------------------
     // index.html is redirectd to slash:
@@ -60,17 +58,9 @@ const generator = {
       res.redirect(redirect_path)
       return
     }
-    // no more redirect to / without index.html, because files do not have slash
-    // else {
-    //   const regex2 = /\/$/g
-    //   const found2 = req_path.match(regex2)
-    //   if(! found2) {
-    //     redirect_path = req_path + '/'
-    //   }
-    // }
+
     // ----------------------------------------------------
-    // Check type, we have three:
-    // view, node, article
+    // Check type, we have three: 1.view, 2.node, 3.article
     let resource_type = ''
     let suffix = '.ejs'
     if(slashEnd) { suffix = 'index.ejs'}
@@ -171,7 +161,8 @@ const generator = {
               let myData = {}
               myData.title = articleresult.title
               myData.content = articleresult.content
-              res.render(ejs_template, myData, function(err, output) {
+              myData.pageData = articleresult
+              res.render(article_layout, myData, function(err, output) {
                 res.send(output)
                 if (err) {
                   console.error(err);
@@ -193,153 +184,12 @@ const generator = {
           })
         }
       })
-    }
-  },
-
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  gen_view: function (req, res) {
-    console.log(req.originalUrl)
-    let page = req.query.page
-    if(!page || page === '' ) {
-      console.log("    missing parameter page")
-      res.sendStatus(404)
-    }
-    else {
-      console.log("    page:        " + page)
-      let input_path  = input_dir + page
-      let output_path = output_dir + page
-      let input_file  = input_path + 'index.ejs'
-      let output_file = output_path + 'index.html'
-      console.log("    input_file: ", input_file)
-      console.log("    output_file:", output_file)
-
-      if (! fs.existsSync(input_file)) {
-        // ejs_file not found
-        console.log("    ---> this is 404")
+      .catch (err => {
+        console.log(err)
         res.sendStatus(404)
-      }
-      else {
-        // make dir
-        if (! fs.existsSync(output_path)) {
-          console.log(`    Creating directory ${output_path}.`);
-          fs.mkdirSync(output_path, { recursive: true });
-        }
-        // respond and save
-        res.render(input_file, {}, function(err, output) {
-          res.send(output)
-          if (err) {
-            console.error(err);
-          }
-          fs.writeFile(output_file, output, err => {
-            console.log("    writing to file", output_file)
-            if (err) {
-              console.error(err);
-            }
-          })
-        })
-      }
-    }
-  },
-
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  gen_node: async function(req, res) {
-    console.log("----------------------")
-    console.log("GENERATE NODE")
-    console.log(req.originalUrl)
-
-    let myData = {}
-    let node = req.query.path
-    if( !node ) { node = '' }
-    let searchpath = node.replace(/\/+/g, '/')
-    // searchpath = searchpath.replace(/\/$/, '')
-    if(searchpath === '') { searchpath = '/' }
-    console.log('    search_path: [' + searchpath + ']')
-
-    const result = await Node.findOne({ where: { path: searchpath } })
-    if (result === null) {
-      console.log('Not found!')
-      res.sendStatus(404)
-    } 
-    else {
-      let output_path = output_dir + node
-      let html_file   = output_path + '/index.html'
-      console.log("    output_path:", output_path)
-      console.log("    html_file:", html_file)
-      // make dir
-      if (! fs.existsSync(output_path)) {
-        console.log(`    Creating directory ${output_path}.`);
-        fs.mkdirSync(output_path, { recursive: true });
-      }
-      myData.title = result.title
-      myData.content = result.content
-      myData.pageData = {}
-      // myData.content = '<div class="sector"><div class="container">' + output_table + '</div></div>'
-      res.render(ejs_template, myData, function(err, output) {
-        res.send(output)
-        if (err) {
-          console.error(err);
-        }
-        fs.writeFile(html_file, output, err => {
-          console.log("    writing to file", html_file)
-          if (err) {
-            console.error(err);
-          }
-        })
-      })
-    }
-  },
-
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  gen_article: async function(req, res) {
-    console.log("----------------------")
-    console.log("GENERATE ARTICLE")
-    console.log(req.originalUrl)
-
-    let myData = {}
-    let article_path = req.query.path
-    if( !article_path ) { article_path = '' }
-    // replace duplicate slashes:
-    let searchpath = article_path.replace(/\/+/g, '/')
-    // no trailing slash:
-    searchpath = searchpath.replace(/\/$/, '')
-    if(searchpath === '') { searchpath = '/' }
-    console.log("    search_path: [" + searchpath + ']')
-    const result = await Article.findOne({ where: { path: searchpath } })
-    if (result === null) {
-      console.log('Not found!')
-      res.sendStatus(404)
-    } 
-    else {
-      let path_array = searchpath.split("/")
-      //let path_length = path_array.length
-      let article_dir = output_dir + path_array.slice(0,-1).join('/')
-      console.log("    article_dir", article_dir)
-      if (! fs.existsSync(article_dir)) {
-        console.log(`    Creating directory ${article_dir}.`);
-        fs.mkdirSync(article_dir, { recursive: true });
-      }
-
-      let html_file = output_dir + article_path
-      console.log("    html_file:", html_file)
-
-      myData.title = result.title
-      myData.content = result.content
-      myData.pageData = result
-      res.render(ejs_template, myData, function(err, output) {
-        res.sendStatus(200)
-        if (err) {
-          console.error(err);
-        }
-        fs.writeFile(html_file, output, err => {
-          console.log("    writing to file", html_file)
-          if (err) {
-            console.error(err);
-          }
-        })
       })
     }
   }
-
 }
 
 export default generator

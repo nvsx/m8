@@ -14,10 +14,10 @@
 	/* +++++++++++++++++++++++++++++++++++ */
 	* {
 		box-sizing: border-box;
-	}
-	html, body {
 		margin: 0;
 		padding: 0;
+	}
+	html, body {
 		color: #444;
 		background-color: #fafafa;
 	}
@@ -50,6 +50,7 @@
 		height:100%;
 		background-color: #fff;
 		display: flex;
+		flex-wrap: nowrap;
 	}
 	.col1{
 		position: relative;
@@ -147,11 +148,12 @@
 		overflow: auto;
 	}
 	.col1div.active {
-		background-color: #a55;
+		border-left: 1px solid #c00;
+		border-right: 15px solid #c00;
 	}
 	.col1div.active a {
-		background-color: #a55;
-		color: #ffa;
+		text-decoration: none;
+		font-weight: bold;
 	}
 	.col1div a img {
 		max-width: 32px;

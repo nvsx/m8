@@ -65,6 +65,7 @@
 
 <form name="delete_form" method="POST" action="/m8/ce/nodes/delete">
 	<input type="hidden" name="nodeid" value="<%- locals.node.id %>" />
+	<input type="hidden" name="path" value="<%- locals.node.path %>" />
 	<div class="formcontrol">
 		<button>DELETE</button>
 	</div>

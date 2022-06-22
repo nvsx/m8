@@ -27,9 +27,8 @@
 <table>
 	<tr>
 		<th>ID</th>
-		<th>Topic</th>
 		<th>Title</th>
-		<th>Description</th>
+		<th>Topic</th>
 		<th>Channel</th>
 		<th>Slug</th>
 		<th>View</th>
@@ -41,9 +40,14 @@
 			<td>
 				<%- all_articles[i].id %>
 			</td>
-			<td><%- all_articles[i].topic %></td>
-			<td><%- all_articles[i].title %></td>
-			<td style="font-size:0.75rem;"><%- all_articles[i].description %></td>
+			<td>
+				<%- all_articles[i].title %>
+			</td>
+			<td>
+				<span style="font-size:0.8rem">
+					<%- all_articles[i].topic %>
+				</span>
+			</td>
 			<td>
 				<b>
 					<%- all_articles[i].channel %>
@@ -55,11 +59,13 @@
 					<img src="/img/icon-view.svg" alt="view article" />
 				</a>
 			</td>
+
 			<td>
-				<a href="/m8/generate/article?path=<%- all_articles[i].path %>" target="m8preview">
+				<a href="/m8/generate/build<%- all_articles[i].path %>" target="m8preview">
 					<img src="/img/icon-generate.svg" style="height:28px;width:auto;" alt="edit node <%- all_articles[i].id %>" />
 				</a>
 			</td>
+
 			<td>
 				<a href="/m8/ce/articles/read?articleid=<%- all_articles[i].id %>">
 					<img src="/img/icon-edit.svg" alt="edit article_<%- all_articles[i].id %>" />

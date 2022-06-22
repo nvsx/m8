@@ -1,4 +1,8 @@
 import Node from '../models/Node.js'
+import axios from 'axios'
+
+const build_url = 'http://localhost:8088/m8/generate/build'
+const delete_url = 'http://localhost:8088/m8/generate/delete'
 
 const ceNodes = {
 
@@ -43,6 +47,13 @@ const ceNodes = {
       locals.content = JSON.stringify(result, null, 2)
       res.render('m8/ce/nodes/created.ejs', locals)
     })
+    // build file
+    axios.get(build_url + req.body.path).then(resp => {
+      // console.log(resp.data)
+      console.log("    axios ok")
+    }).catch( err => {
+      console.log(err)
+    })
   },
 
   read: function (req, res) {
@@ -74,6 +85,13 @@ const ceNodes = {
       // res.send("cenodes: update " + nodeid )
       res.redirect(302, '/m8/ce/nodes/read?id=' + nodeid);
     })
+    // build file
+    axios.get(build_url + req.body.path).then(resp => {
+      // console.log(resp.data)
+      console.log("    axios ok")
+    }).catch( err => {
+      console.log(err)
+    })
   },
 
   delete: function (req, res) {
@@ -86,7 +104,19 @@ const ceNodes = {
     Node.findByPk(req.body.nodeid).then(thisNode => {
       thisNode.destroy()
     })
-    // res.send("cenodes: delete: " + locals.node.id).sendStatus(200)
+    // delete public file
+    if(req.body.path && req.body.path !== '') {
+      console.log("    -> sending request to delete", req.body.path)
+      axios.get(delete_url + req.body.path).then(resp => {
+        // console.log(resp.data)
+        console.log("    axios ok")
+      }).catch( err => {
+        console.log(err)
+      })
+    }
+    else {
+      console.log("WARNING: can not delete file on disk, no path in body")
+    }
     res.redirect(302, '/m8/ce/nodes');
   }
 }

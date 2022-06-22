@@ -1,4 +1,8 @@
 import Article from '../models/Article.js'
+import axios from 'axios'
+
+const build_url = 'http://localhost:8088/m8/generate/build'
+const delete_url = 'http://localhost:8088/m8/generate/delete'
 
 const ceArticles = {
 
@@ -43,6 +47,13 @@ const ceArticles = {
       locals.content = JSON.stringify(result, null, 2)
       res.render('m8/ce/articles/created.ejs', locals)
     })
+    // build file
+    axios.get(build_url + req.body.path).then(resp => {
+      // console.log(resp.data)
+      console.log("    axios ok")
+    }).catch( err => {
+      console.log(err)
+    })
   },
     
   read: function (req, res) {
@@ -69,15 +80,20 @@ const ceArticles = {
     locals.node = {}
     locals.title = 'update article'
     let article_id = req.body.id;
-
     console.log("    channel:", req.body.channel)
     console.log("    channel_old:", req.body.channel_old)
-
     Article.findByPk(article_id).then( thisArticle => {
       console.log(JSON.stringify(req.body, null, 2))
       thisArticle.set(req.body)
       thisArticle.save()
       res.redirect(302, '/m8/ce/articles/read?articleid=' + article_id);
+    })
+    // build file
+    axios.get(build_url + req.body.path).then(resp => {
+      // console.log(resp.data)
+      console.log("    axios ok")
+    }).catch( err => {
+      console.log(err)
     })
   },
 
@@ -91,9 +107,21 @@ const ceArticles = {
     Article.findByPk(req.body.articleid).then(thisArticle => {
       thisArticle.destroy()
     })
-    res.redirect(302, '/m8/ce/articles');
+    // delete public file
+    if(req.body.path && req.body.path !== '') {
+      console.log("    -> sending request to delete", req.body.path)
+      axios.get(delete_url + req.body.path).then(resp => {
+        // console.log(resp.data)
+        console.log("    axios ok")
+      }).catch( err => {
+        console.log(err)
+      })
+    }
+    else {
+      console.log("WARNING: can not delete file on disk, no path in body")
+    }
+    res.redirect(302, '/m8/ce/articles')
   }
-
 }
 
 export default ceArticles
