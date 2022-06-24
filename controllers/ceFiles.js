@@ -5,7 +5,7 @@ import fs from 'fs'
 
 const public_dir = '../public'
 let ce_template = 'm8/ce/index.ejs'
-let url_prefix = '/m8/files/'
+let url_prefix = '/_m8/files/'
 let dir_prefix = '../files/'
 
 const ceFiles = {
@@ -22,6 +22,14 @@ const ceFiles = {
     File.findAll().then(all_files => {
       locals.all_files = all_files
       res.render(ce_template, locals)
+
+
+
+
+
+
+
+      
     })
   }
 }

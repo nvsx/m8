@@ -1,0 +1,53 @@
+<%- include('../../includes/header', { title: locals.title}); %>
+
+<h1>Containers</h1>
+
+<%- locals.content %>
+
+<div class="ceCard">
+	<div class="button">
+		<a href="/_m8/ce/nodes/create">Create new Container</a>
+	</div>
+</div>
+
+<table class="ce-table">
+	<tr>
+		<th>
+			<a href="/_m8/ce/nodes/?order=asc&by=id">
+				ID <img src="/img/icon-edit.svg" alt="edit node" />
+			</a>
+		</th>
+		<th>Status</th>
+		<th>
+			<a href="/_m8/ce/nodes/?order=asc&by=path">
+				Path <img src="/img/icon-view.svg" alt="view node" />
+			</a>
+		</th>
+		<th>
+			<a href="/_m8/ce/nodes/?order=asc&by=title">
+				Title
+			</a>
+		</th>
+		<th>Type</th>
+	</tr>
+
+	<% for(let i=0; i<all_nodes.length; i++) { %>
+		<tr>
+			<td>
+				<a href="/_m8/ce/nodes/read?id=<%- all_nodes[i].id %>">
+					<%- all_nodes[i].id %>
+				</a>
+			</td>
+			<td>live</td>
+			<td>
+				<a href="<%- all_nodes[i].path %>" target="m8preview">
+					<%- all_nodes[i].path %>
+				</a>
+			</td>
+			<td><%- all_nodes[i].title %></td>
+			<td><%- all_nodes[i].type %></td>
+		</tr>
+	<% } %>
+</table>
+
+<%- include('../../includes/footer'); %>

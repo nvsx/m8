@@ -20,14 +20,14 @@
 
 <div class="ceCard">
 	<div class="button">
-		<a href="/m8/ce/users/create">Create new user</a>
+		<a href="/_m8/ce/users/create">Create new user</a>
 	</div>
 </div>
 
-<table class="ce-users-list">
+<table class="ce-table">
 	<tr>
-		<th><a href="/m8/ce/users/?order=asc&by=id">ID</a></th>
-		<th><a href="/m8/ce/users/?order=asc&by=loginname">Loginname</a></th>
+		<th><a href="/_m8/ce/users/?order=asc&by=id">ID</a></th>
+		<th><a href="/_m8/ce/users/?order=asc&by=loginname">Loginname</a></th>
 		<th>Edit</th>
 	</tr>
 
@@ -35,7 +35,7 @@
 		<tr>
 			<td><%- all_users[i].id %></td>
 			<td><%- all_users[i].loginname %></td>
-			<td><a href="/m8/ce/articles/read?id=<%- all_users[i].id %>"><%- all_users[i].id %></a></td>
+			<td><a href="/_m8/ce/articles/read?id=<%- all_users[i].id %>"><%- all_users[i].id %></a></td>
 		</tr>
 	<% } %>
 </table>

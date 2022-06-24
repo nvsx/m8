@@ -1,0 +1,71 @@
+<%- include('../../includes/header', { title: locals.title}); %>
+
+<h1>Articles</h1>
+
+<div>
+	<%- locals.content %>
+</div>
+
+<div class="ceCard">
+	<div class="button">
+		<a href="/_m8/ce/articles/create">Create new article</a>
+	</div>
+	<form>
+		Open article:
+		<input type="number" name="articleid" />
+		<input type="submit" value="open" />
+	</form>
+	<form>	Filter Channel:
+		<select name="channel_filter">
+			<option value="all">All</option>
+		</select>
+		<input type="submit" value="go" />
+	</form>
+</div>
+
+<h2><%- locals.title %></h2>
+<table class="ce-table">
+	<tr>
+		<th>ID <img src="/img/icon-edit.svg" alt="edit article" /></th>
+		<th>Status</th>
+		<th>Title <img src="/img/icon-view.svg" alt="view article" /></th>
+		<th>Channel</th>
+		<th>Slug</th>
+	</tr>
+	<% for(let i=0; i<all_articles.length; i++) { %>
+		<tr>
+			<td>
+				<a href="/_m8/ce/articles/read?articleid=<%- all_articles[i].id %>">
+					<%- all_articles[i].id %>
+				</a>
+			</td>
+			<td>
+				live
+			</td>
+			<td>
+				<%- all_articles[i].topic %>
+				<a href="<%- all_articles[i].path %>" target="m8preview">
+					<%- all_articles[i].title %></a>
+				</a>
+			</td>
+			<td>
+				<b><%- all_articles[i].channel %></b>
+					<hr style="color:#f0f0f0;">
+					<span style="color:#555;">
+						channelname
+					</span>
+			</td>
+			<td>
+				<b><%- all_articles[i].slug %></b>
+				<hr style="color:#f0f0f0;">
+				<a href="<%- all_articles[i].path %>" target="m8preview">
+					<span style="color:#555;">
+						<%- all_articles[i].path %>
+					</span>
+					</a>
+			</td>
+		</tr>
+	<% } %>
+</table>
+
+<%- include('../../includes/footer'); %>

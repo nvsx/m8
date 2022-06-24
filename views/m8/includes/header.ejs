@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title><%- locals.title || 'CE' %></title>
-		<link rel="stylesheet" href="/m8/ce/cfg/main.css" type="text/css" />
+		<link rel="stylesheet" href="/_m8/ce/cfg/main.css" type="text/css" />
 	</head>
 	<body>
 
@@ -84,9 +84,29 @@
 	}
 	.main-content {
 		position:relative;
-		padding:0 0 0 10px;
+		padding:10px;
 		margin:0;
 		background-color: transparent;
+		flex-grow: 2;
+	}
+	table.ce-table {
+		width:100%;
+		margin:0;
+		padding: 50px 0;
+	}
+	table.ce-table th {
+		text-align:left;
+	}
+	table.ce-table tr img {
+		width:  24px;
+		height: auto;
+	}
+	table.ce-table tr a {
+		display: inline-block;
+		width: 100%;
+	}
+	table.ce-table tr a:hover {
+		background-color: #ffd;
 	}
 	.ceCard {
 		display: inline-block;
@@ -97,38 +117,21 @@
 		margin: 10px;
 		background-color: antiquewhite;
 	}
-	.activity-bar {
-		width: 280px;
-	}
-	.activity-button {
-		display: block;
-		color: white;
-		background-color: darkgreen;
-		padding: 5px;
-		margin: 5px;
-		border: 1px solid #ffc;
-		border-radius: 5px;
-		cursor: pointer;
-	}
-
-	div.button {
+	div.button, button.button {
 		display: inline-block;
 		margin:5px;
 		padding:5px;
 		border: 1px solid gray;
 		border-radius: 5px;
 		background-color: #58a;
+		color: #fff;
 	}
 	div.button a {
 		display: block;
 		color: #fff;
+		text-decoration: none;
 	}
 	a.button {
-		display: inline-block;
-	}
-	button.button {
-		margin: 5px;
-		padding: 5px;
 		display: inline-block;
 	}
 
@@ -148,18 +151,36 @@
 		overflow: auto;
 	}
 	.col1div.active {
-		border-left: 1px solid #c00;
 		border-right: 15px solid #c00;
 	}
 	.col1div.active a {
 		text-decoration: none;
-		font-weight: bold;
 	}
 	.col1div a img {
 		max-width: 32px;
 		height: auto;
 		vertical-align: middle;
 	}
+
+	div.valueedit  {
+		padding: 0 5px 10px 5px;
+		background-color: lightsteelblue;
+		width: 100%;
+	}
+	div.valueedit label {
+		display: inline-block;
+		min-width: 90px;
+	}
+	div.valueedit input {
+		display: inline-block;
+		min-width: 450px;
+	}
+	input:read-only {
+		background-color: #ddd;
+	}
+
+
+
 </style>
 <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 

@@ -1,5 +1,6 @@
 // import ejs               from 'ejs'
 import express           from 'express'
+import fs                from 'fs'
 import path              from 'path'
 import dotenv            from 'dotenv'
 import { fileURLToPath } from 'url'
@@ -9,20 +10,23 @@ import bodyParser        from 'body-parser'
 const env_file   = '../.env'
 const dotenv_result = dotenv.config({ path: env_file })
 if (dotenv_result.error) { throw dotenv_result.error }
+const site_raw = fs.readFileSync('../site/config.json', "utf8")
+const site_cfg = JSON.parse(site_raw)
 
 // global
 const serverpath = fileURLToPath(import.meta.url)
 global.__basedir = path.dirname(serverpath)
 global.__context = process.env.NODE_ENV || 'undefined_context'
 global.__m8version = 'v0.0.4'
+global.__sitecfg = site_cfg
 
 // app
 const app = express()
 app.use(express.static('../public'))
 app.use(express.static('public'))
 app.set('view engine', 'ejs')
-app.set('views','../views');
-app.use(bodyParser.urlencoded({ extended: true }));
+app.set('views',  ['./views', '../site/views'])
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // routing
 import router from './routes/index.js'

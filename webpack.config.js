@@ -5,7 +5,7 @@ import path from 'path'
 const current_path    = fileURLToPath(import.meta.url)
 const base_dir        = path.dirname(current_path)
 const entry_file      = base_dir + '/javascript/index.js'
-const target_dir      = base_dir + '/public/m8/ce/cfg'
+const target_dir      = base_dir + '/public/_m8/ce/cfg'
 const target_filename = 'index.js'
 
 console.log("DEBUG: base_dir =", base_dir)

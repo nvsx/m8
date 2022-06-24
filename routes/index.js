@@ -7,25 +7,32 @@ const router = express.Router()
 // export default myfunction
 // router.get('/test/123', (req, res) => { res.redirect('/') })
 
-// m8/ce/articles/
+// /_m8/ce/articles/
 import ceArticlesRouter from './cearticles.js'
 router.use(ceArticlesRouter)
-// m8/ce/elements/
+
+// /_m8/ce/elements/
 import ceElementRouter from './ceelements.js'
 router.use(ceElementRouter)
-// m8/ce/files/
+
+// /_m8/ce/files/
 import cefilesRouter from './cefiles.js'
 router.use(cefilesRouter)
-// /m8/ce/pages/
+
+// /_m8/ce/pages/
 import cenodesRouter from './cenodes.js'
 router.use(cenodesRouter)
-// /m8/ce/users/
+
+// /_m8/ce/users/
 import ceusersRouter from './ceusers.js'
 router.use(ceusersRouter)
-// /m8/ce/
+
+// /_m8/ce/
 import ceRouter from './ce.js'
 router.use(ceRouter)
+
 // fallback all URLs: generator
 import generatorRouter from './generator.js'
 router.use(generatorRouter)
+
 export default router

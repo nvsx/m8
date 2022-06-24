@@ -1,0 +1,103 @@
+<%- include('../../includes/header', { title: locals.title}); %>
+
+<h1>Edit article</h1>
+<%- locals.content %>
+
+<form method="POST" action="<%- locals.formaction %>">
+	<div class="valueedit">
+		<label for="id">ID:</label>
+		<input name="id" id="id" type="text" value="<%- locals.article.id %>" readonly />
+	</div>
+
+	<div class="valueedit">
+		<label for="topic">Topic</label>
+		<input name="topic" id"topic" type="text" value="<%- locals.article.topic %>" />
+	</div>
+
+	<div class="valueedit">
+		<label for="title">Title</label>
+		<input name="title" id="title" type="text" value="<%- locals.article.title %>" />
+	</div>
+
+	<div class="valueedit">
+		<label for="description">Description</label>
+
+			<input name="description" type="text" value="<%- locals.article.description %>" />
+
+	</div>
+
+	<div class="valueedit">
+		<label for="channel">Channel</label>
+
+			<input name="channel" type="number" value="<%- locals.article.channel %>" />
+			<input name="channel_old" type="hidden" value="<%- locals.article.channel %>" />
+
+	</div>
+	<div class="valueedit">
+		<label for="slug">Slug</label>
+
+			<input name="slug" type="text" value="<%- locals.article.slug %>" />
+
+	</div>
+	<div class="valueedit">
+		<label for="path">Path</label>
+
+			<input name="path" type="text" value="<%- locals.article.path %>" />
+			<input name="channel_path" type="hidden" value="<%- locals.article.path %>" />
+
+	</div>
+	<div class="valueedit">
+		<label for="type">Type</label>
+
+			<input name="type" type="text" value="<%- locals.article.type %>" />
+
+	</div>
+	<div class="valueedit">
+		<span class="name">
+			Content
+		</span><br>
+		<span class="value">
+			<%# textarea name="content" rows="30" cols="90"><x- locals.article.content x></textarea %>
+			<script src="https://cdn.ckeditor.com/4.19.0/standard/ckeditor.js"></script>
+			<textarea name="content" id="content"><%- locals.article.content %></textarea>
+			<script>
+					CKEDITOR.replace( 'content' );
+			</script>
+		</span>
+	</div>
+	<div class="formcontrol">
+		<button class="button">Save</button>
+	</div>
+</form>
+
+<div style="border:1px solid darkseagreen; padding:20px; margin:10px; background-color:#f0f0f0;">
+	<div class="button">
+		<a href="/_m8/ce/articles">Close</a>
+	</div>
+	<div class="button">
+		<a href="/_m8/generate/build<%- locals.article.path %>" target="m8preview">
+			<img src="/img/icon-generate.svg" alt="edit node <%- locals.article.id %>" /> Build
+		</a>
+	</div>
+	<div class="button">
+		<a href="<%- locals.article.path %>" target="m8preview">
+			<img src="/img/icon-view.svg" alt="view article" /> View
+		</a>
+	</div>
+</div>
+
+<div style="border:1px solid darkseagreen; padding:20px; margin:10px; background-color:#f0f0f0;">
+	<div style="margin-top:50px">
+		<form name="delete_form" method="POST" action="/_m8/ce/articles/delete">
+			<input type="hidden" name="articleid" value="<%- locals.article.id %>" />
+			<input type="hidden" name="path" value="<%- locals.article.path %>" />
+			<div>
+				<input type="checkbox" id="confirm" name="confirm" >
+				<label for="confirm">Confirm</label>
+			</div>
+			<button class="button">DELETE</button>
+		</form>
+	</div>
+</div>
+
+<%- include('../../includes/footer'); %>

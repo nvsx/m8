@@ -1,10 +1,10 @@
 <%- include('../../includes/header', { title: locals.title}); %>
 
 <div style="text-align:center;">
-	<a href="/m8/ce/nodes/">back</a>
+	<a href="/_m8/ce/nodes/">back</a>
 </div>
 
-<h1><%- locals.title || 'Edit Node' %></h1>
+<h1><%- locals.title || 'Edit Container' %></h1>
 <%- locals.content %>
 
 <form method="POST" action="<%- locals.formaction %>">
@@ -13,7 +13,7 @@
 			ID
 		</span>
 		<span class="value">
-			Create New Node
+			Create New Container
 		</span>
 	</div>
 	<div class="valueedit">

@@ -1,8 +1,10 @@
-import Article from '../models/Article.js'
 import axios from 'axios'
 
-const build_url = 'http://localhost:8088/m8/generate/build'
-const delete_url = 'http://localhost:8088/m8/generate/delete'
+import Article from '../models/Article.js'
+import Node    from '../models/Node.js'
+
+const build_url = 'http://localhost:8088/_m8/generator/build'
+const delete_url = 'http://localhost:8088/_m8/generator/delete'
 
 const ceArticles = {
 
@@ -32,7 +34,7 @@ const ceArticles = {
     locals.nav_active_articles = 'active'
     locals.article.title = 'new article title'
     locals.title = 'create article'
-    locals.formaction = '/m8/ce/articles/createsave'
+    locals.formaction = '/_m8/ce/articles/createsave'
     let ce_template = 'm8/ce/articles/create.ejs'
     res.render(ce_template, locals)
   },
@@ -65,7 +67,7 @@ const ceArticles = {
       locals.nav_active_articles = 'active'
       locals.article = thisArticle
       locals.title  = `edit node ${articleid}`
-      locals.formaction = '/m8/ce/articles/update'
+      locals.formaction = '/_m8/ce/articles/update'
       let ce_template = 'm8/ce/articles/edit.ejs'
       res.render(ce_template, locals)
     })
@@ -75,6 +77,8 @@ const ceArticles = {
     // POST update
     console.log("-------------------------")
     console.log("saving article")
+
+    let req_body = req.body
     let locals = {}
     locals.nav_active_articles = 'active'
     locals.node = {}
@@ -83,17 +87,49 @@ const ceArticles = {
     console.log("    channel:", req.body.channel)
     console.log("    channel_old:", req.body.channel_old)
     Article.findByPk(article_id).then( thisArticle => {
-      console.log(JSON.stringify(req.body, null, 2))
-      thisArticle.set(req.body)
+      // console.log(JSON.stringify(req.body, null, 2))
+      // channel
+      let myChannelNumber = req_body.channel
+      let myChannelPath = '/'
+      if (myChannelNumber !== '' ) { 
+        // TODO: select channel from db, set myChannelPath
+        // myChannelPath is node_path so always starting and ending with slashd
+        // Node.findByPk(myChannelNumber).then(thisNode => {
+        //   myChannelPath = thisNode.path
+        // })
+      }
+      // slug
+      let mySlug = req_body.slug
+      mySlug = mySlug.replace(/\s/g, '_')
+      mySlug = mySlug.replace(/\.html$/, '')
+      req_body.slug = mySlug
+      // path
+      let myPath = req_body.path
+      myPath = myPath.replace(/\/$/, '')
+      myPath = myPath.replace(/\.html$/, '')
+      if(myPath !== '') {
+        myPath = myPath + '.html'
+      }
+      else {
+        myPath = myChannelPath + mySlug + '.html'
+      }
+      if(req_body.old_path !== '' && myPath !== '' && req_body.old_path !== myPath) {
+        // TODO: delete old file from cache:
+        console.log("    TODO: delete olf file")
+      }
+      req_body.path = myPath
+      thisArticle.set(req_body)
       thisArticle.save()
-      res.redirect(302, '/m8/ce/articles/read?articleid=' + article_id);
-    })
-    // build file
-    axios.get(build_url + req.body.path).then(resp => {
-      // console.log(resp.data)
-      console.log("    axios ok")
-    }).catch( err => {
-      console.log(err)
+      // build file
+      const refresh_request = build_url + req_body.path
+      console.log("    REFRESH FILE REQUEST:", refresh_request)
+      axios.get(refresh_request).then(resp => {
+        // console.log(resp.data)
+        console.log("    axios ok")
+      }).catch( err => {
+        console.log('   refresh sent an error:', err.response.status)
+      })
+      res.redirect(302, '/_m8/ce/articles/read?articleid=' + article_id);
     })
   },
 
@@ -120,7 +156,7 @@ const ceArticles = {
     else {
       console.log("WARNING: can not delete file on disk, no path in body")
     }
-    res.redirect(302, '/m8/ce/articles')
+    res.redirect(302, '/_m8/ce/articles')
   }
 }
 

@@ -7,4 +7,4 @@ m8 cms
 
 ## Localhost
 - Homepage: http://localhost:8088
-- Backend: http://localhost:8088/m8/ce/
+- Backend: http://localhost:8088/_m8/ce/
