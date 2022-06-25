@@ -28,11 +28,18 @@
 
 	<div class="valueedit">
 		<label for="channel">Channel</label>
-
-			<input name="channel" type="number" value="<%- locals.article.channel %>" />
-			<input name="channel_old" type="hidden" value="<%- locals.article.channel %>" />
-
+		<input name="channel" type="number" value="<%- locals.article.channel %>" />
+		<input name="channel_old" type="hidden" value="<%- locals.article.channel %>" />
 	</div>
+
+	<div class="valueedit">
+		<label for="channel">Channelpath</label>
+		<input type="text" value="<%- locals.channelPath %>" readonly />
+	</div>
+
+
+
+
 	<div class="valueedit">
 		<label for="slug">Slug</label>
 
@@ -83,6 +90,9 @@
 		<a href="<%- locals.article.path %>" target="m8preview">
 			<img src="/img/icon-view.svg" alt="view article" /> View
 		</a>
+	</div>
+	<div>
+		<button class="button">upldate path</button>
 	</div>
 </div>
 

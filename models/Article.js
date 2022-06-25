@@ -35,7 +35,6 @@ const Article = sequelize.define('articles', {
   	}
 });
 
-
 // 1-3: also see https://sequelize.org/docs/v6/core-concepts/model-basics/
 
 // 1/3 

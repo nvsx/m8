@@ -14,7 +14,7 @@ const generator = {
     console.log("DELETE FILE FROM PUBLIC DIR")
     const req_path = req.path
     console.log("    delete request:", req_path)
-    const calc_path = req_path.replace(/^\/_m8\/generate\/delete/, output_dir)
+    const calc_path = req_path.replace(/^\/_m8\/cegenerator\/delete/, output_dir)
     const delete_path = calc_path.replace(/\/$/, '/index.html')
     console.log("    delete file:", delete_path)
     res.sendStatus(200)
@@ -29,7 +29,7 @@ const generator = {
     // generate is called as fallback, if file is not existing in public dir
     // or directly by url /_m8/generyte/build/my_path
     const req_path = req.path
-    const clean_path = req_path.replace(/^\/m8\/generate\/build/, '')
+    const clean_path = req_path.replace(/^\/_m8\/cegenerator\/build/, '')
     let searchpath = clean_path.replace(/\/+/g, '/')
     console.log("--------------------")
     console.log("GENERATOR GENERATE")

@@ -7,6 +7,7 @@ const Node = sequelize.define('nodes', {
     primaryKey: true
   },
 	parentid: DataTypes.INTEGER,
+	ord: DataTypes.INTEGER,
 	status: DataTypes.INTEGER,
 	layout: DataTypes.STRING,
 	layout_current: DataTypes.STRING,

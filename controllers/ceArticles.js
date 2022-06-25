@@ -3,8 +3,10 @@ import axios from 'axios'
 import Article from '../models/Article.js'
 import Node    from '../models/Node.js'
 
-const build_url = 'http://localhost:8088/_m8/generator/build'
-const delete_url = 'http://localhost:8088/_m8/generator/delete'
+// Article.belongsTo(Node)
+
+const build_url = 'http://localhost:8088/_m8/cegenerator/build'
+const delete_url = 'http://localhost:8088/_m8/cegenerator/delete'
 
 const ceArticles = {
 
@@ -68,8 +70,16 @@ const ceArticles = {
       locals.article = thisArticle
       locals.title  = `edit node ${articleid}`
       locals.formaction = '/_m8/ce/articles/update'
-      let ce_template = 'm8/ce/articles/edit.ejs'
-      res.render(ce_template, locals)
+      const testNode = Node.findOne({
+        where: {
+          id: thisArticle.channel
+        }
+      }).then( myNode => {
+        let channelPath = ''
+        if(myNode && myNode.path) { channelPath = myNode.path }
+        locals.channelPath = channelPath
+        res.render('m8/ce/articles/edit.ejs', locals)
+      });
     })
   },
 
