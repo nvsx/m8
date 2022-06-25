@@ -56,25 +56,18 @@ const generator = {
       res.redirect(redirect_path)
       return
     }
-
-    // ----------------------------------------------------
-    // Check what kind of page we have
-    // there are three types: 1.view, 2.container, 3.article
-    let source_node, source_article
-    let resource_type = ''
+ 
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // 1/3 EJS VIEW
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     let suffix = '.ejs'
     if(slashEnd) { suffix = 'index.ejs'}
     let source_ejs = views_dir + searchpath + suffix
     let render_ejs = searchpath + suffix
     // render without leading slash:
     render_ejs = render_ejs.substring(1)
-
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // 1/3 EJS VIEW
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     console.log("    TESTing for ejs_file:", source_ejs)
     if (fs.existsSync(source_ejs)) {
-      resource_type = 'view'
       console.log("    -> resource_type === view")
       let output_file  = output_dir + searchpath
       let generate_dir = output_dir + searchpath
@@ -125,8 +118,7 @@ const generator = {
       console.log("    TESTing for container")
       Node.findOne({ where: { path: searchpath } }).then(noderesult => {
         if(noderesult){
-          source_node = noderesult
-          resource_type = 'node'
+          let source_node = noderesult
           console.log("    -> resource_type === container")
           let write_dir  = output_dir + noderesult.path
           let write_file = write_dir + 'index.html'
@@ -135,9 +127,12 @@ const generator = {
             fs.mkdirSync(write_dir, { recursive: true });
           }
           let myData = {}
+          myData.page = {}
+          myData.container = noderesult
           myData.siteconfig = global.__sitecfg
-          myData.title = noderesult.title
-          myData.content = noderesult.content
+          // myData.title = noderesult.title
+          myData.container.title = noderesult.title
+          myData.container.content = noderesult.content
           res.render(ejs_template, myData, function(err, output) {
             res.send(output)
             if (err) {
@@ -160,8 +155,7 @@ const generator = {
           console.log("    testing for article")
           Article.findOne({ where: { path: searchpath } }).then(articleresult => {
             if(articleresult) {
-              source_article = articleresult
-              resource_type = 'article'
+              let source_article = articleresult
               console.log("    -> resource_type === article")
               let write_dir  = output_dir + path.dirname(articleresult.path)
               let write_file = output_dir + articleresult.path
@@ -172,20 +166,38 @@ const generator = {
                 fs.mkdirSync(write_dir, { recursive: true });
               }
               let myData = {}
+              myData.page = {}
               myData.siteconfig = global.__sitecfg
-              myData.title = articleresult.title
-              myData.content = articleresult.content
-              myData.pageData = articleresult
-              res.render(article_layout, myData, function(err, output) {
-                res.send(output)
-                if (err) {
-                  console.error(err);
+              myData.article = articleresult
+
+              let myChannelId = 0
+              let ChannelData = {}
+              // if(myData.article.channel && myData.article.channel != '') {
+              //   myChannelId = parseInt(myData.article.channel)
+              // }
+              myChannelId = myData.article.channel
+              console.log("---------> searching for channel", myChannelId)
+              Node.findByPk(myChannelId).then(noderesult => {
+                if(noderesult){
+                  ChannelData = noderesult
+                  console.log("---------> YESSS_NODE")
                 }
-                fs.writeFile(write_file, output, err => {
-                  console.log("        writing to file", write_file)
+                else {
+                  console.log("---------> NO_NODE")
+                }
+                console.log("---------> noderesult", JSON.stringify(ChannelData,null,2))
+                myData.channel = ChannelData
+                res.render(article_layout, myData, function(err, output) {
+                  res.send(output)
                   if (err) {
                     console.error(err);
                   }
+                  fs.writeFile(write_file, output, err => {
+                    console.log("        writing to file", write_file)
+                    if (err) {
+                      console.error(err);
+                    }
+                  })
                 })
               })
             } 
