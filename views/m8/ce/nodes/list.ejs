@@ -4,36 +4,28 @@
 
 <%- locals.content %>
 
-<div class="ceCard">
-	<div class="button">
-		<a href="/_m8/ce/nodes/create">Create new Container</a>
-	</div>
-</div>
-
 <table class="ce-table">
 	<tr>
 		<th>
-			<a href="/_m8/ce/nodes/?order=asc&by=id">
-				ID <img src="/img/icon-edit.svg" alt="edit node" />
-			</a>
-		</th>
-		<th>Status</th>
-		<th>
-			<a href="/_m8/ce/nodes/?order=asc&by=parentid">
-				Parent
-			</a>
+			<a href="/_m8/ce/nodes/?orderhow=asc&orderby=id">ID</a>
 		</th>
 		<th>
-			Num
+			<a href="/_m8/ce/nodes/?orderhow=asc&orderby=islive">Status</a>
+		</th>
+		<th>
+			<a href="/_m8/ce/nodes/?orderby=asc&orderby=parentid">Parent</a>
+		</th>
+		<th>
+			<a href="/_m8/ce/nodes/?orderby=asc&orderby=parentid">Num</a>
 		</th>
 
 		<th>
-			<a href="/_m8/ce/nodes/?order=asc&by=path">
-				Path <img src="/img/icon-view.svg" alt="view node" />
+			<a href="/_m8/ce/nodes/?orderby=asc&orderby=path">
+				Path
 			</a>
 		</th>
 		<th>
-			<a href="/_m8/ce/nodes/?order=asc&by=title">
+			<a href="/_m8/ce/nodes/?orderby=asc&orderby=title">
 				Title
 			</a>
 		</th>
@@ -44,11 +36,14 @@
 		<tr>
 			<td>
 				<a href="/_m8/ce/nodes/read?id=<%- all_nodes[i].id %>">
+					<img src="/img/icon-edit.svg" alt="edit node" />
 					<%- all_nodes[i].id %>
+					<% if(all_nodes[i].parentid === 0) { %>🌏<%}%>
 				</a>
 			</td>
 			<td>live</td>
 			<td>
+				<%# if(all_nodes[i].parentid === 0) { style="background-color:#6495ed;"}%>
 				<%- all_nodes[i].parentid %>
 			</td>
 			<td>
@@ -56,6 +51,7 @@
 			</td>
 			<td>
 				<a href="<%- all_nodes[i].path %>" target="m8preview">
+					<img src="/img/icon-view.svg" alt="view node" />
 					<%- all_nodes[i].path %>
 				</a>
 			</td>
@@ -64,5 +60,19 @@
 		</tr>
 	<% } %>
 </table>
+
+<div class="button">
+	<a href="/_m8/ce/nodes/create">Create new Container</a>
+</div>
+
+<% if(locals.page.verbose > 3){ %>
+	<pre style="background-color:pink;max-width:1200px;overflow:scroll;">
+		DEBUG:
+		is array of objects sorted by ?id/path?
+		<%- JSON.stringify(all_nodes, null, 4) %>
+	</pre>
+<% } %>
+
+
 
 <%- include('../../includes/footer'); %>

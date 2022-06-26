@@ -1,5 +1,6 @@
 import Node from '../models/Node.js'
 import axios from 'axios'
+import getNodes from './helpers/get_nodes.js'
 
 const build_url = 'http://localhost:8088/_m8/cegenerator/build'
 const delete_url = 'http://localhost:8088/_m8/cegenerator/delete'
@@ -12,13 +13,19 @@ const ceNodes = {
     let locals = {}
     locals.nav_active_nodes = 'active'
     locals.title = 'List of containers'
-    locals.content = '<!-- +++ list of containers +++ -->'
+    locals.content = ''
     Node.findAll({
       order: [
+        ['parentid', 'ASC'],
+        ['ord', 'ASC'],
         ['path', 'ASC']
     ],
     }).then(all_nodes => {
-      locals.all_nodes = all_nodes
+      let sorted_nodes = getNodes.getList(null, all_nodes, {})
+      // locals.all_nodes = all_nodes
+      locals.all_nodes = sorted_nodes
+      locals.page = {}
+      locals.page.verbose = 2
       res.render(ce_template, locals)
     })
   },
@@ -74,15 +81,36 @@ const ceNodes = {
   update: function (req, res) {
     // POST update
     let locals = {}
+    let req_body = req.body
     locals.nav_active_nodes = 'active'
     locals.node = {}
     locals.title = 'update container'
     let nodeid = req.body.nodeid;
     Node.findByPk(nodeid).then( thisNode => {
-      console.log(JSON.stringify(req.body, null, 2))
-      thisNode.set(req.body)
+      // ord
+      let myOrd = req_body.ord
+      myOrd = parseInt(myOrd)
+      if(! Number.isInteger(myOrd)) { 
+        myOrd = 999
+        req_body.ord = myOrd 
+      }
+      // parent
+      let myParentid = req_body.parentid
+      myParentid = parseInt(myParentid)
+      if(! Number.isInteger(myParentid)) { 
+        myParentid = 0
+      }
+      req_body.parentid = myParentid
+      // path
+      let myPath = req_body.path
+      const slashRegexEnd = /\/$/g
+      const slashEnd = myPath.match(slashRegexEnd)? true : false
+      if(! slashEnd ) {
+        req_body.path = req_body.path + "/" 
+      }
+      // console.log(JSON.stringify(req_body, null, 2))
+      thisNode.set(req_body)
       thisNode.save()
-      // res.send("cenodes: update " + nodeid )
       res.redirect(302, '/_m8/ce/nodes/read?id=' + nodeid);
     })
     // build file

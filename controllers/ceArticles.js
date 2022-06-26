@@ -99,9 +99,11 @@ const ceArticles = {
     Article.findByPk(article_id).then( thisArticle => {
       // console.log(JSON.stringify(req.body, null, 2))
       // channel
-      let myChannelNumber = req_body.channel
+      let myChannel = req_body.channel
+      myChannel = parseInt(myChannel)
+      if(! Number.isInteger(myChannel)) { myChannel = 0}
       let myChannelPath = '/'
-      if (myChannelNumber !== '' ) { 
+      if (myChannel !== 0 ) { 
         // TODO: select channel from db, set myChannelPath
         // myChannelPath is node_path so always starting and ending with slashd
         // Node.findByPk(myChannelNumber).then(thisNode => {

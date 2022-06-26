@@ -128,11 +128,35 @@ const generator = {
           }
           let myData = {}
           myData.page = {}
+          myData.page.verbose = 2   
           myData.container = noderesult
           myData.siteconfig = global.__sitecfg
-          // myData.title = noderesult.title
           myData.container.title = noderesult.title
           myData.container.content = noderesult.content
+          myData.page.channel_articles = []
+          // if(noderesult.id === 4) {
+          //   Article.findAll({
+          //     order: [
+          //       ['updatedAt', 'DESC']
+          //   ],
+          //   }).then(all_articles => {
+          //     myData.page.channel_articles = all_articles
+          //     res.render(ejs_template, myData, function(err, output) {
+          //       res.send(output)
+          //       if (err) {
+          //         console.error(err);
+          //       }
+          //       console.log("        write_dir", write_dir)
+          //       console.log("        write_file", write_file)
+          //       fs.writeFile(write_file, output, err => {
+          //         console.log("        writing to file", write_file)
+          //         if (err) {
+          //           console.error(err);
+          //         }
+          //       })
+          //     })
+          //   }).catch(err => console.log(err))
+          // }
           res.render(ejs_template, myData, function(err, output) {
             res.send(output)
             if (err) {
@@ -167,9 +191,9 @@ const generator = {
               }
               let myData = {}
               myData.page = {}
+              myData.page.verbose = 2
               myData.siteconfig = global.__sitecfg
-              myData.article = articleresult
-
+              myData.article = articleresult     
               let myChannelId = 0
               let ChannelData = {}
               // if(myData.article.channel && myData.article.channel != '') {
