@@ -1,7 +1,9 @@
 import axios from 'axios'
-
-import Article from '../models/Article.js'
+// import { classToInvokable } from 'sequelize/types/utils.js'
+// import Article from '../models/Article.js'
 import Node    from '../models/Node.js'
+
+//console.log("xxxxxx controller: ", global.global)
 
 // Article.belongsTo(Node)
 
@@ -15,9 +17,12 @@ const ceArticles = {
     let ce_template = 'm8/ce/articles/list.ejs'
     let locals = {}
     locals.nav_active_articles = 'active'
-    locals.title = 'List of articles'
+    locals.title = ''
     locals.content = '<!-- +++ list of articles +++ -->'
-    Article.findAll({
+    Node.findAll({
+      where: {
+        type: "article"
+      },
       order: [
         ['updatedAt', 'DESC'],
         ['createdAt', 'DESC'],
@@ -43,13 +48,21 @@ const ceArticles = {
 
   createsave: function (req, res) {
     // POST new
+    let req_body = req.body
+    req_body.type = 'article'
     let locals = {}
     locals.nav_active_articles = 'active'
     locals.title = 'save new article'
     req.body.id = undefined
-    Article.create(req.body).then(result => {
+    Node.create(req_body).then(result => {
       locals.content = JSON.stringify(result, null, 2)
-      res.render('m8/ce/articles/created.ejs', locals)
+      if(result.id) {
+        let redirect_url = '/_m8/ce/articles/read?articleid=' + result.id
+        res.redirect(redirect_url)
+      }
+      else {
+        res.render('m8/ce/articles/created.ejs', locals)
+      }
     })
     // build file
     axios.get(build_url + req.body.path).then(resp => {
@@ -64,22 +77,39 @@ const ceArticles = {
     // GET single
     let articleid = req.query.articleid
     if(! articleid) { articleid = 0}
-    Article.findByPk(articleid).then(thisArticle => {
-      let locals = {}
-      locals.nav_active_articles = 'active'
-      locals.article = thisArticle
-      locals.title  = `edit node ${articleid}`
-      locals.formaction = '/_m8/ce/articles/update'
-      const testNode = Node.findOne({
-        where: {
-          id: thisArticle.channel
+    Node.findByPk(articleid).then(thisArticle => {
+      if(thisArticle && thisArticle.type === 'article') {
+        let locals = {}
+        locals.nav_active_articles = 'active'
+        locals.title  = `edit node ${articleid}`
+        locals.formaction = '/_m8/ce/articles/update'
+        let parentid = 0
+        if(thisArticle.parentid) {
+          parentid = thisArticle.parentid
+          thisArticle.channel = parentid
+          // console.log("    reading article, parentid=", parentid)
         }
-      }).then( myNode => {
-        let channelPath = ''
-        if(myNode && myNode.path) { channelPath = myNode.path }
-        locals.channelPath = channelPath
-        res.render('m8/ce/articles/edit.ejs', locals)
-      });
+        Node.findOne({
+          where: {
+            id: parentid
+          }
+        }).then( myNode => {
+          let channelPath = ''
+          if(myNode && myNode.path) { 
+            channelPath = myNode.path 
+          }
+          locals.channelPath = channelPath
+          locals.article = thisArticle
+          res.render('m8/ce/articles/edit.ejs', locals)
+        })
+      }
+      else {
+        // TODO: Pretty page with link
+        let locals = {}
+        locals.status = 'error articleid not valid'
+        locals.message = "Article not found. <a href=\"javascript:history.back();\">back</a>"
+        res.render('m8/ce/error.ejs', locals)
+      }
     })
   },
 
@@ -87,7 +117,6 @@ const ceArticles = {
     // POST update
     console.log("-------------------------")
     console.log("saving article")
-
     let req_body = req.body
     let locals = {}
     locals.nav_active_articles = 'active'
@@ -96,20 +125,11 @@ const ceArticles = {
     let article_id = req.body.id;
     console.log("    channel:", req.body.channel)
     console.log("    channel_old:", req.body.channel_old)
-    Article.findByPk(article_id).then( thisArticle => {
-      // console.log(JSON.stringify(req.body, null, 2))
-      // channel
+    Node.findByPk(article_id).then( thisArticle => {
       let myChannel = req_body.channel
       myChannel = parseInt(myChannel)
-      if(! Number.isInteger(myChannel)) { myChannel = 0}
-      let myChannelPath = '/'
-      if (myChannel !== 0 ) { 
-        // TODO: select channel from db, set myChannelPath
-        // myChannelPath is node_path so always starting and ending with slashd
-        // Node.findByPk(myChannelNumber).then(thisNode => {
-        //   myChannelPath = thisNode.path
-        // })
-      }
+      if(! Number.isInteger(myChannel)) { myChannel = 1}
+      req_body.parentid = myChannel
       // slug
       let mySlug = req_body.slug
       mySlug = mySlug.replace(/\s/g, '_')
@@ -117,6 +137,7 @@ const ceArticles = {
       req_body.slug = mySlug
       // path
       let myPath = req_body.path
+      myPath = myPath.replace(/\s/g, '_')
       myPath = myPath.replace(/\/$/, '')
       myPath = myPath.replace(/\.html$/, '')
       if(myPath !== '') {
@@ -125,9 +146,11 @@ const ceArticles = {
       else {
         myPath = myChannelPath + mySlug + '.html'
       }
-      if(req_body.old_path !== '' && myPath !== '' && req_body.old_path !== myPath) {
+      if(req_body.old_path !== '' && req_body.old_path !== myPath) {
         // TODO: delete old file from cache:
-        console.log("    TODO: delete olf file")
+        console.log("    ---------> TODO: delete old file (ceArticles, L140)")
+        console.log("                     path_now:", req_body.path)
+        console.log("                     path_old:", req_body.old_path)
       }
       req_body.path = myPath
       thisArticle.set(req_body)
@@ -141,6 +164,8 @@ const ceArticles = {
       }).catch( err => {
         console.log('   refresh sent an error:', err.response.status)
       })
+      // also refresh channel page because of latest_articles_list
+      console.log("    ---------> TODO: also refresh channel center")
       res.redirect(302, '/_m8/ce/articles/read?articleid=' + article_id);
     })
   },
@@ -152,7 +177,7 @@ const ceArticles = {
     locals.node = {}
     locals.title = 'delete article'
     locals.node.id = req.body.articleid;
-    Article.findByPk(req.body.articleid).then(thisArticle => {
+    Node.findByPk(req.body.articleid).then(thisArticle => {
       thisArticle.destroy()
     })
     // delete public file

@@ -4,7 +4,8 @@ import sequelize from '../lib/database.js'
 const Element = sequelize.define('elements', {
 	id: {
     type: DataTypes.INTEGER,
-    primaryKey: true
+    primaryKey: true,
+	autoIncrement: true
   },
 	title: DataTypes.STRING,
 	description: DataTypes.STRING,

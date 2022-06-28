@@ -1,0 +1,17 @@
+<%- include('../includes/header', { title: 'CE: Error'}); %>
+
+<h1>CE: Error</h1>
+
+<div class="ceStartDiv">
+	<h3>That's an error!</h3>
+</div>
+
+<div class="errorStatus">
+    <%- locals.status %>
+</div>
+
+<div class="error-message">
+    <%- locals.message %>
+</div>
+	
+<%- include('../includes/footer') %>

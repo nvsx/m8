@@ -4,7 +4,8 @@ import sequelize from '../lib/database.js'
 const File = sequelize.define('files', {
 	id: {
     type: DataTypes.INTEGER,
-    primaryKey: true
+    primaryKey: true,
+	autoIncrement: true
   },
 	fullpath: DataTypes.STRING,
 	directory: DataTypes.STRING,

@@ -5,23 +5,26 @@ import getNodes from './helpers/get_nodes.js'
 const build_url = 'http://localhost:8088/_m8/cegenerator/build'
 const delete_url = 'http://localhost:8088/_m8/cegenerator/delete'
 
-const ceNodes = {
+const cePages = {
 
   list: function (req, res) {
     // GET list
-    let ce_template = 'm8/ce/nodes/list.ejs'
+    let ce_template = 'm8/ce/pages/index.ejs'
     let locals = {}
-    locals.nav_active_nodes = 'active'
-    locals.title = 'List of containers'
+    locals.nav_active_pages = 'active'
+    locals.title = 'List of pages'
     locals.content = ''
     Node.findAll({
+        where: {
+          type: "page"
+        },
       order: [
         ['parentid', 'ASC'],
         ['num', 'ASC'],
         ['path', 'ASC']
-      ],
+    ],
     }).then(all_nodes => {
-      let sorted_nodes = getNodes.getList(null, all_nodes, {})
+      // let sorted_nodes = getNodes.getList(null, all_nodes, {})
       locals.all_nodes = all_nodes
       // locals.all_nodes = sorted_nodes
       locals.page = {}
@@ -73,8 +76,8 @@ const ceNodes = {
       locals.nav_active_nodes = 'active'
       locals.node = thisNode
       locals.title  = `Container ${nodeid}`
-      locals.formaction = '/_m8/ce/nodes/update'
-      let ce_template = 'm8/ce/nodes/edit.ejs'
+      locals.formaction = '/_m8/ce/pages/update'
+      let ce_template = 'm8/ce/pages/edit.ejs'
       res.render(ce_template, locals)
     })
   },
@@ -161,8 +164,8 @@ const ceNodes = {
     else {
       console.log("    -> missing confirm, can not delete container")
     }
-    res.redirect(302, '/_m8/ce/nodes');
+    res.redirect(302, '/_m8/ce/pages');
   }
 }
 
-export default ceNodes
+export default cePages

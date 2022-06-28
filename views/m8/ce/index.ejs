@@ -1,35 +1,83 @@
 <%- include('../includes/header', { title: locals.title}); %>
 <h1><%- locals.title %></h1>
 
-<div>
+<div class="ceStartDiv">
 	<%- locals.content %>
-</div><br>
+</div>
 
-<div class="ceCard">
-	<div class="button">
-		<a href="/_m8/ce/articles/create">Create new article</a>
+<div class="ceStartGroup">
+	<div class="ceStartDiv">
+		<h3>What do you want to do today?</h3>
 	</div>
-</div><br>
-
-<div class="ceCard">
-	<input type="number" name="articleid" />
-	<div class="button">	
-		<a href="/_m8/ce/articles/create">Open article</a>
+	<div class="ceStartDiv">
+		Create a new article: 
+		<div class="button">
+			<a href="/_m8/ce/articles/create">Create</a>
+		</div>
 	</div>
-</div><br>
-
-<div class="ceCard">
-	<div class="button">
-		<a href="/" target="m8preview">Display homepage</a>
+	<div class="ceStartDiv">
+		<form action="/_m8/ce/articles/read?" method="get">
+			Open article with id: 
+			<input type="number" name="articleid" />
+			<button class="button">Open</button>
+		</form>
 	</div>
-	(new named window)
-</div><br>
+</div>
 
-<div class="ceCard">
-	Documentation
-	<div class="button">
+<div class="ceStartGroup">
+	<div class="ceStartDiv">
+		<h3>Links</h3>
+	</div>
+	<div class="ceStartDiv">
+		Open homepage in preview window:
+		<a href="/" target="m8preview">Homepage</a>
+	</div>
+	<div class="ceStartDiv">
+		Open public url in blank window:
+		<a href="<%- __sitecfg.url %>" target="m8preview"><%- __sitecfg.url %></a>
+	</div>
+	<div class="ceStartDiv">
+		Read documentation: 
 		<a href="https://www.m8web.net/doc/" target="_blank">www.m8web.net/doc/</a>
 	</div>
-</div><br>
+</div>
 
+<div class="ceStartGroup">
+	<div class="ceStartDiv">
+		<h3>Static pages</h3>
+	</div>
+	<div class="ceStartDiv">
+		Build static website: 
+		<div class="button">
+			<a href="/_m8/ce/staticbuild/">Build</a>
+		</div>
+	</div>
+	<div class="ceStartDiv">
+		Publish static website: 
+		<div class="button">
+			<a href="/_m8/ce/staticpublish/">Publish</a>
+		</div>
+	</div>
+</div>
+
+<div class="ceStartGroup">
+	<div class="ceStartDiv">
+		DEBUG/DEVELOP:
+		<ul>
+			<li>
+				<a href="/_m8/ce/nodes/">nodes</a>
+			</li> 
+			<li>
+				<a href="https://sequelize.org/v3/docs/models-definition/" target="_blank">https://sequelize.org/v3/docs/models-definition/</a>
+			</li>
+		</ul>
+	</div>
+</div>
+	
+<div class="m8info">
+	<p>
+		This is m8 version <%- m8info.version %> from <%- m8info.date %>.
+	</p>
+</div>
+	
 <%- include('../includes/footer') %>

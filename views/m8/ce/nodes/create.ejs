@@ -35,6 +35,7 @@
 			<input name="title" type="text" value="" />
 		</span>
 	</div>
+	
 	<div class="valueedit">
 		<span class="name">
 			Path
@@ -43,6 +44,18 @@
 			<input name="path" type="text" value="<%- locals.node.path %>" />
 		</span>
 	</div>
+
+	<div class="valueedit">
+		<span class="name">
+			Typ3
+		</span>
+			<select name="type" id="type">
+				<option value="container"<% if(locals.node.type === 'container') { %>selected<% }%> >container</option>
+				<option value="page"<% if(locals.node.type === 'page') { %>selected<% }%> >page</option>
+				<option value="article"<% if(locals.node.type === 'article') { %>selected<% }%> >article</option>
+	  </select>
+	</div>
+
 	<div class="valueedit">
 		<span class="name">
 			Content

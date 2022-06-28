@@ -4,7 +4,8 @@ import sequelize from '../lib/database.js'
 const User = sequelize.define('users', {
 	id: {
     type: DataTypes.INTEGER,
-    primaryKey: true
+    primaryKey: true,
+	autoIncrement: true
   },
 	loginname: DataTypes.STRING,
 	password: DataTypes.STRING,

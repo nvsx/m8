@@ -9,17 +9,20 @@ const ceNodes = {
 
   list: function (req, res) {
     // GET list
-    let ce_template = 'm8/ce/nodes/list.ejs'
+    let ce_template = 'm8/ce/containers/index.ejs'
     let locals = {}
-    locals.nav_active_nodes = 'active'
+    locals.nav_active_containers = 'active'
     locals.title = 'List of containers'
     locals.content = ''
     Node.findAll({
+        where: {
+          type: "container"
+        },
       order: [
         ['parentid', 'ASC'],
         ['num', 'ASC'],
         ['path', 'ASC']
-      ],
+    ],
     }).then(all_nodes => {
       let sorted_nodes = getNodes.getList(null, all_nodes, {})
       locals.all_nodes = all_nodes

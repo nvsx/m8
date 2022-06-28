@@ -116,8 +116,7 @@ const generator = {
       // 2/3 CONTAINER
       // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       console.log("    TESTing for container")
-      Node.findOne({ where: { path: searchpath, type: 'container' } })
-      .then(noderesult => {
+      Node.findOne({ where: { path: searchpath } }).then(noderesult => {
         if(noderesult){
           let source_node = noderesult
           console.log("    -> resource_type === container")
@@ -135,36 +134,41 @@ const generator = {
           myData.container.title = noderesult.title
           myData.container.content = noderesult.content
           myData.page.channel_articles = []
-          Node.findAll({ where: 
-            { 
-              parentid: noderesult.id, 
-              type: 'article' 
-            },
-            order: [
-              ['id', 'DESC']
-            ],
-          })
-          .then( listresult => {
-            if(listresult){
-              // console.log(JSON.stringify(listresult, null, 2))
-              myData.page.channel_articles = listresult
+          // if(noderesult.id === 4) {
+          //   Article.findAll({
+          //     order: [
+          //       ['updatedAt', 'DESC']
+          //   ],
+          //   }).then(all_articles => {
+          //     myData.page.channel_articles = all_articles
+          //     res.render(ejs_template, myData, function(err, output) {
+          //       res.send(output)
+          //       if (err) {
+          //         console.error(err);
+          //       }
+          //       console.log("        write_dir", write_dir)
+          //       console.log("        write_file", write_file)
+          //       fs.writeFile(write_file, output, err => {
+          //         console.log("        writing to file", write_file)
+          //         if (err) {
+          //           console.error(err);
+          //         }
+          //       })
+          //     })
+          //   }).catch(err => console.log(err))
+          // }
+          res.render(ejs_template, myData, function(err, output) {
+            res.send(output)
+            if (err) {
+              console.error(err);
             }
-            else {
-              console.log("  ---> no related articles found")
-            }
-            res.render(ejs_template, myData, function(err, output) {
-              res.send(output)
+            console.log("        write_dir", write_dir)
+            console.log("        write_file", write_file)
+            fs.writeFile(write_file, output, err => {
+              console.log("        writing to file", write_file)
               if (err) {
                 console.error(err);
               }
-              console.log("        write_dir", write_dir)
-              console.log("        write_file", write_file)
-              fs.writeFile(write_file, output, err => {
-                console.log("        writing to file", write_file)
-                if (err) {
-                  console.error(err);
-                }
-              })
             })
           })
         } else {
@@ -173,13 +177,7 @@ const generator = {
           // 3/3 ARTICLE
           // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
           console.log("    testing for article")
-          Node.findOne({ 
-            where: { 
-              path: searchpath, 
-              type: 'article' 
-            } 
-          })
-          .then(articleresult => {
+          Article.findOne({ where: { path: searchpath } }).then(articleresult => {
             if(articleresult) {
               let source_article = articleresult
               console.log("    -> resource_type === article")
@@ -198,18 +196,20 @@ const generator = {
               myData.article = articleresult     
               let myChannelId = 0
               let ChannelData = {}
+              // if(myData.article.channel && myData.article.channel != '') {
+              //   myChannelId = parseInt(myData.article.channel)
+              // }
               myChannelId = myData.article.channel
-              console.log("    ---------> searching for channel", myChannelId)
-              Node.findByPk(myChannelId)
-              .then(noderesult => {
+              console.log("---------> searching for channel", myChannelId)
+              Node.findByPk(myChannelId).then(noderesult => {
                 if(noderesult){
                   ChannelData = noderesult
-                  console.log("    ---------> YESSS_NODE")
+                  console.log("---------> YESSS_NODE")
                 }
                 else {
-                  console.log("    ---------> NO_NODE")
+                  console.log("---------> NO_NODE")
                 }
-                console.log("    ---------> noderesult", JSON.stringify(ChannelData,null,2))
+                console.log("---------> noderesult", JSON.stringify(ChannelData,null,2))
                 myData.channel = ChannelData
                 res.render(article_layout, myData, function(err, output) {
                   res.send(output)

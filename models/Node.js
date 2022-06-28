@@ -3,38 +3,37 @@ import sequelize from '../lib/database.js'
 
 const Node = sequelize.define('nodes', {
 	id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true
-  },
+		type: DataTypes.INTEGER,
+		primaryKey: true,
+		autoIncrement: true
+	},
 	parentid: DataTypes.INTEGER,
-	ord: DataTypes.INTEGER,
-	status: DataTypes.INTEGER,
+	num: DataTypes.INTEGER,
+	exists: DataTypes.INTEGER,
+	islive: DataTypes.INTEGER,
+	ispool: DataTypes.INTEGER,
 	layout: DataTypes.STRING,
-	layout_current: DataTypes.STRING,
+	topic: DataTypes.STRING,
 	title: DataTypes.STRING,
 	description: DataTypes.STRING,
 	notes: DataTypes.STRING,
 	type: DataTypes.STRING,
 	slug: DataTypes.STRING, 
 	path: DataTypes.STRING,
-	robots_index: DataTypes.INTEGER,
-	robots_follow: DataTypes.INTEGER,
-	in_sitemap: DataTypes.INTEGER,
-	in_search: DataTypes.INTEGER,
-	in_menu: DataTypes.INTEGER,
+  	link_type: DataTypes.STRING,
+	link_value:  DataTypes.STRING,
 	link_target: DataTypes.STRING,
 	caching: DataTypes.STRING,
 	image: DataTypes.STRING,
-	language: DataTypes.STRING,
 	date_start: DataTypes.STRING,
 	date_end: DataTypes.STRING,
 	date_recurisve: DataTypes.INTEGER,
 	categories: DataTypes.STRING, 
 	tags: DataTypes.STRING,
-  content: {
-    type: Sequelize.STRING,
-    allowNull: true,
-  }
+  	content: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    }
 });
 
 // 1/3 

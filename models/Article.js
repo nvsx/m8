@@ -4,7 +4,8 @@ import sequelize from '../lib/database.js'
 const Article = sequelize.define('articles', {
 	id: {
 		type: DataTypes.INTEGER,
-		primaryKey: true
+		primaryKey: true,
+		autoIncrement: true
 	},
 	containerid: DataTypes.INTEGER,
 	status: DataTypes.INTEGER,
