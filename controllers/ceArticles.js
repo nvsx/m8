@@ -140,6 +140,8 @@ const ceArticles = {
       myPath = myPath.replace(/\s/g, '_')
       myPath = myPath.replace(/\/$/, '')
       myPath = myPath.replace(/\.html$/, '')
+      // todo: myChannelPath = path of channel
+      let myChannelPath= ''
       if(myPath !== '') {
         myPath = myPath + '.html'
       }

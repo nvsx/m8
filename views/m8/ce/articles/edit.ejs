@@ -21,7 +21,7 @@
 
 	<div class="valueedit">
 		<label for="description">Description</label>
-		<input name="description" type="text" value="<%- locals.article.description %>" />
+		<textarea name="description" id="description" rows="4" cols="50"><%- locals.article.description %></textarea>
 	</div>
 
 	<div class="valueedit">
@@ -49,10 +49,9 @@
 
 	<div class="valueedit">
 		<label for="type">Type</label>
-
-			<input name="type" type="text" value="<%- locals.article.type %>" />
-
+		<input name="type" type="text" value="<%- locals.article.type %>" readonly />
 	</div>
+
 	<div class="valueedit">
 		<span class="name">
 			Content
@@ -66,6 +65,7 @@
 			</script>
 		</span>
 	</div>
+
 	<div class="formcontrol">
 		<button class="button">Save</button>
 	</div>
@@ -77,12 +77,12 @@
 	</div>
 	<div class="button">
 		<a href="/_m8/generate/build<%- locals.article.path %>" target="m8preview">
-			<img src="/img/icon-generate.svg" alt="edit node <%- locals.article.id %>" /> Build
+			<img src="/_m8/img/icon-generate.svg" alt="edit node <%- locals.article.id %>" /> Build
 		</a>
 	</div>
 	<div class="button">
 		<a href="<%- locals.article.path %>" target="m8preview">
-			<img src="/img/icon-view.svg" alt="view article" /> View
+			<img src="/_m8/img/icon-view.svg" alt="view article" /> View
 		</a>
 	</div>
 	<div>

@@ -40,6 +40,14 @@ import cefilesRouter from './cefiles.js'
 router.use(cefilesRouter)
 
 // /_m8/ce/users/
+import cepluginsRouter from './ceplugins.js'
+router.use('/_m8/ce/ceplugins/', cepluginsRouter)
+
+// /_m8/ce/feusers/
+import cefeusersRouter from './cefeusers.js'
+router.use('/_m8/ce/cefeusers/', cefeusersRouter)
+
+// /_m8/ce/users/
 import ceusersRouter from './ceusers.js'
 router.use(ceusersRouter)
 

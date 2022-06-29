@@ -6,5 +6,5 @@ m8 cms
 - https://www.m8web.net/
 
 ## Localhost
-- Homepage: http://localhost:8088
+- Homepage: http://localhost:8088/
 - Backend: http://localhost:8088/_m8/ce/
