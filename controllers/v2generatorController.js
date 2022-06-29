@@ -1,12 +1,12 @@
 import fs      from 'fs'
 import path    from 'path'
 import Node    from '../models/Node.js'
-// import Article from '../models/Article.js'
+import Article from '../models/Article.js'
 
 const output_dir     = '../public'
 const views_dir      = '../site/views'
-const ejs_default    = '_site/layouts/default.ejs'
-const ejs_article    = '_site/layouts/article_default.ejs'
+const ejs_template   = '_site/layouts/default.ejs'
+const article_layout = '_site/layouts/article_default.ejs'
 
 const generator = {
 
@@ -56,19 +56,9 @@ const generator = {
       res.redirect(redirect_path)
       return
     }
-
-    // ----------------------------------------------------
-    // no \.html$ ending is always redirectd to slash:
-    if(! slashEnd && ! htmlEnd) {
-      let redirect_path = req_path + '/'
-      console.log("    REQUESTED an NO_HTML and NO_SLASH")
-      console.log("    NEW REDIRECT PATH", redirect_path)
-      res.redirect(redirect_path)
-      return
-    }
-
+ 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // 1/2 EJS VIEW
+    // 1/3 EJS VIEW
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     let suffix = '.ejs'
     if(slashEnd) { suffix = 'index.ejs'}
@@ -122,64 +112,68 @@ const generator = {
     }
     else {
 
+      let breadcrumb = []
+      
       // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      // 2/2 NODE
+      // 2/3 CONTAINER
       // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      console.log("    TESTing for NODE")
-      Node.findOne({ where: { path: searchpath } })
-      .then( noderesult => {
+      console.log("    TESTing for container")
+      let globalArray = []
+      Node.findAll({
+        attributes: ['id', 'parentid', 'title', 'path']
+      })
+      .then( fullResult => {
+        globalArray = fullResult
+      })
+      Node.findOne({ where: { path: searchpath, type: 'container' } })
+      .then(noderesult => {
         if(noderesult){
-          let type = noderesult.type
-          let write_file
-          let ejs_template 
-
-          if(type === 'article') {
-            ejs_template = ejs_article
-            write_file = output_dir + noderesult.path
-          }
-          else {
-            ejs_template = ejs_default
-            write_file = output_dir + noderesult.path + 'index.html'
-          }
-          let write_dir  = path.dirname(write_file)
-
-          console.log("    -> resource_type   " , type)
-          console.log("        ejs_template   ", ejs_template)
-          console.log("        write_file     ", write_file)
-          console.log("        write_dir      ", write_dir)
-          
+          let source_node = noderesult
+          console.log("    -> resource_type === container")
+          let write_dir  = output_dir + noderesult.path
+          let write_file = write_dir + 'index.html'
           if (! fs.existsSync(write_dir)) {
             console.log(`        Directory ${write_dir} not found. Try to create...`);
             fs.mkdirSync(write_dir, { recursive: true });
           }
+          if(noderesult.parentid && noderesult.parentid !== 0) {
+            let thisParent = noderesult.parentid
+            let breadcrumbIndex = 0
+            while(breadcrumbIndex < globalArray.length) {
+              let thisEntry = globalArray[breadcrumbIndex]
+              console.log(" "+ breadcrumbIndex + " " + thisEntry.title)
+              if(thisParent === thisEntry.id ) {
+                breadcrumb.unshift(thisEntry)
+                console.log(thisEntry.title)
+              }
+              breadcrumbIndex = breadcrumbIndex +1
+            }
+          }
           let myData = {}
           myData.page = {}
-          myData.page.breadcrumb = []
           myData.page.verbose = 2   
-          myData.node = noderesult
+          myData.container = noderesult
           myData.siteconfig = global.__sitecfg
-          myData.node.title = noderesult.title
-          myData.nodescontent = noderesult.content
+          myData.container.title = noderesult.title
+          myData.container.content = noderesult.content
           myData.page.channel_articles = []
-
-          // channel articles:
-          Node.findAll({ 
-            where: { 
+          Node.findAll({ where: 
+            { 
               parentid: noderesult.id, 
               type: 'article' 
             },
             order: [
               ['id', 'DESC']
-            ]
+            ],
           })
           .then( listresult => {
             if(listresult){
+              //   console.log(JSON.stringify(listresult, null, 2))
               myData.page.channel_articles = listresult
             }
             else {
               console.log("  ---> no related articles found")
             }
-
             res.render(ejs_template, myData, function(err, output) {
               res.send(output)
               if (err) {
@@ -190,20 +184,85 @@ const generator = {
               fs.writeFile(write_file, output, err => {
                 console.log("        writing to file", write_file)
                 if (err) {
-                  console.error(err)
+                  console.error(err);
                 }
               })
             })
           })
-        } // if noderesult
-        else {
-          // ERROR: No view and no Node found
-          console.log("    ->->-> 404")
-          res.sendStatus(404)
+        } else {
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          // 3/3 ARTICLE
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          console.log("    testing for article")
+          Node.findOne({ 
+            where: { 
+              path: searchpath, 
+              type: 'article' 
+            } 
+          })
+          .then(articleresult => {
+            if(articleresult) {
+              let source_article = articleresult
+              console.log("    -> resource_type === article")
+              let write_dir  = output_dir + path.dirname(articleresult.path)
+              let write_file = output_dir + articleresult.path
+              console.log("        write_dir", write_dir)
+              console.log("        write_file", write_file)
+              if (! fs.existsSync(write_dir)) {
+                console.log(`        Directory ${write_dir} not found. Try to create...`);
+                fs.mkdirSync(write_dir, { recursive: true });
+              }
+              let myData = {}
+              myData.page = {}
+              myData.page.verbose = 2
+              myData.siteconfig = global.__sitecfg
+              myData.article = articleresult     
+              let myChannelId = 0
+              let ChannelData = {}
+              myChannelId = myData.article.channel
+              console.log("    ---------> searching for channel", myChannelId)
+              Node.findByPk(myChannelId)
+              .then(noderesult => {
+                if(noderesult){
+                  ChannelData = noderesult
+                  console.log("    ---------> YESSS_NODE")
+                }
+                else {
+                  console.log("    ---------> NO_NODE")
+                }
+                console.log("    ---------> noderesult", JSON.stringify(ChannelData,null,2))
+                myData.channel = ChannelData
+                myData.page.breadcrumb = breadcrumb
+                res.render(article_layout, myData, function(err, output) {
+                  res.send(output)
+                  if (err) {
+                    console.error(err);
+                  }
+                  fs.writeFile(write_file, output, err => {
+                    console.log("        writing to file", write_file)
+                    if (err) {
+                      console.error(err);
+                    }
+                  })
+                })
+              })
+            } 
+            else {
+              // no match of any kind
+              console.log('    ERROR: Resource not found.')
+              res.sendStatus(404)
+              return
+            }
+          })
         }
-      }) // node.then
-    } // else, no source_ejs
-  } // generate
-} // generator
+      })
+      .catch (err => {
+        console.log(err)
+        res.sendStatus(404)
+      })
+    }
+  }
+}
 
 export default generator

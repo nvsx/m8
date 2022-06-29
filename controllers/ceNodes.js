@@ -68,7 +68,8 @@ const ceNodes = {
     // GET single
     let nodeid = req.query.id
     if(! nodeid) { nodeid = 0}
-    Node.findByPk(nodeid).then(thisNode => {
+    Node.findByPk(nodeid)
+    .then(thisNode => {
       let locals = {}
       locals.nav_active_nodes = 'active'
       locals.node = thisNode
