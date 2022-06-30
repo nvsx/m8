@@ -1,0 +1,29 @@
+FILENAME='do/buildpages'
+
+if [ "$0" != "$FILENAME" ]; then
+	echo "error: must be called as ${FILENAME} from project directory"
+	echo "exiting"
+	exit
+fi
+
+REQ='http://localhost:8088'
+URL1='http://localhost:8088/_m8/cegenerator/build'
+for FILE in `find site/views/ -type f -name "index.ejs" -not -path '*/includes/*'  -not -path '*/layouts/*'`; do
+	TARG=`echo $FILE|sed 's/site\/views\//public/'`
+	TARG=`echo $TARG|sed 's/\.ejs/\.html/'`
+	rm $TARG
+	PAGE=`echo $FILE|sed 's/index\.ejs//'`
+	PAGE=`echo $PAGE|sed 's/site\/views\///'`
+	BUILD_URL="${REQ}${PAGE}"
+	GEN_URL="${URL1}${PAGE}"
+	echo ""
+	echo "file: ${FILE}"
+	echo "targ: ${TARG}"
+	echo "page: ${PAGE}"
+	echo " url: ${BUILD_URL}"
+	echo "url1: ${GEN_URL}"
+	# curl $BUILD_URL > /dev/null 2>&1
+	curl $GEN_URL > /dev/null 2>&1
+done
+
+# EOF
