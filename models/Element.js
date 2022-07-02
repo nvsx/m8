@@ -1,5 +1,6 @@
 import { Sequelize, Model, DataTypes } from 'sequelize'
 import sequelize from '../lib/database.js'
+import Node from './Node.js'
 
 const Element = sequelize.define('elements', {
 	id: {
@@ -9,6 +10,7 @@ const Element = sequelize.define('elements', {
   },
 	title: DataTypes.STRING,
 	description: DataTypes.STRING,
+	type: DataTypes.STRING,
 	status: DataTypes.INTEGER,
 	notes: DataTypes.STRING,
 	content: DataTypes.STRING,
@@ -33,5 +35,16 @@ const Element = sequelize.define('elements', {
 Element.sync({ alter: true }) 
 
 // see also https://sequelize.org/docs/v6/core-concepts/model-basics/
+
+// Element.belongsToMany(Node, {
+//   through: "node_element",
+//   as: "elements",
+//   foreignKey: "element_id",
+// });
+// Node.belongsToMany(Element, {
+//   through: "node_element",
+//   as: "nodes",
+//   foreignKey: "node_id",
+// });
 
 export default Element

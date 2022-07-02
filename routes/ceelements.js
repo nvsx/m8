@@ -3,6 +3,9 @@ const router = express.Router()
 
 import ceElements from '../controllers/ceElements.js'
 
-router.get('/_m8/ce/elements/', ceElements.list)
+router.post('/create/', ceElements.create)
+router.post('/update/', ceElements.update)
+router.get('/read/', ceElements.read)
+router.get('/', ceElements.list)
 
 export default router

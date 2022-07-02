@@ -29,22 +29,26 @@
 			<input name="title" type="text" value="<%- locals.node.title %>" />
 		</span>
 	</div>
+	
 	<div class="valueedit">
 		<label for="path">Path</label>
 		<span class="value">
 			<input name="path" type="text" value="<%- locals.node.path %>" />
 		</span>
 	</div>
+
 	<div class="valueedit">
 		<label for="type">Type</label>
 		<span class="value">
 			<select name="type" id="type">
+<option value="article"<% if(locals.node.type === 'article') { %>selected<% }%> >article</option>
 <option value="container"<% if(locals.node.type === 'container') { %>selected<% }%> >container</option>
 <option value="page"<% if(locals.node.type === 'page') { %>selected<% }%> >page</option>
-<option value="article"<% if(locals.node.type === 'article') { %>selected<% }%> >article</option>
+<option value="plugin"<% if(locals.node.type === 'plugin') { %>selected<% }%> >plugin</option>
 			  </select>
 		</span>
 	</div>
+
 	<div class="valueedit">
 		<label for="content">Content</label>
 		<br>
@@ -57,9 +61,11 @@
 			</script>
 		</span>
 	</div>
+
 	<div class="formcontrol">
-		<button>Save</button>
+		<button class="	button">Save</button>
 	</div>
+
 </form>
 
 <div style="border:1px solid darkseagreen; padding:20px; margin:10px; background-color:#f0f0f0;">

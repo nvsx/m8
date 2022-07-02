@@ -33,7 +33,7 @@ router.use('/_m8/ce/xlinks/', ceXlinkRouter)
 
 // /_m8/ce/elements/
 import ceElementRouter from './ceelements.js'
-router.use(ceElementRouter)
+router.use('/_m8/ce/elements/', ceElementRouter)
 
 // /_m8/ce/files/
 import cefilesRouter from './cefiles.js'

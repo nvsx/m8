@@ -1,33 +1,42 @@
 <%- include('../../includes/header', { title: locals.title}); %>
 
-<h1>Elements</h1>
+<h1 class="ceType">Elements</h1>
 
 <div>
 	<%- locals.content %>
 </div>
 
 <div class="ceCard">
-	<div class="button">
-		<a href="/_m8/ce/elements/create">Create new element</a>
+	<div>
+		<form name="createForm" id="createForm" action="/_m8/ce/elements/create" method="post">
+			<input type="submit" class="button" value="New Element" />
+		</form>
 	</div>
 </div>
 
-<h2 style="margin:20px 0;"><%- locals.title %></h2>
+<table>
+	<tr>
+		<th>id</th>
+		<th>title</th>
+		<th>type</th>
+	</tr>
 
-<p>
-
-</p>
-
-<p>
-	<ol style="margin-left:20px;">
-		<li>Text</li>
-		<li>Image (&lt;-File)</li>
-		<li>HTML</li>
-		<li>Seperator</li>
-		<li>Card</li>
-		<li>ImageCard</li>
-		<li>ImageList</li>
-	</ol>
-</p>
+	<% for(let i=0; i<all_elements.length; i++) { %>
+		<tr>
+			<td>
+				<a href="/_m8/ce/elements/read?id=<%- all_elements[i].id %>">
+					<img src="/_m8/img/icon-edit.svg" alt="edit element" />
+					<%- all_elements[i].id %>
+				</a>
+			</td>
+			<td>
+				<%- all_elements[i].title %>
+			</td>
+			<td>
+				<%- all_elements[i].type %>
+			</td>
+		</tr>
+	<% } %>
+</table>
 
 <%- include('../../includes/footer'); %>

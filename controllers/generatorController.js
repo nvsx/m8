@@ -2,6 +2,7 @@ import fs      from 'fs'
 import path    from 'path'
 import Node    from '../models/Node.js'
 // import Article from '../models/Article.js'
+import breadcrumbBuilder from './helpers/breadcrumbBuilder.js'
 
 const output_dir     = '../public'
 const views_dir      = '../site/views'
@@ -154,7 +155,6 @@ const generator = {
           }
           let myData = {}
           myData.page = {}
-          myData.page.breadcrumb = []
           myData.page.verbose = 2   
           myData.node = noderesult
           myData.siteconfig = global.__sitecfg
@@ -180,19 +180,37 @@ const generator = {
               console.log("  ---> no related articles found")
             }
 
-            res.render(ejs_template, myData, function(err, output) {
-              res.send(output)
-              if (err) {
-                console.error(err);
+            // channel articles:
+            Node.findAll({ 
+              attributes: ['id', 'parentid', 'path', 'title']
+            })
+            .then( full_list => {
+              let breadcrumb_list = []
+              if(full_list) {
+                // breadcrumb_list[0] = noderesult
+                full_list.unshift(noderesult)
+                breadcrumb_list = breadcrumbBuilder.build(full_list)                
               }
-              console.log("        write_dir", write_dir)
-              console.log("        write_file", write_file)
-              fs.writeFile(write_file, output, err => {
-                console.log("        writing to file", write_file)
+              else {
+                breadcrumb_list[0] = noderesult
+              }
+              myData.page.breadcrumb = breadcrumb_list 
+
+              res.render(ejs_template, myData, function(err, output) {
+                res.send(output)
                 if (err) {
-                  console.error(err)
+                  console.error(err);
                 }
+                console.log("        write_dir", write_dir)
+                console.log("        write_file", write_file)
+                fs.writeFile(write_file, output, err => {
+                  console.log("        writing to file", write_file)
+                  if (err) {
+                    console.error(err)
+                  }
+                })
               })
+
             })
           })
         } // if noderesult

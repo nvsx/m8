@@ -1,0 +1,70 @@
+<%- include('../../includes/header', { title: "Element"}); %>
+
+<h1 class="ceType">Element</h1>
+
+<div class="button"><a href="./">Back</a></div>
+
+<h3>Element <%- locals.object.id %></h3>
+
+<form name="myForm" id="myForm" method="post" action="<%- locals.formaction %>">
+
+	<div class="valueedit">
+		<label for="id">Id</label>
+		<span class="value">
+			<input name="id" type="text" value="<%- locals.object.id %>" readonly />
+		</span>
+	</div>
+
+	<div class="valueedit">
+		<label for="title">title</label>
+		<span class="value">
+			<input name="title" type="text" value="<%- locals.object.title %>" />
+		</span>
+	</div>
+	<div class="valueedit">
+		<label for="type">Type</label>
+		<span class="value">
+			<select name="type" id="type">
+<option value="text"<% if(locals.object.type === 'text') { %>selected<% }%> >text</option>
+<option value="html"<% if(locals.object.type === 'html') { %>selected<% }%> >html</option>
+<option value="image"<% if(locals.object.type === 'image') { %>selected<% }%> >image</option>
+<option value="seperator"<% if(locals.object.type === 'seperator') { %>selected<% }%> >seperator</option>
+<option value="card"<% if(locals.object.type === 'card') { %>selected<% }%> >card</option>
+<option value="imagelist"<% if(locals.object.type === 'imagelist') { %>selected<% }%> >imagelist</option>
+			  </select>
+		</span>
+	</div>
+
+	<% if(locals.object.type === 'text') { %>
+	<div class="valueedit">
+		<label for="content">Content</label>
+		<br>
+		<span class="value">
+			<%# textarea name="content" rows="30" cols="90"><- locals.node.content ></textarea %>
+			<script src="https://cdn.ckeditor.com/4.19.0/standard/ckeditor.js"></script>
+			<textarea name="content" id="content"><%- locals.object.content %></textarea>
+			<script>
+					CKEDITOR.replace( 'content' );
+			</script>
+		</span>
+	</div>
+	<% } %>
+
+	<% if(locals.object.type === 'html') { %>
+		<div class="valueedit">
+			<label for="content">Content</label>
+			<br>
+			<span class="value">
+				<textarea name="content" id="content" rows="30" cols="90"><%- locals.object.content %></textarea>
+			</span>
+		</div>
+		<% } %>
+
+
+
+	<div class="formcontrol">
+		<button class="	button">Save</button>
+	</div>
+</form>
+
+<%- include('../../includes/footer'); %>

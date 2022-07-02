@@ -1,8 +1,5 @@
 import Element from '../models/Element.js'
-import path from 'path'
-import fs from 'fs'
-
-let ce_template = 'm8/ce/elements/index.ejs'
+import Node from '../models/Node.js'
 
 const ceElements = {
 
@@ -17,9 +14,48 @@ const ceElements = {
     ],
     }).then(all_elements => {
       locals.all_elements = all_elements
-      res.render(ce_template, locals)
+      locals.page = {}
+      locals.page.verbose = 2
+      res.render('m8/ce/elements/index.ejs', locals)
     })
   },
+
+  create: function(req, res) {
+    let initialData = {}
+    Element.create(initialData).then(result => {
+      res.redirect(302, '/_m8/ce/elements/read?id=' + result.id);
+    })
+  },
+
+  read: function(req, res) {
+    let thisId = req.query.id
+    if(! thisId) { thisId = 0}
+    Element.findByPk(thisId)
+    .then(thisResult => {
+      let locals = {}
+      locals.nav_active_nodes = 'active'
+      locals.object = thisResult
+      locals.title  = `Element ${thisId}`
+      locals.formaction = '/_m8/ce/elements/update'
+      let ce_template = 'm8/ce/elements/read.ejs'
+      res.render(ce_template, locals)
+    })
+  }, 
+
+  update: function (req, res) {
+    // POST update
+    let locals = {}
+    let req_body = req.body
+    locals.nav_active_nodes = 'active'
+    locals.data = {}
+    locals.title = 'update container'
+    let thisId = req.body.id;
+    Element.findByPk(thisId).then( thisObject => {
+      thisObject.set(req_body)
+      thisObject.save()
+      res.redirect(302, '/_m8/ce/elements/read?id=' + thisId);
+    })
+  }
 }
 
 export default ceElements
