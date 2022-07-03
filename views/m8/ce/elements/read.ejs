@@ -2,16 +2,30 @@
 
 <h1 class="ceType">Element</h1>
 
-<div class="button"><a href="./">Back</a></div>
+<br><div class="button"><a href="./">Back</a></div>
 
 <h3>Element <%- locals.object.id %></h3>
 
-<form name="myForm" id="myForm" method="post" action="<%- locals.formaction %>">
+<script>
+	function submitForm() {
+		if(document.getElementById("editor")) {
+			// alert(editor.getValue());
+			document.getElementById('content').value = editor.getValue();
+		}
+	}
+</script>
 
+<form 
+	name="myForm" 
+	id="myForm" 
+	method="post" 
+	action="<%- locals.formaction %>"
+	onsubmit="submitForm()"
+>
 	<div class="valueedit">
 		<label for="id">Id</label>
 		<span class="value">
-			<input name="id" type="text" value="<%- locals.object.id %>" readonly />
+			<input name="id" type="text" value="<%- locals.object.id %>" readonly class="numberonly" />
 		</span>
 	</div>
 
@@ -36,35 +50,54 @@
 	</div>
 
 	<% if(locals.object.type === 'text') { %>
-	<div class="valueedit">
-		<label for="content">Content</label>
-		<br>
-		<span class="value">
-			<%# textarea name="content" rows="30" cols="90"><- locals.node.content ></textarea %>
-			<script src="https://cdn.ckeditor.com/4.19.0/standard/ckeditor.js"></script>
-			<textarea name="content" id="content"><%- locals.object.content %></textarea>
-			<script>
-					CKEDITOR.replace( 'content' );
-			</script>
-		</span>
-	</div>
-	<% } %>
-
-	<% if(locals.object.type === 'html') { %>
 		<div class="valueedit">
 			<label for="content">Content</label>
 			<br>
 			<span class="value">
-				<textarea name="content" id="content" rows="30" cols="90"><%- locals.object.content %></textarea>
+				<script src="/_m8/ce/cfg/ckeditor/ckeditor.js"></script>
+				<textarea name="content" id="content"><%- locals.object.content %></textarea>
+				<script>CKEDITOR.replace( 'content' );</script>
 			</span>
 		</div>
-		<% } %>
+	<% } %>
 
+	<% if(locals.object.type === 'html') { %>
+		<div class="valueedit" style="display:none;">
+			<label for="content">Content</label>
+			<textarea name="content" id="content"><%- locals.object.content %></textarea>
+		</div>
+	<% } %>
 
-
-	<div class="formcontrol">
+	<div class="formcontrol" style="margin-bottom:15px;">
 		<button class="	button">Save</button>
 	</div>
 </form>
+
+<% if(locals.object.type === 'html') { %>
+		<div style="position:relative;width:500px;height:500px;overflow:hidden;">
+			<style type="text/css">
+				#editor {
+					position: absolute;
+					margin: 0;
+					top: 0;
+					bottom: 0;
+					left: 0;
+					right: 0;
+				}
+			</style>
+			<pre id="editor" name="editor"></pre>
+			<script src="/_m8/ce/cfg/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+			<script>
+				var editor = ace.edit("editor");
+				editor.setTheme("ace/theme/solarized_dark");
+				editor.session.setMode("ace/mode/html");
+				editor.session.setUseWrapMode(true);
+				editor.setValue(document.getElementById("content").value);
+			</script>
+		<div>
+		<div class="button">
+			Something beneath it
+		</div>
+<% } %>
 
 <%- include('../../includes/footer'); %>

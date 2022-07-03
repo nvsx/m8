@@ -1,0 +1,99 @@
+<%- include('../../includes/header', { title: locals.title}); %>
+
+<h1><%- locals.title || 'Edit Container' %></h1>
+<%- locals.content %>
+
+<form method="POST" action="<%- locals.formaction %>">
+	<input type="hidden" name="nodeid" value="<%- locals.node.id %>" />
+	<div class="valueedit">
+		<label for="id">Id</label>
+		<span class="value">
+			<input name="id" type="text" value="<%- locals.node.id %>" readonly class="numberonly" />
+		</span>
+	</div>
+	<div class="valueedit">
+		<label for="parentid">Parent</label>
+		<span class="value">
+			<input name="parentid" type="number" value="<%- locals.node.parentid %>" />
+		</span>
+	</div>
+	<div class="valueedit">
+		<label for="parentid">Num</label>
+		<span class="value">
+			<input name="ord" type="number" value="<%- locals.node.ord %>" />
+		</span>
+	</div>
+	<div class="valueedit">
+		<label for="title">title</label>
+		<span class="value">
+			<input name="title" type="text" value="<%- locals.node.title %>" />
+		</span>
+	</div>
+	
+	<div class="valueedit">
+		<label for="path">Path</label>
+		<span class="value">
+			<input name="path" type="text" value="<%- locals.node.path %>" />
+		</span>
+	</div>
+
+	<div class="valueedit">
+		<label for="type">Type</label>
+		<span class="value">
+			<select name="type" id="type">
+<option value="article"<% if(locals.node.type === 'article') { %>selected<% }%> >article</option>
+<option value="container"<% if(locals.node.type === 'container') { %>selected<% }%> >container</option>
+<option value="page"<% if(locals.node.type === 'page') { %>selected<% }%> >page</option>
+<option value="plugin"<% if(locals.node.type === 'plugin') { %>selected<% }%> >plugin</option>
+			  </select>
+		</span>
+	</div>
+
+	<div class="valueedit">
+		<label for="content">Content</label>
+		<br>
+		<span class="value">
+			<script src="/_m8/ce/cfg/ckeditor/ckeditor.js"></script>
+			<textarea name="content" id="content"><%- locals.node.content %></textarea>
+			<script>
+					CKEDITOR.replace( 'content' );
+			</script>
+		</span>
+	</div>
+
+	<div class="formcontrol">
+		<button class="	button">Save</button>
+	</div>
+
+</form>
+
+<div style="border:1px solid darkseagreen; padding:20px; margin:10px; background-color:#f0f0f0;">
+	<div class="button">
+		<a href="/_m8/ce/nodes">Close</a>
+	</div>
+	<div class="button">
+		<a href="/_m8/generate/build<%- locals.node.path %>" target="m8preview">
+			<img src="/_m8/img/icon-generate.svg" alt="build page" style="width:auto; height:25px;" /> Build
+		</a>
+	</div>
+	<div class="button">
+		<a href="<%- locals.node.path %>" target="m8preview">
+			<img src="/_m8/img/icon-view.svg" alt="view page" /> View
+		</a>
+	</div>
+</div>
+	
+<div style="border:1px solid darkseagreen; padding:20px; margin:10px; background-color:#f0f0f0;">
+	<form name="delete_form" method="POST" action="/_m8/ce/nodes/delete">
+		<input type="hidden" name="nodeid" value="<%- locals.node.id %>" />
+		<input type="hidden" name="path" value="<%- locals.node.path %>" />
+		<div>
+			<input type="checkbox" id="confirm" name="confirm" >
+			<label for="confirm">Confirm</label>
+		</div>
+		<button class="button"	>DELETE</button>
+	</form>
+</div>
+	
+<%- include('../../includes/footer'); %>
+	

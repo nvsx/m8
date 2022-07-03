@@ -35,6 +35,9 @@
 	.ceType {
 		font-family: 'Comic Sans MS', Helvetica, Verdana, Arial, sans-serif;
 		color: purple; 
+		display: inline-block;
+		padding: 5px;
+		background-color: #ffa;
 	}
 	.ceHeader {
 		position: absolute;
@@ -194,7 +197,11 @@
 	}
 	div.valueedit input {
 		display: inline-block;
-		min-width: 450px;
+		min-width: 600px;
+		padding:5px;
+	}
+	div.valueedit input.numberonly {
+		min-width: 60px;
 	}
 	input:read-only {
 		background-color: #ddd;

@@ -57,8 +57,7 @@
 			Content
 		</span><br>
 		<span class="value">
-			<%# textarea name="content" rows="30" cols="90"><x- locals.article.content x></textarea %>
-			<script src="https://cdn.ckeditor.com/4.19.0/standard/ckeditor.js"></script>
+			<script src="/_m8/ce/cfg/ckeditor/ckeditor.js"></script>
 			<textarea name="content" id="content"><%- locals.article.content %></textarea>
 			<script>
 					CKEDITOR.replace( 'content' );
@@ -77,7 +76,7 @@
 	</div>
 	<div class="button">
 		<a href="/_m8/generate/build<%- locals.article.path %>" target="m8preview">
-			<img src="/_m8/img/icon-generate.svg" alt="edit node <%- locals.article.id %>" /> Build
+			<img src="/_m8/img/icon-generate.svg" alt="build page" style="width:auto; height:25px;" /> Build
 		</a>
 	</div>
 	<div class="button">

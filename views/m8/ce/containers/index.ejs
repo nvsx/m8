@@ -7,22 +7,22 @@
 <table class="ce-table">
 	<tr>
 		<th>
-			<a href="/_m8/ce/nodes/?orderhow=asc&orderby=id">ID</a>
+			<a href="/_m8/ce/containers/?orderhow=asc&orderby=id">ID</a>
 		</th>
 		<th>
-			<a href="/_m8/ce/nodes/?orderhow=asc&orderby=islive">Status</a>
+			<a href="/_m8/ce/containers/?orderhow=asc&orderby=islive">Status</a>
 		</th>
 		<th>
-			<a href="/_m8/ce/nodes/?orderby=asc&orderby=parentid">Channel</a>
+			<a href="/_m8/ce/containers/?orderby=asc&orderby=parentid">Channel</a>
 		</th>
 		<th>
-			<a href="/_m8/ce/nodes/?orderby=asc&orderby=parentid">Num</a>
+			<a href="/_m8/ce/containers/?orderby=asc&orderby=parentid">Num</a>
 		</th>
 		<th>
-			<a href="/_m8/ce/nodes/?orderby=asc&orderby=path">Slug/Path</a>
+			<a href="/_m8/ce/containers/?orderby=asc&orderby=path">Slug/Path</a>
 		</th>
 		<th>
-			<a href="/_m8/ce/nodes/?orderby=asc&orderby=title">
+			<a href="/_m8/ce/containers/?orderby=asc&orderby=title">
 				Title
 			</a>
 		</th>
@@ -32,7 +32,7 @@
 	<% for(let i=0; i<all_nodes.length; i++) { %>
 		<tr>
 			<td>
-				<a href="/_m8/ce/nodes/read?id=<%- all_nodes[i].id %>">
+				<a href="/_m8/ce/containers/read?id=<%- all_nodes[i].id %>">
 					<img src="/_m8/img/icon-edit.svg" alt="edit node" />
 					<% if(all_nodes[i].parentid === 0) { %>🌏<%}%>
 					<%- all_nodes[i].id %>

@@ -6,7 +6,7 @@ const Element = sequelize.define('elements', {
 	id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-	autoIncrement: true
+    autoIncrement: true
   },
 	title: DataTypes.STRING,
 	description: DataTypes.STRING,

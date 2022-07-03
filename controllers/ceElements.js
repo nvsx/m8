@@ -35,6 +35,7 @@ const ceElements = {
       let locals = {}
       locals.nav_active_nodes = 'active'
       locals.object = thisResult
+      // console.log("READ",thisResult.content)
       locals.title  = `Element ${thisId}`
       locals.formaction = '/_m8/ce/elements/update'
       let ce_template = 'm8/ce/elements/read.ejs'
@@ -50,6 +51,7 @@ const ceElements = {
     locals.data = {}
     locals.title = 'update container'
     let thisId = req.body.id;
+    // console.log("WRITE",req.body.content)
     Element.findByPk(thisId).then( thisObject => {
       thisObject.set(req_body)
       thisObject.save()

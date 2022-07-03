@@ -1,2 +1,5 @@
-SSH_USER_SERVER_PATH="testuser@testserver:/var/www/vhosts/examplesite/current"
-
+PUBLISH_METHOD=ssh
+PUBLISH_SSH_SERVER=www.example.com
+PUBLISH_SSH_PORT=22
+PUBLISH_SSH_USER=testuser
+PUBLISH_SSH_DIR=/var/www/websites/test.example.com/current/

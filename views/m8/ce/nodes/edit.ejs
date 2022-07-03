@@ -1,6 +1,6 @@
 <%- include('../../includes/header', { title: locals.title}); %>
 
-<h1><%- locals.title || 'Edit Container' %></h1>
+<h1><%- locals.title || 'Edit Node' %></h1>
 <%- locals.content %>
 
 <form method="POST" action="<%- locals.formaction %>">
@@ -8,7 +8,7 @@
 	<div class="valueedit">
 		<label for="id">Id</label>
 		<span class="value">
-			<input name="id" type="text" value="<%- locals.node.id %>" readonly />
+			<input name="id" type="text" value="<%- locals.node.id %>" readonly class="numberonly" />
 		</span>
 	</div>
 	<div class="valueedit">
@@ -53,8 +53,7 @@
 		<label for="content">Content</label>
 		<br>
 		<span class="value">
-			<%# textarea name="content" rows="30" cols="90"><- locals.node.content ></textarea %>
-			<script src="https://cdn.ckeditor.com/4.19.0/standard/ckeditor.js"></script>
+			<script src="/_m8/ce/cfg/ckeditor/ckeditor.js"></script>
 			<textarea name="content" id="content"><%- locals.node.content %></textarea>
 			<script>
 					CKEDITOR.replace( 'content' );
@@ -74,7 +73,7 @@
 	</div>
 	<div class="button">
 		<a href="/_m8/generate/build<%- locals.node.path %>" target="m8preview">
-			<img src="/_m8/img/icon-generate.svg" alt="edit node <%- locals.node.id %>" /> Build
+			<img src="/_m8/img/icon-generate.svg" alt="edit node" style="width:auto; height:25px;" /> Build
 		</a>
 	</div>
 	<div class="button">

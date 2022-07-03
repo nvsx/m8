@@ -77,7 +77,7 @@ const ceNodes = {
       locals.node = thisNode
       locals.title  = `Container ${nodeid}`
       locals.formaction = '/_m8/ce/nodes/update'
-      let ce_template = 'm8/ce/nodes/edit.ejs'
+      let ce_template = 'm8/ce/containers/read.ejs'
       res.render(ce_template, locals)
     })
   },

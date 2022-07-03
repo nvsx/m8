@@ -1,35 +1,52 @@
+# do/publish 
 
 FILENAME="do/publish"
 ENV_FILE=".project.env"
-
 if [ "$0" != "$FILENAME" ]; then
 	echo "error: must be called as ${FILENAME} from project directory"
 	echo "exiting"
 	exit
 fi
-
 if [ ! -f "$ENV_FILE" ]; then
 	echo "error: missing ${ENV_FILE}"
 	echo "exiting"
 	exit
 fi
-
 date 
 source $ENV_FILE
 
-echo "publishing with rsyn over ssh..."
-echo -n "SSH_USER_SERVER_PATH: "
-echo $SSH_USER_SERVER_PATH
 
-if [ "" == "$SSH_USER_SERVER_PATH" ]; then
-	echo "error: missing value for SSH_USER_SERVER_PATH"
-	echo "exiting"
-	exit
+if [ "$PUBLISH_METHOD" == "ssh" ]; then
+	echo "publishing with rsyn over ssh..."
+	if [ "" == "$PUBLISH_SSH_SERVER" ]; then
+		echo "error: missing value for PUBLISH_SSH_SERVER"
+		echo "exiting"
+		exit
+	fi
+	if [ "" == "$PUBLISH_SSH_PORT" ]; then
+		echo "error: missing value for PUBLISH_SSH_PORT"
+		echo "exiting"
+		exit
+	fi
+	if [ "" == "$PUBLISH_SSH_USER" ]; then
+		echo "error: missing value for PUBLISH_SSH_USER"
+		echo "exiting"
+		exit
+	fi
+	if [ "" == "$PUBLISH_SSH_DIR" ]; then
+		echo "error: missing value for PUBLISH_SSH_DIR"
+		echo "exiting"
+		exit
+	fi
+	COMMAND="ssh -p $PUBLISH_SSH_PORT"
+	echo $COMMAND
+	echo $PUBLISH_SSH_USER
+	echo $PUBLISH_SSH_SERVER
+	echo $PUBLISH_SSH_DIR
+	rsync -arvz --delete --progress --exclude='files' -e "${COMMAND}" ./public $PUBLISH_SSH_USER@$PUBLISH_SSH_SERVER:$PUBLISH_SSH_DIR
+else 
+	echo "This publish method is not implemented yet."
 fi
 
-# rsync -avz --delete -e ssh ./public --exclude="files" example-user@example-server:/var/www/vhosts/example-site/current/
-rsync -avz --delete -e ssh ./public --exclude="files" $SSH_USER_SERVER_PATH
-
-date
-echo -n "finished "
-
+echo -n "finished: "; date
+# eof
