@@ -5,12 +5,18 @@ const ceElements = {
 
   list: function (req, res) {
     let locals = {}
+    let orderBy = 'updatedAt'
+    let orderHow = 'DESC'
+    if(req.query.orderby) {
+      orderBy = req.query.orderby
+    }
+    //  ['id', 'ASC']
     locals.nav_active_elements = 'active'
     locals.title = 'Elements'
     locals.content = '<!-- +++ list of elements +++ -->'
     Element.findAll({
       order: [
-        ['id', 'ASC']
+        [orderBy, orderHow]
     ],
     }).then(all_elements => {
       locals.all_elements = all_elements

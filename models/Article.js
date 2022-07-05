@@ -2,11 +2,12 @@ import { Sequelize, Model, DataTypes } from 'sequelize'
 import sequelize from '../lib/database.js'
 
 const Article = sequelize.define('articles', {
-	id: {
-		type: DataTypes.INTEGER,
-		primaryKey: true,
-		autoIncrement: true
-	},
+  id: {
+    type: DataTypes.INTEGER, 
+    allowNull: false, 
+    primaryKey: true, 
+    autoIncrement: true
+  },
 	containerid: DataTypes.INTEGER,
 	status: DataTypes.INTEGER,
 	channel: DataTypes.INTEGER,

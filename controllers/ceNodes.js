@@ -5,6 +5,10 @@ import getNodes from './helpers/get_nodes.js'
 const build_url = 'http://localhost:8088/_m8/cegenerator/build'
 const delete_url = 'http://localhost:8088/_m8/cegenerator/delete'
 
+// ['parentid', 'ASC'],
+// ['num', 'ASC'],
+// ['path', 'ASC']
+
 const ceNodes = {
 
   list: function (req, res) {
@@ -16,9 +20,7 @@ const ceNodes = {
     locals.content = ''
     Node.findAll({
       order: [
-        ['parentid', 'ASC'],
-        ['num', 'ASC'],
-        ['path', 'ASC']
+        ['id', 'DESC']
       ],
     }).then(all_nodes => {
       let sorted_nodes = getNodes.getList(null, all_nodes, {})

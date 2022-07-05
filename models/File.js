@@ -2,10 +2,11 @@ import { Sequelize, Model, DataTypes } from 'sequelize'
 import sequelize from '../lib/database.js'
 
 const File = sequelize.define('files', {
-	id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-	autoIncrement: true
+  id: {
+    type: DataTypes.INTEGER, 
+    allowNull: false, 
+    primaryKey: true, 
+    autoIncrement: true
   },
 	fullpath: DataTypes.STRING,
 	directory: DataTypes.STRING,

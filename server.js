@@ -18,6 +18,7 @@ const site_raw = fs.readFileSync(sitecfg_file, "utf8")
 const site_cfg = JSON.parse(site_raw)
 const version_raw = fs.readFileSync(version_file, "utf8")
 const m8info = JSON.parse(version_raw)
+site_cfg.version = m8info.version
 
 // global
 const serverpath = fileURLToPath(import.meta.url)

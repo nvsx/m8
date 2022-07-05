@@ -8,6 +8,8 @@ const output_dir     = '../public'
 const views_dir      = '../site/views'
 const ejs_default    = '_site/layouts/default.ejs'
 const ejs_article    = '_site/layouts/article_default.ejs'
+const ejs_homepage   = '_site/layouts/homepage.ejs'
+// const builder_path   = '/_m8/cegenerator/build'
 
 const generator = {
 
@@ -126,15 +128,21 @@ const generator = {
       // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       // 2/2 NODE
       // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      console.log("    TESTing for NODE")
+      if(searchpath === '') { searchpath = '/'}
+      console.log("    TESTing for NODE:", searchpath)
       Node.findOne({ where: { path: searchpath } })
       .then( noderesult => {
         if(noderesult){
+          console.log("    -> node found")
           let type = noderesult.type
           let write_file
           let ejs_template 
 
-          if(type === 'article') {
+          if( noderesult.parentid === 0 ) {
+            ejs_template = ejs_homepage
+            write_file = output_dir + noderesult.path + 'index.html'
+          }
+          else if(type === 'article') {
             ejs_template = ejs_article
             write_file = output_dir + noderesult.path
           }
@@ -155,11 +163,11 @@ const generator = {
           }
           let myData = {}
           myData.page = {}
-          myData.page.verbose = 2   
+          myData.page.verbose = 3
           myData.node = noderesult
           myData.siteconfig = global.__sitecfg
-          myData.node.title = noderesult.title
           myData.nodescontent = noderesult.content
+          myData.page.title = noderesult.title
           myData.page.channel_articles = []
 
           // channel articles:

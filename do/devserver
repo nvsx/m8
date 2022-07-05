@@ -1,4 +1,4 @@
-FILENAME='do/serverdev'
+FILENAME='do/devserver'
 
 if [ "$0" != "$FILENAME" ]; then
 	echo "error: must be called as ${FILENAME} from project directory"
@@ -8,7 +8,7 @@ fi
 
 cd m8
 
-sleep 3 && open "http://localhost:8088/_m8/ce" &
+sleep 5 && open "http://localhost:8088/_m8/ce" &
 
 npm run dev
 

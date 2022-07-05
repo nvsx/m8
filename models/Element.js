@@ -3,9 +3,10 @@ import sequelize from '../lib/database.js'
 import Node from './Node.js'
 
 const Element = sequelize.define('elements', {
-	id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
+  id: {
+    type: DataTypes.INTEGER, 
+    allowNull: false, 
+    primaryKey: true, 
     autoIncrement: true
   },
 	title: DataTypes.STRING,

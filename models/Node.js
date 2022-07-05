@@ -2,11 +2,12 @@ import { Sequelize, Model, DataTypes } from 'sequelize'
 import sequelize from '../lib/database.js'
 
 const Node = sequelize.define('nodes', {
-	id: {
-		type: DataTypes.INTEGER,
-		primaryKey: true,
-		autoIncrement: true
-	},
+  id: {
+    type: DataTypes.INTEGER, 
+    allowNull: false, 
+    primaryKey: true, 
+    autoIncrement: true
+  },
 	parentid: DataTypes.INTEGER,
 	num: DataTypes.INTEGER,
 	exists: DataTypes.INTEGER,

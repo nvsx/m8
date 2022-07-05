@@ -2,10 +2,11 @@ import { Sequelize, Model, DataTypes } from 'sequelize'
 import sequelize from '../lib/database.js'
 
 const User = sequelize.define('users', {
-	id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-	autoIncrement: true
+  id: {
+    type: DataTypes.INTEGER, 
+    allowNull: false, 
+    primaryKey: true, 
+    autoIncrement: true
   },
 	loginname: DataTypes.STRING,
 	password: DataTypes.STRING,

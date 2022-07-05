@@ -1,11 +1,11 @@
-// import { Sequelize, Model, DataTypes } from 'sequelize'
-// import sequelize from '../modules/database.js'
-
-//import fs from 'fs'
-//import Node from '../models/Node.js'
+import axios from 'axios'
 import { exec } from 'child_process'
 import Node    from '../models/Node.js'
+// import { Sequelize, Model, DataTypes } from 'sequelize'
+// import sequelize from '../modules/database.js'
+// import fs from 'fs'
 
+const build_url = 'http://localhost:8088/_m8/cegenerator/build'
 const output_dir = '../public'
 const input_dir  = '../site/views'
 const ce_template = 'm8/ce/index.ejs'
@@ -23,6 +23,7 @@ const ceController = {
     // console.log(req.layout)
     // res.sendStatus(200)
   }, 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   staticbuild: function(req, res) {
     // do/import
     // do/buildpages
@@ -58,27 +59,40 @@ const ceController = {
       console.log(`stdout: ${stdout}`);
     });
     // ----------------------------------------
-    // do/buildnodes
+    // build nodes
     console.log("    -> build nodes")
-  //  where: {
-  //   exists: 1,
-  //   islive: 1
-  // },
-    Node.findAll({
-      order: [
-        ['id', 'DESC']
-    ],
-    }).
-    then(all_nodes => {
+    //  where: {
+    //   exists: 1,
+    //   islive: 1
+    // },
+    Node.findAll({})
+    .then(all_nodes => {
       let node_counter = 0
       while (node_counter < all_nodes.length){
-        console.log("node", all_nodes[node_counter].id)
+        console.log("building node", all_nodes[node_counter].id)
+        let node_url = all_nodes[node_counter].path
+        console.log("         path", node_url)
+        if(node_url) {
+          axios.get(build_url + node_url).then(resp => {
+            // console.log(resp.data)
+            console.log("           axios", node_url)
+            console.log("               -> ok")
+          }).catch( err => {
+            console.log("           axios", node_url)
+            console.log("               -> error")
+            // console.log(err)
+          })
+        } 
+        else {
+          console.log("         ERROR: node has empty path")
+        }
         node_counter = node_counter +1
       }
     })
     .catch(err => console.log(err))
     res.redirect('/_m8/ce/');
   }, 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   staticpublish: function(req, res) {
     console.log("----> publishing static content")
     exec("cd .. && do/publish", (error, stdout, stderr) => {
