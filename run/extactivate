@@ -1,0 +1,36 @@
+FILENAME='run/extactivate'
+
+if [ "$0" != "$FILENAME" ]; then
+	echo "error: must be called as ${FILENAME} from project directory"
+	echo "exiting"
+	exit
+fi
+
+EXT="ext"
+PUB="_public"
+TARGET="public"
+
+if [ -d "$EXT" ]; then
+	# echo "direcory exists: $EXT"
+	# ls -1 $EXT
+	for NAME in `ls $EXT`; do
+		echo $NAME
+		MY_PUB="${EXT}/${NAME}/_public"
+		echo $MY_PUB
+		if [ -d $MY_PUB ]; then
+			MY_TARGET="${TARGET}/ext/${NAME}"
+			echo "target: $MY_TARGET"
+			if [ ! -d $MY_TARGET ]; then
+				echo "creating dir $MY_TARGET"
+				mkdir -p $MY_TARGET
+			fi
+			cp -r $MY_PUB/ $MY_TARGET/
+			# ls $MY_PUB
+		fi
+	done
+else 
+	echo "missing driectory: $EXT"
+fi
+
+# EOF
+

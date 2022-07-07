@@ -1,6 +1,6 @@
-# do/publish 
+# run/publish 
 
-FILENAME="do/publish"
+FILENAME="run/publish"
 ENV_FILE=".project.env"
 if [ "$0" != "$FILENAME" ]; then
 	echo "error: must be called as ${FILENAME} from project directory"

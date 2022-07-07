@@ -21,8 +21,8 @@ const Node = sequelize.define('nodes', {
 	type: DataTypes.STRING,
 	slug: DataTypes.STRING, 
 	path: DataTypes.STRING,
-  	link_type: DataTypes.STRING,
-	link_value:  DataTypes.STRING,
+  link_type: DataTypes.STRING,
+  link_value: DataTypes.STRING,
 	link_target: DataTypes.STRING,
 	caching: DataTypes.STRING,
 	image: DataTypes.STRING,
@@ -31,10 +31,10 @@ const Node = sequelize.define('nodes', {
 	date_recurisve: DataTypes.INTEGER,
 	categories: DataTypes.STRING, 
 	tags: DataTypes.STRING,
-  	content: {
-      type: Sequelize.STRING,
-      allowNull: true,
-    }
+  content: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  }
 });
 
 // 1/3 

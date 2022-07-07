@@ -95,7 +95,7 @@ const ceController = {
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   staticpublish: function(req, res) {
     console.log("----> publishing static content")
-    exec("cd .. && do/publish", (error, stdout, stderr) => {
+    exec("cd .. && run/publish", (error, stdout, stderr) => {
       if (error) {
         console.log(`error: ${error.message}`);
         return;

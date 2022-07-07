@@ -1,4 +1,4 @@
-FILENAME='do/serverrun'
+FILENAME='run/liveserver'
 
 if [ "$0" !== "$FILENAME" ]; then
 	echo "error: must be called as ${FILENAME} from project directory"
@@ -8,3 +8,4 @@ fi
 
 cd m8
 npm run start
+

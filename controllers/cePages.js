@@ -121,7 +121,7 @@ const cePages = {
       // console.log(JSON.stringify(req_body, null, 2))
       thisNode.set(req_body)
       thisNode.save()
-      res.redirect(302, '/_m8/ce/nodes/read?id=' + nodeid);
+      res.redirect(302, '/_m8/ce/pages/read?id=' + nodeid);
     })
     // build file
     axios.get(build_url + req.body.path).then(resp => {

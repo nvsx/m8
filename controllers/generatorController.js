@@ -1,14 +1,14 @@
 import fs      from 'fs'
 import path    from 'path'
 import Node    from '../models/Node.js'
-// import Article from '../models/Article.js'
 import breadcrumbBuilder from './helpers/breadcrumbBuilder.js'
+import navigationBuilder from './helpers/navigationBuilder.js'
 
 const output_dir     = '../public'
 const views_dir      = '../site/views'
-const ejs_default    = '_site/layouts/default.ejs'
-const ejs_article    = '_site/layouts/article_default.ejs'
-const ejs_homepage   = '_site/layouts/homepage.ejs'
+const ejs_default    = '_layout/default.ejs'
+const ejs_article    = '_layout/article_default.ejs'
+const ejs_homepage   = '_layout/homepage.ejs'
 // const builder_path   = '/_m8/cegenerator/build'
 
 const generator = {
@@ -31,19 +31,18 @@ const generator = {
   generate: function (req, res) {
     // generate is called as fallback, if file is not existing in public dir
     // or directly by url /_m8/generyte/build/my_path
-    const req_path = req.path
+
+    const req_path   = req.path
     const clean_path = req_path.replace(/^\/_m8\/cegenerator\/build/, '')
-    let searchpath = clean_path.replace(/\/+/g, '/')
-    console.log("--------------------")
+    let searchpath   = clean_path.replace(/\/+/g, '/')
+    const slashRegex = /\/$/g
+    const htmlRegex  = /\.html$/g
+    const slashEnd   = searchpath.match(slashRegex)? true : false
+    const htmlEnd    = searchpath.match(htmlRegex)? true :false
     console.log("GENERATOR GENERATE")
     console.log('    req_path', req_path)
     console.log('    clean_path', clean_path)
     console.log('    searchpath', searchpath)
-    // is this request file or dir?
-    const slashRegex = /\/$/g
-    const htmlRegex  = /\.html$/g
-    const slashEnd = searchpath.match(slashRegex)? true : false
-    const htmlEnd  = searchpath.match(htmlRegex)? true :false
     console.log('    slashEnd', slashEnd)
     console.log('    htmlEnd', htmlEnd)
 
@@ -64,7 +63,7 @@ const generator = {
     // no \.html$ ending is always redirectd to slash:
     if(! slashEnd && ! htmlEnd) {
       let redirect_path = req_path + '/'
-      console.log("    REQUESTED an NO_HTML and NO_SLASH")
+      console.log("    REQUESTED NO_HTML and NO_SLASH")
       console.log("    NEW REDIRECT PATH", redirect_path)
       res.redirect(redirect_path)
       return
@@ -72,7 +71,6 @@ const generator = {
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // 1/2 EJS VIEW
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     let suffix = '.ejs'
     if(slashEnd) { suffix = 'index.ejs'}
     let source_ejs = views_dir + searchpath + suffix
@@ -124,39 +122,48 @@ const generator = {
       })
     }
     else {
-
       // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       // 2/2 NODE
-      // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+      let nodeData 
+      let write_file
+      let ejs_template 
       if(searchpath === '') { searchpath = '/'}
-      console.log("    TESTing for NODE:", searchpath)
       Node.findOne({ where: { path: searchpath } })
       .then( noderesult => {
         if(noderesult){
-          console.log("    -> node found")
-          let type = noderesult.type
-          let write_file
-          let ejs_template 
-
-          if( noderesult.parentid === 0 ) {
+          nodeData = noderesult
+          console.log("    -> node found", searchpath)
+          // write_file
+          if( nodeData.parentid === 0 ) {
             ejs_template = ejs_homepage
-            write_file = output_dir + noderesult.path + 'index.html'
+            write_file = output_dir + nodeData.path + 'index.html'
           }
-          else if(type === 'article') {
+          else if(nodeData.type === 'article') {
             ejs_template = ejs_article
-            write_file = output_dir + noderesult.path
+            write_file = output_dir + nodeData.path
           }
           else {
             ejs_template = ejs_default
-            write_file = output_dir + noderesult.path + 'index.html'
+            write_file = output_dir + nodeData.path + 'index.html'
           }
           let write_dir  = path.dirname(write_file)
-
-          console.log("    -> resource_type   " , type)
-          console.log("        ejs_template   ", ejs_template)
-          console.log("        write_file     ", write_file)
-          console.log("        write_dir      ", write_dir)
-          
+          // selected layout
+          if( nodeData.layout && nodeData.layout !== '') {
+            let test_layout = '_layout/' + nodeData.layout + '.ejs'
+            let test_fiile = views_dir + '/' + test_layout
+            if (fs.existsSync(test_fiile)) {
+              ejs_template = test_layout
+            }
+            else {
+              console.log("    WARNING: can not find required layout", test_fiile)
+            }
+          }
+          // debug
+          console.log("      resource_type   " , nodeData.type)
+          console.log("      ejs_template   ", ejs_template)
+          console.log("      write_file     ", write_file)
+          console.log("      write_dir      ", write_dir)
+          // target directory
           if (! fs.existsSync(write_dir)) {
             console.log(`        Directory ${write_dir} not found. Try to create...`);
             fs.mkdirSync(write_dir, { recursive: true });
@@ -169,8 +176,7 @@ const generator = {
           myData.nodescontent = noderesult.content
           myData.page.title = noderesult.title
           myData.page.channel_articles = []
-
-          // channel articles:
+          // channel articles 
           Node.findAll({ 
             where: { 
               parentid: noderesult.id, 
@@ -187,15 +193,13 @@ const generator = {
             else {
               console.log("  ---> no related articles found")
             }
-
-            // channel articles:
+            // breadcrumbs 
             Node.findAll({ 
               attributes: ['id', 'parentid', 'path', 'title']
             })
             .then( full_list => {
               let breadcrumb_list = []
-              if(full_list) {
-                // breadcrumb_list[0] = noderesult
+              if(full_list) { 
                 full_list.unshift(noderesult)
                 breadcrumb_list = breadcrumbBuilder.build(full_list)                
               }
@@ -203,7 +207,9 @@ const generator = {
                 breadcrumb_list[0] = noderesult
               }
               myData.page.breadcrumb = breadcrumb_list 
-
+              // TODO: Navigation
+              myData.page.navigation = navigationBuilder.build(full_list)
+              // render
               res.render(ejs_template, myData, function(err, output) {
                 res.send(output)
                 if (err) {
@@ -218,13 +224,12 @@ const generator = {
                   }
                 })
               })
-
             })
           })
         } // if noderesult
         else {
           // ERROR: No view and no Node found
-          console.log("    ->->-> 404")
+          console.log("    -> node not found, sending 404", searchpath)
           res.sendStatus(404)
         }
       }) // node.then
