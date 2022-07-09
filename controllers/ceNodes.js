@@ -82,6 +82,28 @@ const ceNodes = {
     })
   },
 
+  open: function (req, res) {
+    // GET redirect
+    let nodeid = req.query.id
+    if(! nodeid) { nodeid = 0}
+    Node.findByPk(nodeid)
+    .then(thisNode => {
+      let type = thisNode.type
+      let redirect_url = '/_m8/ce/'
+      console.log("- - - - > node type", type)
+      if(type === 'article') {
+        redirect_url = redirect_url + 'artice/edit?id=' + nodeid
+      }
+      else if(type === 'container') {
+        redirect_url = redirect_url + 'containers/read?id=' + nodeid
+      }
+      else if(type === 'page') {
+        redirect_url = redirect_url + 'pages/edit?id=' + nodeid
+      }
+      res.redirect(redirect_url)
+    })
+  },
+
   update: function (req, res) {
     // POST update
     let locals = {}

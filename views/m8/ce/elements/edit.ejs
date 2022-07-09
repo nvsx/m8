@@ -94,10 +94,42 @@
 				editor.session.setUseWrapMode(true);
 				editor.setValue(document.getElementById("content").value);
 			</script>
-		<div>
-		<div class="button">
-			Something beneath it
 		</div>
 <% } %>
+
+
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+<h3>Mappings</h3>
+<table>
+	<tr>
+		<th>ID</th>
+		<th>Type</th>
+		<th>Position</th>
+		<th>Number</th>
+		<th>Actions</th>
+	</tr>
+	<% if(locals.all_mappings && locals.all_mappings.length){ %>
+		<% for(let i=0; i<locals.all_mappings.length; i++) { %>
+			<% thisMapping = locals.all_mappings[i] %>
+			<tr>
+				<td><%- thisMapping.nodeId %></td>
+				<td><%- thisMapping.nodeType %></td>
+				<td><%- thisMapping.posrow %></td>
+				<td><%- thisMapping.posnum %></td>
+				<td>
+					<a href="/_m8/ce/nodes/open?id=<%- thisMapping.nodeId %>">
+						open <%- thisMapping.nodeId %>
+					</a> 
+					action2 
+					action3
+				</td>
+			</tr>
+		<% } %>
+		</table>
+	<% } else { %>
+		</table>
+		<div> +++++ no mappings found +++++	</div>
+	<% } %>
 
 <%- include('../../includes/footer'); %>

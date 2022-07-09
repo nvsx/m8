@@ -1,5 +1,6 @@
 import Element from '../models/Element.js'
-import Node from '../models/Node.js'
+// import Node from '../models/Node.js'
+import Element2Node from '../models/Element2Node.js'
 
 const ceElements = {
 
@@ -29,24 +30,34 @@ const ceElements = {
   create: function(req, res) {
     let initialData = {}
     Element.create(initialData).then(result => {
-      res.redirect(302, '/_m8/ce/elements/read?id=' + result.id);
+      res.redirect(302, '/_m8/ce/elements/edit?id=' + result.id);
     })
   },
 
-  read: function(req, res) {
-    let thisId = req.query.id
-    if(! thisId) { thisId = 0}
-    Element.findByPk(thisId)
-    .then(thisResult => {
-      let locals = {}
-      locals.nav_active_nodes = 'active'
+  edit: function(req, res) {
+    let elementId = req.query.id
+    let elementResult
+    let mappingResult
+    let locals = {}
+    let ce_template = 'm8/ce/elements/edit.ejs'
+    if(! elementId) { 
+      elementId = 0
+    }
+    Element.findByPk(elementId)
+    .then( thisResult => {
       locals.object = thisResult
-      // console.log("READ",thisResult.content)
-      locals.title  = `Element ${thisId}`
-      locals.formaction = '/_m8/ce/elements/update'
-      let ce_template = 'm8/ce/elements/read.ejs'
-      res.render(ce_template, locals)
     })
+    .then(
+      Element2Node.findAll( { where: { elementId: elementId }} )
+      .then( mappingResult => {
+        console.log(JSON.stringify(mappingResult, null, 4))
+        locals.all_mappings = mappingResult
+        locals.title  = `Element ${elementId}`
+        locals.formaction = '/_m8/ce/elements/update'
+        locals.nav_active_nodes = 'active'
+        res.render(ce_template, locals)
+      })
+    )
   }, 
 
   update: function (req, res) {
@@ -61,7 +72,7 @@ const ceElements = {
     Element.findByPk(thisId).then( thisObject => {
       thisObject.set(req_body)
       thisObject.save()
-      res.redirect(302, '/_m8/ce/elements/read?id=' + thisId);
+      res.redirect(302, '/_m8/ce/elements/edit?id=' + thisId);
     })
   }
 }

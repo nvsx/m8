@@ -32,7 +32,7 @@
 	<% for(let i=0; i<all_nodes.length; i++) { %>
 		<tr>
 			<td>
-				<a href="/_m8/ce/pages/read?id=<%- all_nodes[i].id %>">
+				<a href="/_m8/ce/pages/edit?id=<%- all_nodes[i].id %>">
 					<img src="/_m8/img/icon-edit.svg" alt="edit node" />
 					<% if(all_nodes[i].parentid === 0) { %>🌏<%}%>
 					<%- all_nodes[i].id %>

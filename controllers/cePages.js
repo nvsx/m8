@@ -1,6 +1,7 @@
 import Node from '../models/Node.js'
 import axios from 'axios'
-import getNodes from './helpers/get_nodes.js'
+// import getNodes from './helpers/get_nodes.js'
+import Element2Node from '../models/Element2Node.js'
 
 const build_url = 'http://localhost:8088/_m8/cegenerator/build'
 const delete_url = 'http://localhost:8088/_m8/cegenerator/delete'
@@ -67,19 +68,26 @@ const cePages = {
     })
   },
 
-  read: function (req, res) {
+  edit: function (req, res) {
     // GET single
     let nodeid = req.query.id
+    let ce_template = 'm8/ce/pages/edit.ejs'
+    let locals = {}
+    locals.nav_active_nodes = 'active'
+    locals.formaction = '/_m8/ce/pages/update'
     if(! nodeid) { nodeid = 0}
     Node.findByPk(nodeid).then(thisNode => {
-      let locals = {}
-      locals.nav_active_nodes = 'active'
       locals.node = thisNode
-      locals.title  = `Container ${nodeid}`
-      locals.formaction = '/_m8/ce/pages/update'
-      let ce_template = 'm8/ce/pages/edit.ejs'
-      res.render(ce_template, locals)
+      locals.title  = `Page ${nodeid}`
     })
+    .then(
+      Element2Node.findAll( { where: { nodeId: nodeid }} )
+      .then( mappingResult => {
+        // console.log(JSON.stringify(mappingResult, null, 4))
+        locals.all_mappings = mappingResult
+        res.render(ce_template, locals)
+      })
+    )
   },
 
   update: function (req, res) {
@@ -121,7 +129,7 @@ const cePages = {
       // console.log(JSON.stringify(req_body, null, 2))
       thisNode.set(req_body)
       thisNode.save()
-      res.redirect(302, '/_m8/ce/pages/read?id=' + nodeid);
+      res.redirect(302, '/_m8/ce/pages/edit?id=' + nodeid);
     })
     // build file
     axios.get(build_url + req.body.path).then(resp => {

@@ -3,6 +3,7 @@ const router = express.Router()
 
 import ceNodes from '../controllers/ceNodes.js'
 
+router.get('/open/', ceNodes.open)
 router.get('/create/', ceNodes.create)
 router.post('/createsave/', ceNodes.createsave)
 router.get('/read/', ceNodes.read)
