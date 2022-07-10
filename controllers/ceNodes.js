@@ -1,6 +1,7 @@
 import Node from '../models/Node.js'
 import axios from 'axios'
 import getNodes from './helpers/get_nodes.js'
+import Element2Node from '../models/Element2Node.js'
 
 const build_url = 'http://localhost:8088/_m8/cegenerator/build'
 const delete_url = 'http://localhost:8088/_m8/cegenerator/delete'
@@ -66,20 +67,26 @@ const ceNodes = {
     })
   },
 
-  read: function (req, res) {
+  edit: function (req, res) {
     // GET single
     let nodeid = req.query.id
     if(! nodeid) { nodeid = 0}
+    let ce_template = 'm8/ce/nodes/edit.ejs'
+    let locals = {}
+    locals.nav_active_nodes = 'active'
+    locals.title  = `Container ${nodeid}`
+    locals.formaction = '/_m8/ce/nodes/update'
     Node.findByPk(nodeid)
     .then(thisNode => {
-      let locals = {}
-      locals.nav_active_nodes = 'active'
       locals.node = thisNode
-      locals.title  = `Container ${nodeid}`
-      locals.formaction = '/_m8/ce/nodes/update'
-      let ce_template = 'm8/ce/nodes/edit.ejs'
-      res.render(ce_template, locals)
     })
+    .then(
+      Element2Node.findAll( { where: { nodeId: nodeid }} )
+      .then( mappingResult => {
+        locals.all_mappings = mappingResult
+        res.render(ce_template, locals)
+      })
+    )
   },
 
   open: function (req, res) {
@@ -92,10 +99,10 @@ const ceNodes = {
       let redirect_url = '/_m8/ce/'
       console.log("- - - - > node type", type)
       if(type === 'article') {
-        redirect_url = redirect_url + 'artice/edit?id=' + nodeid
+        redirect_url = redirect_url + 'articles/edit?articleid=' + nodeid
       }
       else if(type === 'container') {
-        redirect_url = redirect_url + 'containers/read?id=' + nodeid
+        redirect_url = redirect_url + 'containers/edit?id=' + nodeid
       }
       else if(type === 'page') {
         redirect_url = redirect_url + 'pages/edit?id=' + nodeid

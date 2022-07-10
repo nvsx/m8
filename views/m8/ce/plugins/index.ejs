@@ -6,4 +6,30 @@
 	<%- locals.content %>
 </div>
 
+<h3>List of plugins</h3>
+<table>
+	<tr>
+		<th>Num</th>
+		<th>Plugin</th>
+		<th>Info</th>
+		<th>Status</th>
+		<th>Activate</th>
+		<th>Deactivate</th>
+		<th>Uninstall</th>
+	</tr>
+
+	<% for(let i=0; i<locals.plugin_list.length; i++) { %>
+		<tr>
+			<td><%- i +1 %></td>
+			<td><%- locals.plugin_list[i].name %></td>
+			<td>info</td>
+			<td>working</td>
+			<td>activate</td>
+			<td>deactivate</td>
+			<td>uninstall</td>
+		</tr>
+	<% } %>
+
+</table>
+
 <%- include('../../includes/footer'); %>

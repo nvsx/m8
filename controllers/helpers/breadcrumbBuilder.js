@@ -13,7 +13,7 @@ const breadcrumbBuilder = {
       let searcher = 0
       while(searcher < list.length) {
         let tester = list[searcher]
-        console.log(tester.id, " - ", current.parentid)
+        // console.log(tester.id, " - ", current.parentid)
         if(tester.id == current.parentid) {
           current = tester
           // 2. push element

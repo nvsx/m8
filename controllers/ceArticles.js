@@ -1,28 +1,29 @@
 import axios from 'axios'
-// import { classToInvokable } from 'sequelize/types/utils.js'
-// import Article from '../models/Article.js'
-import Node    from '../models/Node.js'
-
-//console.log("xxxxxx controller: ", global.global)
-
-// Article.belongsTo(Node)
+import Node  from '../models/Node.js'
+import pathSanitizer from './helpers/pathSanitizer.js'
+import Element2Node from '../models/Element2Node.js'
 
 const build_url = 'http://localhost:8088/_m8/cegenerator/build'
 const delete_url = 'http://localhost:8088/_m8/cegenerator/delete'
 
 const ceArticles = {
-
   list: function (req, res) {
     // GET list
+    let channelid = req.query.channelid
     let ce_template = 'm8/ce/articles/list.ejs'
     let locals = {}
     locals.nav_active_articles = 'active'
     locals.title = ''
     locals.content = '<!-- +++ list of articles +++ -->'
+
+    let whereData = {}
+    whereData.type = 'article'
+    if(channelid && channelid !== 'all') {
+      whereData.parentid = channelid
+    }
+
     Node.findAll({
-      where: {
-        type: "article"
-      },
+      where: whereData,
       order: [
         ['updatedAt', 'DESC'],
         ['createdAt', 'DESC'],
@@ -35,73 +36,59 @@ const ceArticles = {
   },
 
   create: function (req, res) {
-    // GET create form
-    let locals = {}
-    locals.article = {}
-    locals.nav_active_articles = 'active'
-    locals.article.title = 'new article title'
-    locals.title = 'create article'
-    locals.formaction = '/_m8/ce/articles/createsave'
-    let ce_template = 'm8/ce/articles/create.ejs'
-    res.render(ce_template, locals)
-  },
-
-  createsave: function (req, res) {
-    // POST new
-    let req_body = req.body
-    req_body.type = 'article'
-    let locals = {}
-    locals.nav_active_articles = 'active'
-    locals.title = 'save new article'
-    req.body.id = undefined
-    Node.create(req_body).then(result => {
-      locals.content = JSON.stringify(result, null, 2)
+    // POST create new
+    Node.create({
+      type: 'article'
+    }).then(result => {
+      let content = JSON.stringify(result, null, 2)
+      console.log(content)
       if(result.id) {
-        let redirect_url = '/_m8/ce/articles/read?articleid=' + result.id
+        let redirect_url = '/_m8/ce/articles/edit?articleid=' + result.id
         res.redirect(redirect_url)
       }
       else {
-        res.render('m8/ce/articles/created.ejs', locals)
+        res.sendStatus(500)
       }
     })
-    // build file
-    axios.get(build_url + req.body.path).then(resp => {
-      // console.log(resp.data)
-      console.log("    axios ok")
-    }).catch( err => {
-      console.log(err)
-    })
   },
-    
-  read: function (req, res) {
+
+  edit: function (req, res) {
     // GET single
     let articleid = req.query.articleid
+    let ce_template = 'm8/ce/articles/edit.ejs'
+
     if(! articleid) { articleid = 0}
     Node.findByPk(articleid).then(thisArticle => {
       if(thisArticle && thisArticle.type === 'article') {
         let locals = {}
         locals.nav_active_articles = 'active'
         locals.title  = `edit node ${articleid}`
-        locals.formaction = '/_m8/ce/articles/update'
+        locals.formaction = '/_m8/ce/articles/save'
         let parentid = 0
         if(thisArticle.parentid) {
           parentid = thisArticle.parentid
           thisArticle.channel = parentid
-          // console.log("    reading article, parentid=", parentid)
         }
         Node.findOne({
-          where: {
+          where: { 
             id: parentid
           }
-        }).then( myNode => {
+        })
+        .then( myNode => {
           let channelPath = ''
           if(myNode && myNode.path) { 
             channelPath = myNode.path 
           }
           locals.channelPath = channelPath
           locals.article = thisArticle
-          res.render('m8/ce/articles/edit.ejs', locals)
         })
+        .then(
+          Element2Node.findAll( { where: { nodeId: articleid }} )
+          .then( mappingResult => {
+            locals.all_mappings = mappingResult
+            res.render(ce_template, locals)
+          })
+        )
       }
       else {
         // TODO: Pretty page with link
@@ -113,7 +100,7 @@ const ceArticles = {
     })
   },
 
-  update: function (req, res) {
+  save: function (req, res) {
     // POST update
     console.log("-------------------------")
     console.log("saving article")
@@ -137,7 +124,6 @@ const ceArticles = {
       req_body.slug = mySlug
       // path
       let myPath = req_body.path
-      myPath = myPath.replace(/\s/g, '_')
       myPath = myPath.replace(/\/$/, '')
       myPath = myPath.replace(/\.html$/, '')
       // todo: myChannelPath = path of channel
@@ -148,6 +134,7 @@ const ceArticles = {
       else {
         myPath = myChannelPath + mySlug + '.html'
       }
+      myPath = pathSanitizer.sanitize(myPath, 'article')
       if(req_body.old_path !== '' && req_body.old_path !== myPath) {
         // TODO: delete old file from cache:
         console.log("    ---------> TODO: delete old file (ceArticles, L140)")
@@ -168,7 +155,7 @@ const ceArticles = {
       })
       // also refresh channel page because of latest_articles_list
       console.log("    ---------> TODO: also refresh channel center")
-      res.redirect(302, '/_m8/ce/articles/read?articleid=' + article_id);
+      res.redirect(302, '/_m8/ce/articles/edit?articleid=' + article_id);
     })
   },
 

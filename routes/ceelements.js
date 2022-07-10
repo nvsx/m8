@@ -3,6 +3,7 @@ const router = express.Router()
 
 import ceElements from '../controllers/ceElements.js'
 
+router.post('/mappage/', ceElements.mappage)
 router.post('/create/', ceElements.create)
 router.post('/update/', ceElements.update)
 router.get('/edit/', ceElements.edit)

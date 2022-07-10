@@ -17,6 +17,7 @@ const ceController = {
     let locals = {}
     locals.nav_active_start = 'active'
     locals.title = 'CE: Start'
+    locals.siteconfig = global.__sitecfg
     locals.m8info = global.__m8info
     locals.content = ''
     res.render(ce_template, locals)
@@ -28,11 +29,11 @@ const ceController = {
     // do/import
     // do/buildpages
     // do/buildnodes
-    console.log("-----> building static content...")
+    console.log("-----> building static content <--------------------------")
     // ----------------------------------------
     // do/import
     console.log("    -> import...")
-    exec("cd .. && do/import", (error, stdout, stderr) => {
+    exec("cd .. && run/import &", (error, stdout, stderr) => {
       if (error) {
         console.log(`error: ${error.message}`);
         return;
@@ -47,7 +48,7 @@ const ceController = {
     // do/buildpages
     console.log("    -> build views...")
     // system("cd ..; do/import")
-    exec("cd .. && do/buildpages", (error, stdout, stderr) => {
+    exec("cd .. && run/buildpages &", (error, stdout, stderr) => {
       if (error) {
         console.log(`error: ${error.message}`);
         return;
@@ -94,8 +95,8 @@ const ceController = {
   }, 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   staticpublish: function(req, res) {
-    console.log("----> publishing static content")
-    exec("cd .. && run/publish", (error, stdout, stderr) => {
+    console.log("----> publishing static content <----------------------")
+    exec("cd .. && run/publish &", (error, stdout, stderr) => {
       if (error) {
         console.log(`error: ${error.message}`);
         return;

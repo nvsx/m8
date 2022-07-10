@@ -74,6 +74,32 @@ const ceElements = {
       thisObject.save()
       res.redirect(302, '/_m8/ce/elements/edit?id=' + thisId);
     })
+  },
+
+  mappage: function(req, res) {
+    console.log("new mapping for page", req.body.nodeid)
+
+    let elementId = req.body.elementid
+    let nodeId    = req.body.nodeid
+    let posrow    = req.body.posrow || 1
+    let posnum    = req.body.posnum || 1
+
+    let newData = {}
+    newData.elementId = elementId
+    newData.nodeId    = nodeId
+    newData.posrow    = posrow
+    newData.posnum    = posnum
+    console.log(JSON.stringify(newData, null, 2))
+
+    Element2Node.create(newData).then(result => {
+      if(result) {
+        console.log("    SUCCESS: Created")
+      }
+      else {
+        console.log("    ERROR: Can not create")
+      }
+      res.redirect('/_m8/ce/pages/edit?id=' + req.body.nodeid )
+    })
   }
 }
 

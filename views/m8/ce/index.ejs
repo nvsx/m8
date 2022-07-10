@@ -11,12 +11,14 @@
 	</div>
 	<div class="ceStartDiv">
 		Create a new article: 
-		<div class="button">
-			<a href="/_m8/ce/articles/create">Create</a>
-		</div>
+		<form method="post" action="/_m8/ce/articles/create">
+			<button class="button">
+				Create
+			</button>
+		</form>
 	</div>
 	<div class="ceStartDiv">
-		<form action="/_m8/ce/articles/read?" method="get">
+		<form action="/_m8/ce/articles/edit?" method="get">
 			Open article with id: 
 			<input type="number" name="articleid" />
 			<button class="button">Open</button>
@@ -29,16 +31,17 @@
 		<h3>Links</h3>
 	</div>
 	<div class="ceStartDiv">
-		Open homepage in preview window:
-		<a href="/" target="m8preview">Homepage</a>
+		Open homepage (in m8preview window):
+		<a href="/" target="m8preview" style="background-color:#cfc;display:inline-block;padding:3px;border-radius:5px;">Homepage</a>
 	</div>
 	<div class="ceStartDiv">
-		Open public url in blank window:
-		<a href="<%- __sitecfg.url %>" target="m8preview"><%- __sitecfg.url %></a>
+		Open public url (in new window), 
+		<span style="background-color:#cdf;display:inline-block;padding:3px;font-weight:bold;border-radius:5px;"><%- __sitecfg.sitename %></span>:
+		<a href="<%- __sitecfg.url %>" target="_blank"><%- __sitecfg.url %></a>
 	</div>
 	<div class="ceStartDiv">
-		Read documentation: 
-		<a href="https://www.m8web.net/doc/" target="_blank">www.m8web.net/doc/</a>
+		Read documentation (in m8docu window): 
+		<a href="https://www.m8web.net/doc/" target="m8docu" style="background-color:#fcc;display:inline-block;padding:3px;border-radius:5px;">www.m8web.net/doc/</a>
 	</div>
 </div>
 

@@ -1,4 +1,5 @@
 import Node from '../models/Node.js'
+import Element2Node from '../models/Element2Node.js'
 import axios from 'axios'
 import getNodes from './helpers/get_nodes.js'
 
@@ -67,23 +68,30 @@ const ceNodes = {
     })
   },
 
-  read: function (req, res) {
+  edit: function (req, res) {
     // GET single
     let nodeid = req.query.id
     if(! nodeid) { nodeid = 0}
+    let ce_template = 'm8/ce/containers/edit.ejs'
+    let locals = {}
+    locals.nav_active_nodes = 'active'
+    locals.title  = `Container ${nodeid}`
+    locals.formaction = '/_m8/ce/containers/update'
     Node.findByPk(nodeid).then(thisNode => {
-      let locals = {}
-      locals.nav_active_nodes = 'active'
       locals.node = thisNode
-      locals.title  = `Container ${nodeid}`
-      locals.formaction = '/_m8/ce/nodes/update'
-      let ce_template = 'm8/ce/containers/read.ejs'
-      res.render(ce_template, locals)
     })
+    .then(
+      Element2Node.findAll( { where: { nodeId: nodeid }} )
+      .then( mappingResult => {
+        locals.all_mappings = mappingResult
+        res.render(ce_template, locals)
+      })
+    )
   },
 
   update: function (req, res) {
     // POST update
+    let redirect_base = '/_m8/ce/containers/edit?id='
     let locals = {}
     let req_body = req.body
     locals.nav_active_nodes = 'active'
@@ -121,7 +129,7 @@ const ceNodes = {
       // console.log(JSON.stringify(req_body, null, 2))
       thisNode.set(req_body)
       thisNode.save()
-      res.redirect(302, '/_m8/ce/nodes/read?id=' + nodeid);
+      res.redirect(302, redirect_base + nodeid);
     })
     // build file
     axios.get(build_url + req.body.path).then(resp => {

@@ -36,7 +36,8 @@
 				<%- all_elements[i].type %>
 			</td>
 			<td>
-				<%- all_elements[i].updatedAt %>
+				<% const options = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' }; %>
+				<%- all_elements[i].updatedAt.toLocaleString('en-GB', options) %>
 			</td>
 		</tr>
 	<% } %>

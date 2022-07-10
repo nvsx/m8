@@ -31,6 +31,10 @@ router.use('/_m8/ce/shortcuts/', ceShortcutRouter)
 import ceXlinkRouter from './cexlinks.js'
 router.use('/_m8/ce/xlinks/', ceXlinkRouter)
 
+// /_m8/ce/users/
+import ceconfigurationRouter from './ceconfiguration.js'
+router.use('/_m8/ce/configuration/', ceconfigurationRouter)
+
 // /_m8/ce/elements/
 import ceElementRouter from './ceelements.js'
 router.use('/_m8/ce/elements/', ceElementRouter)

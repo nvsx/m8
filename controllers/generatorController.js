@@ -1,6 +1,10 @@
 import fs      from 'fs'
 import path    from 'path'
+
 import Node    from '../models/Node.js'
+import Element from '../models/Element.js'
+import Element2Node from '../models/Element2Node.js'
+
 import breadcrumbBuilder from './helpers/breadcrumbBuilder.js'
 import navigationBuilder from './helpers/navigationBuilder.js'
 
@@ -16,10 +20,10 @@ const generator = {
   delete: function (req, res) {
     console.log("DELETE FILE FROM PUBLIC DIR")
     const req_path = req.path
-    console.log("    delete request:", req_path)
+    // console.log("    delete request:", req_path)
     const calc_path = req_path.replace(/^\/_m8\/cegenerator\/delete/, output_dir)
     const delete_path = calc_path.replace(/\/$/, '/index.html')
-    console.log("    delete file:", delete_path)
+    console.log("    generator: delete file", delete_path)
     res.sendStatus(200)
     fs.unlink(delete_path, (err) => {
       if (err) {
@@ -124,16 +128,34 @@ const generator = {
     else {
       // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       // 2/2 NODE
-      let nodeData 
+
+      let nodeData
+      let write_dir
       let write_file
       let ejs_template 
+      let full_node_list  = []
+
+      let myData = {}
+      myData.page = {}
+      myData.page.channel_articles = []
+      myData.siteconfig = global.__sitecfg
+
+      myData.page.verbose = 3
       if(searchpath === '') { searchpath = '/'}
+      console.log("    TESTING for node", searchpath)
+
+      // ####################################################
+      // nodeData
       Node.findOne({ where: { path: searchpath } })
       .then( noderesult => {
         if(noderesult){
-          nodeData = noderesult
           console.log("    -> node found", searchpath)
-          // write_file
+
+          nodeData          = noderesult
+          myData.node       = nodeData
+          myData.page.title = nodeData.title
+          
+          // ejs_template + write_file
           if( nodeData.parentid === 0 ) {
             ejs_template = ejs_homepage
             write_file = output_dir + nodeData.path + 'index.html'
@@ -146,40 +168,39 @@ const generator = {
             ejs_template = ejs_default
             write_file = output_dir + nodeData.path + 'index.html'
           }
-          let write_dir  = path.dirname(write_file)
-          // selected layout
+          write_dir  = path.dirname(write_file)
+
+          // ejs_template overwrite by specified layout
           if( nodeData.layout && nodeData.layout !== '') {
             let test_layout = '_layout/' + nodeData.layout + '.ejs'
             let test_fiile = views_dir + '/' + test_layout
-            if (fs.existsSync(test_fiile)) {
+            if ( fs.existsSync(test_fiile) ) {
               ejs_template = test_layout
             }
             else {
               console.log("    WARNING: can not find required layout", test_fiile)
             }
           }
-          // debug
-          console.log("      resource_type   " , nodeData.type)
-          console.log("      ejs_template   ", ejs_template)
-          console.log("      write_file     ", write_file)
-          console.log("      write_dir      ", write_dir)
+
           // target directory
           if (! fs.existsSync(write_dir)) {
             console.log(`        Directory ${write_dir} not found. Try to create...`);
             fs.mkdirSync(write_dir, { recursive: true });
           }
-          let myData = {}
-          myData.page = {}
-          myData.page.verbose = 3
-          myData.node = noderesult
-          myData.siteconfig = global.__sitecfg
-          myData.nodescontent = noderesult.content
-          myData.page.title = noderesult.title
-          myData.page.channel_articles = []
-          // channel articles 
+
+          // debug
+          console.log("      resource_type   " , nodeData.type || 'ERR')
+          console.log("      resource_id     " , nodeData.id || 'ERR')
+          console.log("      parent_id     " , nodeData.parentid || 'ERR')
+          console.log("      ejs_template   ", ejs_template || 'ERR')
+          console.log("      write_file     ", write_file || 'ERR')
+          console.log("      write_dir      ", write_dir || 'ERR')
+
+          // ####################################################
+          // channel_articles
           Node.findAll({ 
             where: { 
-              parentid: noderesult.id, 
+              parentid: nodeData.id, 
               type: 'article' 
             },
             order: [
@@ -188,52 +209,97 @@ const generator = {
           })
           .then( listresult => {
             if(listresult){
+              // channel articles 
               myData.page.channel_articles = listresult
             }
             else {
               console.log("  ---> no related articles found")
             }
-            // breadcrumbs 
-            Node.findAll({ 
-              attributes: ['id', 'parentid', 'path', 'title']
-            })
+            // ####################################################
+            // full_list (navi, breadcrumb)
+            Node.findAll({ attributes: ['id', 'parentid', 'path', 'title'] })
             .then( full_list => {
-              let breadcrumb_list = []
+              // Breadcrumb
               if(full_list) { 
                 full_list.unshift(noderesult)
-                breadcrumb_list = breadcrumbBuilder.build(full_list)                
+                // also: full list of all nodes
+                full_node_list = full_list       
+                myData.page.breadcrumb = breadcrumbBuilder.build(full_list)     
               }
-              else {
-                breadcrumb_list[0] = noderesult
-              }
-              myData.page.breadcrumb = breadcrumb_list 
-              // TODO: Navigation
-              myData.page.navigation = navigationBuilder.build(full_list)
-              // render
-              res.render(ejs_template, myData, function(err, output) {
-                res.send(output)
-                if (err) {
-                  console.error(err);
+              // ####################################################
+              // element_list
+              let element_mapping_list = []
+              let element_mapping_data = []
+              Element2Node.findAll({ 
+                where: { 
+                  nodeid: nodeData.id 
+                },
+                order: [
+                  ['posrow', 'ASC'],
+                  ['posnum', 'ASC']
+                ]
+              })
+              .then( mappingResult => {
+                if(mappingResult) {
+                  console.log(JSON.stringify(mappingResult,null,4))
+                  // for each element in mappingResult
+                  // element_mapping_list.push(element.id)
+                  for(let i=0; i<mappingResult.length; i++) { 
+                    element_mapping_list.push(mappingResult[i].elementId)
+                  }
+                  console.log(element_mapping_list)
                 }
-                console.log("        write_dir", write_dir)
-                console.log("        write_file", write_file)
-                fs.writeFile(write_file, output, err => {
-                  console.log("        writing to file", write_file)
-                  if (err) {
-                    console.error(err)
+                Element.findAll({ 
+                  where: {
+                    id: element_mapping_list
                   }
                 })
-              })
-            })
-          })
-        } // if noderesult
-        else {
-          // ERROR: No view and no Node found
-          console.log("    -> node not found, sending 404", searchpath)
-          res.sendStatus(404)
-        }
-      }) // node.then
-    } // else, no source_ejs
+                .then( elementData => {
+                  // for each element in mappingResult
+                  // mapping_data.push mappingResult id???
+                  for(let i=0; i<element_mapping_list.length; i++) { 
+                    for(let k=0; k<elementData.length; k++) { 
+                      if(elementData[k].id == element_mapping_list[i]) {
+                        let eData = {}
+                        eData.id     = elementData[k].id
+                        eData.content= elementData[k].content
+                        eData.posrow = 1
+                        eData.posnum = 1
+                        element_mapping_data.push(eData)
+                      } 
+                    }
+                  }
+                  myData.element_mappings = element_mapping_data
+                  // console.log('Element mappings:')
+                  // console.log(JSON.stringify(myData.element_mappings, null, 4))
+                  // -------------------
+                  // TODO: Navigation
+                  // -------------------
+                  myData.page.navigation = navigationBuilder.build(full_node_list)
+                  // console.log(  "-> " + JSON.stringify(myData.page.breadcrumb, null, 4) )
+                  // console.log( "->" + JSON.stringify(myData.page.element_mappings, null, 4) )
+                  // render
+                  res.render(ejs_template, myData, function(err, output) {
+                    res.send(output)
+                    if (err) {
+                      console.error(err);
+                    }
+                    console.log("        write_dir", write_dir)
+                    console.log("        write_file", write_file)
+                    fs.writeFile(write_file, output, err => {
+                      console.log("        writing to file", write_file)
+                      if (err) {
+                        console.error(err)
+                      }
+                    }) // end write file
+                  }) // end render
+                }) // end select elements
+              })// end element2node
+            }) // end full list
+          }) // end find_all parentid
+        } // end if has one
+      }) // end of find one
+    } // end of else if not exists ejs_file
   } // generate
 } // generator
 

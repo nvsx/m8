@@ -111,6 +111,7 @@
 				<% thisMapping = locals.all_mappings[i] %>
 				<tr>
 					<td><%- thisMapping.elementId %></td>
+					<td>type</td>
 					<td><%- thisMapping.posrow %></td>
 					<td><%- thisMapping.posnum %></td>
 					<td>
@@ -127,6 +128,25 @@
 			</table>
 			<div> +++++ no mappings found +++++	</div>
 		<% } %>
+
+		<div>
+			Add Element:<br>
+			<form name="addElementForm" method="POST" action="/_m8/ce/elements/mappage">
+				<input type="hidden" name="nodeid" value="<%- locals.node.id %>" />
+				Element-ID:
+				<input type="number" name="elementid" />
+				<br>
+				Pos-Col:
+				<input type="number" name="poscol" />
+				<br>
+				Pos-Num:
+				<input type="number" name="posnum" />
+				<br>
+				<button class="button">
+					Submit
+				</button>
+			</form>
+		</div>
 </div>
 
 <%- include('../../includes/footer'); %>

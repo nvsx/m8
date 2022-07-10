@@ -5,7 +5,7 @@ import ceContainers from '../controllers/ceContainers.js'
 
 router.get('/create/', ceContainers.create)
 router.post('/createsave/', ceContainers.createsave)
-router.get('/read/', ceContainers.read)
+router.get('/edit/', ceContainers.edit)
 router.post('/update/', ceContainers.update)
 router.post('/delete/', ceContainers.delete)
 router.get('/', ceContainers.list)

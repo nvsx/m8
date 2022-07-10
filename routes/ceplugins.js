@@ -1,15 +1,9 @@
 import express from 'express'
 const router = express.Router()
 
+import cePluginController from '../controllers/cePluginController.js'
 
-
-router.get('*', function(req,res) {
-    // res.send("ok, not ready yet. ")
-    res.render('m8/ce/plugins/index.ejs', {})
-})
-
-export default router
-
+router.get('/', cePluginController.list)
 // import cePlugins from '../controllers/cePlugins.js'
 // router.get('/_m8/ce/plugins/create/', cePlugins.create)
 // router.post('/_m8/ce/plugins/createsave/', cePlugins.createsave)
@@ -18,3 +12,5 @@ export default router
 // router.post('/_m8/ce/plugins/delete/', cePlugins.delete)
 // router.get('/_m8/ce/plugins/', cePlugins.list)
 // export default cePlugins
+
+export default router

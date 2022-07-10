@@ -95,5 +95,61 @@
 	</form>
 </div>
 	
+
+<!-- ++++++++++++++++++++ ELEMENTS ++++++++++++++++++++ -->
+<div>
+	<h3>Elements</h3>
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>Type</th>
+			<th>Position</th>
+			<th>Number</th>
+			<th>Actions</th>
+		</tr>
+		<% if(locals.all_mappings && locals.all_mappings.length){ %>
+			<% for(let i=0; i<locals.all_mappings.length; i++) { %>
+				<% thisMapping = locals.all_mappings[i] %>
+				<tr>
+					<td><%- thisMapping.elementId %></td>
+					<td>type</td>
+					<td><%- thisMapping.posrow %></td>
+					<td><%- thisMapping.posnum %></td>
+					<td>
+						<a href="/_m8/ce/elements/edit?id=<%- thisMapping.elementId %>">
+							open element <%- thisMapping.elementId %>
+						</a> 
+						action2 
+						action3
+					</td>
+				</tr>
+			<% } %>
+			</table>
+		<% } else { %>
+			</table>
+			<div> +++++ no mappings found +++++	</div>
+		<% } %>
+
+		<div>
+			Add Element:<br>
+			<form name="addElementForm" method="POST" action="/_m8/ce/elements/mappage">
+				<input type="hidden" name="nodeid" value="<%- locals.node.id %>" />
+				Element-ID:
+				<input type="number" name="elementid" />
+				<br>
+				Pos-Col:
+				<input type="number" name="poscol" />
+				<br>
+				Pos-Num:
+				<input type="number" name="posnum" />
+				<br>
+				<button class="button">
+					Submit
+				</button>
+			</form>
+		</div>
+</div>
+<!-- ++++++++++++++++++++ /ELEMENTS ++++++++++++++++++++ -->
+
 <%- include('../../includes/footer'); %>
 	

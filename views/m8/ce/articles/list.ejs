@@ -6,22 +6,32 @@
 	<%- locals.content %>
 </div>
 
-<div class="button">
-	<a href="/_m8/ce/articles/create">Create new article</a>
-</div>
-
 <div class="ceCard" style="background-color:#58a;color:#fff;">
-	<form action="/_m8/ce/articles/read?" method="get">
+	<form action="/_m8/ce/articles/edit?" method="get">
 		Open article:
 		<input type="number" name="articleid" />
 		<input type="submit" value="open" />
 	</form>
 </div>
 
+<div class="button">
+	<form method="POST" action="/_m8/ce/articles/create">
+		<button class="button">
+			Create new article
+		</button>
+	</form>
+</div>
+
 <div class="ceCard" style="background-color:#58a;color:#fff;">
-	<form>	Filter by Channel:
-		<select name="channel_filter">
+	<form metnod="get" action="">	
+		Filter by Channel:
+		<select name="channelid">
 			<option value="all">All</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
 		</select>
 		<input type="submit" value="go" />
 	</form>
@@ -36,11 +46,12 @@
 		<th>Channel</th>
 		<th>Title <img src="/_m8/img/icon-view.svg" alt="view article" /></th>
 		<th>Slug</th>
+		<th>updated</th>
 	</tr>
 	<% for(let i=0; i<all_articles.length; i++) { %>
 		<tr>
 			<td>
-				<a href="/_m8/ce/articles/read?articleid=<%- all_articles[i].id %>">
+				<a href="/_m8/ce/articles/edit?articleid=<%- all_articles[i].id %>">
 					<%- all_articles[i].id %>
 				</a>
 			</td>
@@ -72,6 +83,10 @@
 						<%- all_articles[i].path %>
 					</span>
 					</a>
+			</td>
+			<td>
+				<% const options = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' }; %>
+				<%- all_articles[i].updatedAt.toLocaleString('en-GB', options) %>
 			</td>
 		</tr>
 	<% } %>
