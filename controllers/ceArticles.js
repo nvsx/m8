@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Node  from '../models/Node.js'
-import pathSanitizer from './helpers/pathSanitizer.js'
 import Element2Node from '../models/Element2Node.js'
+import pathSanitizer from './helpers/pathSanitizer.js'
 
 const build_url = 'http://localhost:8088/_m8/cegenerator/build'
 const delete_url = 'http://localhost:8088/_m8/cegenerator/delete'
@@ -31,8 +31,22 @@ const ceArticles = {
     ],
     }).then(all_articles => {
       locals.all_articles = all_articles
-      res.render(ce_template, locals)
-    }).catch(err => console.log(err))
+
+      // TODO: 
+      // only find where has_articles === 1
+      // only find where exists == 1
+      Node.findAll({
+        where: { type: 'container', has_articles: 1 },
+        order: [
+          ['id', 'ASC']
+      ]})
+      .then( containers => {
+        let all_channels = containers
+        locals.all_channels = all_channels
+        res.render(ce_template, locals)
+      }) 
+    })
+    .catch(err => console.log(err))
   },
 
   create: function (req, res) {
@@ -93,7 +107,7 @@ const ceArticles = {
       else {
         // TODO: Pretty page with link
         let locals = {}
-        locals.status = 'error articleid not valid'
+        locals.status = 'ERROR: article does not exist'
         locals.message = "Article not found. <a href=\"javascript:history.back();\">back</a>"
         res.render('m8/ce/error.ejs', locals)
       }

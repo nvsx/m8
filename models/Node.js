@@ -13,6 +13,8 @@ const Node = sequelize.define('nodes', {
 	exists: DataTypes.INTEGER,
 	islive: DataTypes.INTEGER,
 	ispool: DataTypes.INTEGER,
+  has_articles: DataTypes.INTEGER,
+  has_archive: DataTypes.INTEGER,
 	layout: DataTypes.STRING,
 	topic: DataTypes.STRING,
 	title: DataTypes.STRING,

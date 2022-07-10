@@ -27,17 +27,17 @@
 		Filter by Channel:
 		<select name="channelid">
 			<option value="all">All</option>
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
+			<% if( locals.all_channels && locals.all_channels.length) { %>
+				<% for(let i=0; i<locals.all_channels.length; i++) { %>
+					<option value="<%- locals.all_channels[i].id %>">
+						<%- locals.all_channels[i].id %>: <%- locals.all_channels[i].title %>
+					</option>
+				<% } %>
+			<% } %>
 		</select>
 		<input type="submit" value="go" />
 	</form>
 </div>
-
-<h1 class="ceType"><%- locals.title %></h1>
 
 <table class="ce-table">
 	<tr>
@@ -51,9 +51,11 @@
 	<% for(let i=0; i<all_articles.length; i++) { %>
 		<tr>
 			<td>
-				<a href="/_m8/ce/articles/edit?articleid=<%- all_articles[i].id %>">
-					<%- all_articles[i].id %>
-				</a>
+				<div class="button">
+					<a href="/_m8/ce/articles/edit?articleid=<%- all_articles[i].id %>">
+						<%- all_articles[i].id %>
+					</a>
+				</div>
 			</td>
 
 			<td>
@@ -69,9 +71,8 @@
 			</td>
 
 			<td>
-				<%- all_articles[i].topic %>
 				<a href="<%- all_articles[i].path %>" target="m8preview">
-					<%- all_articles[i].title %></a>
+					<%- all_articles[i].topic %>: <%- all_articles[i].title %>
 				</a>
 			</td>
 
@@ -84,7 +85,7 @@
 					</span>
 					</a>
 			</td>
-			<td>
+			<td style="font-size:0.75rem;">
 				<% const options = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' }; %>
 				<%- all_articles[i].updatedAt.toLocaleString('en-GB', options) %>
 			</td>
