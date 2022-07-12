@@ -140,7 +140,7 @@ const generator = {
       myData.page.channel_articles = []
       myData.siteconfig = global.__sitecfg
 
-      myData.page.verbose = 3
+      myData.page.verbose = 1
       if(searchpath === '') { searchpath = '/'}
       console.log("    TESTING for node", searchpath)
 
@@ -274,11 +274,42 @@ const generator = {
                   // console.log(JSON.stringify(myData.element_mappings, null, 4))
                   // -------------------
                   // TODO: Navigation
-                  // -------------------
-                  myData.page.navigation = navigationBuilder.build(full_node_list)
+                  let navigation = []
+                  navigation = navigationBuilder.build(full_node_list)
                   // console.log(  "-> " + JSON.stringify(myData.page.breadcrumb, null, 4) )
                   // console.log( "->" + JSON.stringify(myData.page.element_mappings, null, 4) )
                   // render
+                  navigation = [
+                    {
+                      id: 1,
+                      title: 'Home', 
+                      path: '/',
+                      active: 0,
+                      current: 0
+                    },
+                    {
+                      id: 2,
+                      title: 'Blog', 
+                      path: '/blog/',
+                      active: 1,
+                      current: 0
+                    },
+                    {
+                      id: 3, 
+                      title: 'About', 
+                      path: '/about/',
+                      active: 0,
+                      current: 0
+                    },
+                    {
+                      id: 4, 
+                      title: 'Contact', 
+                      path: '/contact/',
+                      active: 0,
+                      current: 0
+                    }
+                  ]
+                  myData.page.navigation = navigation
                   res.render(ejs_template, myData, function(err, output) {
                     res.send(output)
                     if (err) {
