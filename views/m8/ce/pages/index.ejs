@@ -13,20 +13,23 @@
 			<a href="/_m8/ce/pages/?orderhow=asc&orderby=islive">Status</a>
 		</th>
 		<th>
-			<a href="/_m8/ce/pages/?orderby=asc&orderby=parentid">Channel</a>
+			<a href="/_m8/ce/pages/?orderby=asc&orderby=parentid">Parent</a>
 		</th>
 		<th>
 			<a href="/_m8/ce/pages/?orderby=asc&orderby=parentid">Num</a>
 		</th>
 		<th>
-			<a href="/_m8/ce/pages/?orderby=asc&orderby=path">Slug/Path</a>
+			Path
 		</th>
 		<th>
-			<a href="/_m8/ce/pages/?orderby=asc&orderby=title">
-				Title
-			</a>
+			A
 		</th>
-		<th>Type</th>
+		<th>
+			Title
+		</th>
+		<th>
+			Updated
+		</th>
 	</tr>
 
 	<% for(let i=0; i<all_nodes.length; i++) { %>
@@ -42,26 +45,23 @@
 				live
 			</td>
 			<td>
-				<%# if(all_nodes[i].parentid === 0) { style="background-color:#6495ed;"}%>
 				<%- all_nodes[i].parentid %>
-				<hr style="color:#f0f0f0;">
-				<span style="color:#555;">
-					Parentname
-				</span>
 			</td>
 			<td>
-				<%- all_nodes[i].ord %>
+				<%- all_nodes[i].num %>
 			</td>
 			<td>
-				Slug
-				<hr>
 				<a href="<%- all_nodes[i].path %>" target="m8preview">
 					<img src="/_m8/img/icon-view.svg" alt="view node" />
 					<%- all_nodes[i].path %>
 				</a>
 			</td>
+			<td><% if(all_nodes[i].has_articles) { %><b>x</b> <% } else { %>_<% } %></td>
 			<td><%- all_nodes[i].title %></td>
-			<td><%- all_nodes[i].type %></td>
+			<td style="font-size:0.75rem;">
+				<% const options = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' }; %>
+				<%- all_nodes[i].updatedAt.toLocaleString('en-GB', options) %>
+			</td>
 		</tr>
 	<% } %>
 </table>
