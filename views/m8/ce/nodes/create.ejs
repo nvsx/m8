@@ -1,10 +1,11 @@
+<!-- views/m8/ce/nodes/create.ejs -->
 <%- include('../../includes/header', { title: locals.title}); %>
 
 <div style="text-align:center;">
 	<a href="/_m8/ce/nodes/">back</a>
 </div>
 
-<h1><%- locals.title || 'Edit Container' %></h1>
+<h1><%- locals.title || 'Edit Node' %></h1>
 <%- locals.content %>
 
 <form method="POST" action="<%- locals.formaction %>">
@@ -13,7 +14,7 @@
 			ID
 		</span>
 		<span class="value">
-			Create New Container
+			Create New Node
 		</span>
 	</div>
 
@@ -47,13 +48,14 @@
 
 	<div class="valueedit">
 		<span class="name">
-			Typ3
+			Type
 		</span>
 			<select name="type" id="type">
-				<option value="container"<% if(locals.node.type === 'container') { %>selected<% }%> >container</option>
-				<option value="page"<% if(locals.node.type === 'page') { %>selected<% }%> >page</option>
-				<option value="article"<% if(locals.node.type === 'article') { %>selected<% }%> >article</option>
-	  </select>
+				<option value="page"<% if(locals.node.type === 'page') { %>selected<% }%> >Page</option>
+				<option value="article"<% if(locals.node.type === 'article') { %>selected<% }%> >Article</option>
+				<option value="shortcut"<% if(locals.node.type === 'shortcut') { %>selected<% }%> >Shortcut</option>
+				<option value="xlink"<% if(locals.node.type === 'xlink') { %>selected<% }%> >Xlink</option>
+		</select>
 	</div>
 
 	<div class="valueedit">
