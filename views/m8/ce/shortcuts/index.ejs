@@ -2,4 +2,80 @@
 
 <h1 class="ceType">Shortcuts</h1>
 
+<%- locals.content %>
+
+<table class="ce-table">
+	<tr>
+		<th>
+			<a href="/_m8/ce/shortcuts/?orderhow=asc&orderby=id">ID</a>
+		</th>
+		<th>
+			<a href="/_m8/ce/shortcuts/?orderhow=asc&orderby=islive">Status</a>
+		</th>
+		<th>
+			<a href="/_m8/ce/shortcuts/?orderby=asc&orderby=parentid">Parent</a>
+		</th>
+		<th>
+			<a href="/_m8/ce/shortcuts/?orderby=asc&orderby=parentid">Num</a>
+		</th>
+		<th>
+			Path
+		</th>
+		<th>
+			A
+		</th>
+		<th>
+			Title
+		</th>
+		<th>
+			Updated
+		</th>
+	</tr>
+
+	<% for(let i=0; i<all_nodes.length; i++) { %>
+		<tr>
+			<td>
+				<a href="/_m8/ce/shortcuts/edit?id=<%- all_nodes[i].id %>">
+					<img src="/_m8/img/icon-edit.svg" alt="edit node" />
+					<% if(all_nodes[i].parentid === 0) { %>🌏<%}%>
+					<%- all_nodes[i].id %>
+				</a>
+			</td>
+			<td>
+				live
+			</td>
+			<td>
+				<%- all_nodes[i].parentid %>
+			</td>
+			<td>
+				<%- all_nodes[i].num %>
+			</td>
+			<td>
+				<a href="<%- all_nodes[i].path %>" target="m8preview">
+					<img src="/_m8/img/icon-view.svg" alt="view node" />
+					<%- all_nodes[i].path %>
+				</a>
+			</td>
+			<td><% if(all_nodes[i].has_articles) { %><b>x</b> <% } else { %>_<% } %></td>
+			<td><%- all_nodes[i].title %></td>
+			<td style="font-size:0.75rem;">
+				<% const options = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' }; %>
+				<%- all_nodes[i].updatedAt.toLocaleString('en-GB', options) %>
+			</td>
+		</tr>
+	<% } %>
+</table>
+
+<div class="button">
+	<a href="/_m8/ce/shortcuts/create">Create new Shortcut</a>
+</div>
+
+<% if(locals.page.verbose > 3){ %>
+	<pre style="background-color:pink;max-width:1200px;overflow:scroll;">
+		DEBUG:
+		is array of objects sorted by ?id/path?
+		<%- JSON.stringify(all_nodes, null, 4) %>
+	</pre>
+<% } %>
+
 <%- include('../../includes/footer'); %>

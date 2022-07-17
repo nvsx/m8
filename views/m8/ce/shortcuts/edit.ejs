@@ -1,12 +1,12 @@
 <%- include('../../includes/header', 'Edit Page'); %>
 
-<h1 class="ceType">Edit Page</h1>
+<h1 class="ceType">Edit Shortcut</h1>
 <%- locals.content %>
 
 
 <div class="button">
 	<a href="<%- locals.node.path %>" target="m8preview">
-		<img src="/_m8/img/icon-view.svg" style="max-height:25px;width:auto;" alt="view page" /> View
+		<img src="/_m8/img/icon-view.svg" style="max-height:25px;width:auto;" alt="view shortcut" /> View
 	</a>
 </div>
 
@@ -89,20 +89,17 @@
 	</div>
 </form>
 
-
-
 <div style="border:1px solid darkseagreen; padding:20px; margin:10px; background-color:#f0f0f0;">
 	<div class="button">
-		<a href="/_m8/ce/pages">Close</a>
+		<a href="/_m8/ce/shortcuts">Close</a>
 	</div>
 	<div class="button">
 		<a href="/_m8/cegenerator/build<%- locals.node.path %>" target="m8preview">
-			<img src="/_m8/img/icon-generate.svg" alt="build page" style="width:auto; height:25px;" /> Build
+			<img src="/_m8/img/icon-generate.svg" alt="build shortcut" style="width:auto; height:25px;" /> Build Shortcut
 		</a>
 	</div>
 </div>
-
-
+	
 <div style="border:1px solid darkseagreen; padding:20px; margin:10px; background-color:#f0f0f0;">
 	<form name="delete_form" method="POST" action="/_m8/ce/nodes/delete">
 		<input type="hidden" name="nodeid" value="<%- locals.node.id %>" />
@@ -135,8 +132,6 @@
 						<a href="/_m8/ce/elements/edit?id=<%- thisMapping.elementId %>">
 							open element <%- thisMapping.elementId %>
 						</a> 
-						action2 
-						action3
 					</td>
 				</tr>
 			<% } %>

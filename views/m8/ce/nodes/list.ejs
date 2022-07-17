@@ -44,17 +44,11 @@
 			<td>
 				<%# if(all_nodes[i].parentid === 0) { style="background-color:#6495ed;"}%>
 				<%- all_nodes[i].parentid %>
-				<hr style="color:#f0f0f0;">
-				<span style="color:#555;">
-					Parentname
-				</span>
 			</td>
 			<td>
 				<%- all_nodes[i].ord %>
 			</td>
 			<td>
-				Slug
-				<hr>
 				<a href="<%- all_nodes[i].path %>" target="m8preview">
 					<img src="/_m8/img/icon-view.svg" alt="view node" />
 					<%- all_nodes[i].path %>

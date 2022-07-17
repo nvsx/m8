@@ -1,6 +1,6 @@
-import Node from '../models/Node.js'
-import axios from 'axios'
 // import getNodes from './helpers/get_nodes.js'
+import axios from 'axios'
+import Node from '../models/Node.js'
 import Element2Node from '../models/Element2Node.js'
 
 const build_url = 'http://localhost:8088/_m8/cegenerator/build'
