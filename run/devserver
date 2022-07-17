@@ -1,11 +1,20 @@
 FILENAME='run/devserver'
-
 if [ "$0" != "$FILENAME" ]; then
 	echo "error: must be called as ${FILENAME} from project directory"
 	echo "exiting"
 	exit
 fi
 
+# server needs .env file to start
+if [ ! -f ".env" ];then
+	echo ".env file not found"
+	exit
+fi
+
+# what port are we on?
+PORT=8088
+PORT=`grep -i PORT .env |cut -d '=' -f2`
+
 cd m8
-sleep 10 && open "http://localhost:8088/_m8/ce" &
+sleep 10 && open "http://localhost:${PORT}/_m8/ce" &
 npm run dev
