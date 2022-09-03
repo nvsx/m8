@@ -3,8 +3,9 @@
 m8 cms
 
 # Homepage
-- https://www.m8web.net/
+- https://m8.nvsx.rocks
 
 ## Localhost
-- Homepage: http://localhost:8088/
-- Backend: http://localhost:8088/_m8/ce/
+- Homepage: http://localhost:8088
+- Backend: http://localhost:8088/_m8/ce
+
