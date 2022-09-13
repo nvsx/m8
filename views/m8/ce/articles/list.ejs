@@ -44,8 +44,8 @@
 		<th>ID <img src="/_m8/img/icon-edit.svg" alt="edit article" /></th>
 		<th>Status</th>
 		<th>Channel</th>
-		<th>Title <img src="/_m8/img/icon-view.svg" alt="view article" /></th>
-		<th>Slug</th>
+		<th>Title</th>
+		<th>Slug <img src="/_m8/img/icon-view.svg" alt="view article" /></th>
 		<th>updated</th>
 	</tr>
 	<% for(let i=0; i<all_articles.length; i++) { %>
@@ -71,9 +71,7 @@
 			</td>
 
 			<td>
-				<a href="<%- all_articles[i].path %>" target="m8preview">
-					<%- all_articles[i].topic %>: <%- all_articles[i].title %>
-				</a>
+				<%- all_articles[i].topic %>: <%- all_articles[i].title %>
 			</td>
 
 			<td>

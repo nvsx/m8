@@ -21,7 +21,7 @@ const cePluginController = {
           let thisFile = {}
           let thisName = files[i]
           let thisInfo = {}
-          let thisFileFullPath = public_ext_dir + '/' + thisName
+          let thisFileFullPath = primary_ext_dir + '/' + thisName
           let fileData = fs.statSync( thisFileFullPath, {} )
           if( fileData ) {
             thisInfo = fileData
