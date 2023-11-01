@@ -1,6 +1,6 @@
 FILENAME='run/liveserver'
 
-if [ "$0" !== "$FILENAME" ]; then
+if [ "$0" != "$FILENAME" ]; then
 	echo "error: must be called as ${FILENAME} from project directory"
 	echo "exiting"
 	exit
