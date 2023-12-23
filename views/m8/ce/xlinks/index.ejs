@@ -2,4 +2,80 @@
 
 <h1 class="ceType">Xlinks</h1>
 
+<%- locals.content %>
+
+<table class="ce-table">
+	<tr>
+		<th>
+			ID
+		</th>
+		<th>
+			Title
+		</th>
+		<th>
+			Description
+		</th>
+		<th>
+			URL
+		</th>
+		<th>
+			Internal Notes
+		</th>
+		<th>
+			Modified
+		</th>
+        <th>
+            Mappings
+        </th>
+	</tr>
+
+	<% for(let i=0; i<all_xlinks.length; i++) { %>
+		<tr>
+			<td>
+				<a href="/_m8/ce/xlinks/edit?id=<%- all_xlinks[i].id %>">
+					<%- all_xlinks[i].id %>
+				</a>
+			</td>
+            <td>
+                <%- all_xlinks[i].title %>
+            </td>
+            <td>
+                <%- all_xlinks[i].description %>
+            </td>
+            <td>
+                <a href="<%- all_xlinks[i].url %>" target="_blank"><%- all_xlinks[i].url %></a>
+            </td>
+            <td>
+                <%- all_xlinks[i].int_notes %>
+            </td>		
+			<td style="font-size:0.75rem;">
+				<% const options = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' }; %>
+				<%- all_xlinks[i].updatedAt.toLocaleString('en-GB', options) %>
+			</td>
+			<td>
+				tbd
+			</td>	
+		</tr>
+	<% } %>
+</table>
+
+<div class="button">
+	<a href="/_m8/ce/xlinks/create">Create new Xlink</a>
+</div>
+
+<%- include('../../includes/footer'); %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <%- include('../../includes/footer'); %>

@@ -53,6 +53,7 @@ const startServer = async () => {
     console.debug('VersionFile : ' + version_file)
     console.debug('EnvFile     : ' + env_file)
     console.debug('SitecfgFile : ' + sitecfg_file)
+    console.debug('CE : http://127.0.0.1:' + server.address().port + '/_m8/ce')
     console.debug('\x1b[0m')
     // console.debug('SQLite  :', __basedir + '/' + process.env.DS_FILE, '\x1b[0m')
   })

@@ -11,6 +11,8 @@ const Node = sequelize.define('nodes', {
 	parentid: DataTypes.INTEGER,
 	num: DataTypes.INTEGER,
 	exists: DataTypes.INTEGER,
+	hidden: DataTypes.BOOLEAN,
+	deleted: DataTypes.BOOLEAN,
 	islive: DataTypes.INTEGER,
 	ispool: DataTypes.INTEGER,
   has_articles: DataTypes.INTEGER,

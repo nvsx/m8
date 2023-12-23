@@ -16,7 +16,6 @@ const ejs_homepage   = '_layout/homepage.ejs'
 // const builder_path   = '/_m8/cegenerator/build'
 
 const generator = {
-
   delete: function (req, res) {
     console.log("DELETE FILE FROM PUBLIC DIR")
     const req_path = req.path
@@ -33,9 +32,8 @@ const generator = {
   },
 
   generate: function (req, res) {
-    // generate is called as fallback, if file is not existing in public dir
-    // or directly by url /_m8/generyte/build/my_path
-
+    // generate is called as fallback, if file does not exist in public dir
+    // also can be called directly by url /_m8/generyte/build/my_path
     const req_path   = req.path
     const clean_path = req_path.replace(/^\/_m8\/cegenerator\/build/, '')
     let searchpath   = clean_path.replace(/\/+/g, '/')
@@ -49,20 +47,18 @@ const generator = {
     console.log('    searchpath', searchpath)
     console.log('    slashEnd', slashEnd)
     console.log('    htmlEnd', htmlEnd)
-
     // ----------------------------------------------------
     // index.html is always redirectd to slash:
+    // not for /_m8
+    const regex0 = /\/_m8/
     const regex1 = /\/index\.html$/g
+    const found0 = req_path.match(regex0)
     const found1 = req_path.match(regex1)
-    if(found1) {
-      let redirect_path = ''
-      console.log("    REQUESTED an INDEX")
-      redirect_path = req_path.replace(regex1, '/')
-      console.log("    NEW REDIRECT PATH", redirect_path)
-      res.redirect(redirect_path)
+    if(found1 && ! found0) {
+      console.log("    REQUESTED an INDEX (redirect index.html to slash)")
+      res.redirect(req_path.replace(regex1, '/'))
       return
     }
-
     // ----------------------------------------------------
     // no \.html$ ending is always redirectd to slash:
     if(! slashEnd && ! htmlEnd) {
@@ -72,9 +68,8 @@ const generator = {
       res.redirect(redirect_path)
       return
     }
-
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // 1/2 EJS VIEW
+    // 1/2 pages based on EJS VIEW
     let suffix = '.ejs'
     if(slashEnd) { suffix = 'index.ejs'}
     let source_ejs = views_dir + searchpath + suffix
@@ -82,6 +77,7 @@ const generator = {
     // render without leading slash:
     render_ejs = render_ejs.substring(1)
     console.log("    TESTing for ejs_file:", source_ejs)
+
     if (fs.existsSync(source_ejs)) {
       console.log("    -> resource_type === view")
       let output_file  = output_dir + searchpath
@@ -141,6 +137,12 @@ const generator = {
       myData.siteconfig = global.__sitecfg
 
       myData.page.verbose = 1
+
+      const regexSlash = /\/$/
+      const foundSlash = searchpath.match(regexSlash)
+      if(foundSlash) {
+        searchpath = searchpath.replace(regexSlash, '')
+      }
       if(searchpath === '') { searchpath = '/'}
       console.log("    TESTING for node", searchpath)
 

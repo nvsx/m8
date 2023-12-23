@@ -1,3 +1,7 @@
+import Xlink from '../models/Xlink.js'
+import axios from 'axios'
+import getNodes from './helpers/get_nodes.js'
+import Element2Node from '../models/Element2Node.js'
 import File from '../models/File.js'
 import path from 'path'
 import fs from 'fs'
@@ -18,8 +22,8 @@ const ceXlinks = {
     locals.content = '<!-- +++ list of files +++ -->'
     locals.url_prefix = url_prefix
     locals.dir_prefix = dir_prefix
-    File.findAll().then(all_files => {
-      locals.all_files = all_files
+    Xlink.findAll().then(all_xlinks => {
+      locals.all_xlinks = all_xlinks
       res.render(ce_template, locals)
     })
   }
