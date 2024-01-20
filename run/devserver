@@ -15,6 +15,10 @@ fi
 PORT=8088
 PORT=`grep -i PORT .env |cut -d '=' -f2`
 
+echo
+echo "frontend starting on http://localhost:${PORT}"
+echo "backend starting on http://localhost:${PORT}/_m8"
+
 cd m8
 ### sleep 10 && open "http://localhost:${PORT}/_m8/ce" &
 npm run dev
