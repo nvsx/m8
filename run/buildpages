@@ -1,4 +1,6 @@
-FILENAME='run/buildpages'
+FILENAME='m8/run/buildpages'
+REQ='http://localhost:8088'
+URL1='http://localhost:8088/_m8/cegenerator/build'
 
 if [ "$0" != "$FILENAME" ]; then
 	echo "error: must be called as ${FILENAME} from project directory"
@@ -6,8 +8,6 @@ if [ "$0" != "$FILENAME" ]; then
 	exit
 fi
 
-REQ='http://localhost:8088'
-URL1='http://localhost:8088/_m8/cegenerator/build'
 for FILE in `find site/views/ -type f -name "index.ejs" -not -path '*/_layout/*'  -not -path '*/layouts/*'`; do
 	TARG=`echo $FILE|sed 's/site\/views\//public/'`
 	TARG=`echo $TARG|sed 's/\.ejs/\.html/'`
@@ -27,3 +27,4 @@ for FILE in `find site/views/ -type f -name "index.ejs" -not -path '*/_layout/*'
 done
 
 # EOF
+

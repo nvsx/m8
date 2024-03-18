@@ -1,6 +1,6 @@
 # run/import
 
-FILENAME="run/import"
+FILENAME="m8/run/import"
 if [ "$0" != "$FILENAME" ]; then
 	echo "error: must be called as ${FILENAME} from project directory"
 	echo "exiting"

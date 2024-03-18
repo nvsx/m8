@@ -1,4 +1,4 @@
-FILENAME='run/extactivate'
+FILENAME='m8/run/extactivate'
 
 if [ "$0" != "$FILENAME" ]; then
 	echo "error: must be called as ${FILENAME} from project directory"

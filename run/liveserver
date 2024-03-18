@@ -1,4 +1,4 @@
-FILENAME='run/liveserver'
+FILENAME='m8/run/liveserver'
 
 if [ "$0" != "$FILENAME" ]; then
 	echo "error: must be called as ${FILENAME} from project directory"

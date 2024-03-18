@@ -1,20 +1,22 @@
 # run/publish 
 
-FILENAME="run/publish"
+FILENAME="m8/run/publish"
 ENV_FILE=".project.env"
+
 if [ "$0" != "$FILENAME" ]; then
 	echo "error: must be called as ${FILENAME} from project directory"
 	echo "exiting"
 	exit
 fi
+
 if [ ! -f "$ENV_FILE" ]; then
 	echo "error: missing ${ENV_FILE}"
 	echo "exiting"
 	exit
 fi
+
 date 
 source $ENV_FILE
-
 
 if [ "$PUBLISH_METHOD" == "ssh" ]; then
 	echo "publishing with rsyn over ssh..."
@@ -50,3 +52,4 @@ fi
 
 echo -n "finished: "; date
 # eof
+

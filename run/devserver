@@ -1,4 +1,6 @@
-FILENAME='run/devserver'
+FILENAME='m8/run/devserver'
+
+# check
 if [ "$0" != "$FILENAME" ]; then
 	echo "error: must be called as ${FILENAME} from project directory"
 	echo "exiting"
@@ -22,3 +24,4 @@ echo "backend starting on http://localhost:${PORT}/_m8"
 cd m8
 ### sleep 10 && open "http://localhost:${PORT}/_m8/ce" &
 npm run dev
+
