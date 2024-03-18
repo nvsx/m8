@@ -1,0 +1,13 @@
+<%- include('../../includes/header', { title: locals.title}); %>
+
+<div style="text-align:center;">
+	<a href="/_m8/ce/nodes/edit?nodeid=<%- locals.node.id %>">Edit Container</a>
+</div>
+
+<h1><%- locals.title || 'Create Container' %></h1>
+
+<div style="margin: 20px;">
+	<%- locals.content %>
+</div>
+
+<%- include('../../includes/footer'); %>

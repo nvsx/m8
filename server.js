@@ -11,6 +11,16 @@ const env_file   = '../.env'
 const version_file = './version.json'
 const sitecfg_file = '../site/siteconfig.json'
 
+// env file:
+// M8_PORT=8088
+// M8_ROOT_PATH=/
+// M8_DATABASE_FILE="db/start2.db"
+// M8_DATABASE_NAME=db
+// M8_DATABASE_USER=db
+// M8_DATABASE_PASSWORD=db
+// M8_DATABASE_HOST=db
+// M8_DATABASE_PORT=3306
+
 // read config
 const dotenv_result = dotenv.config({ path: env_file })
 if (dotenv_result.error) { throw dotenv_result.error }
@@ -26,7 +36,13 @@ global.__basedir = path.dirname(serverpath)
 global.__context = process.env.NODE_ENV || 'undefined_node_env'
 global.__m8info = m8info
 global.__sitecfg = site_cfg
-global.__dbfile = "../" + process.env.DATABASE
+global.__dbfile = "../" + process.env.M8_DATABASE_FILE
+
+console.log("__global_basedir:", __basedir)
+console.log("__global_context:", __context)
+console.log("__global_m8info:", m8info)
+console.log("__global_sitecfg:", __sitecfg)
+console.log("__global_dbfile:", __dbfile)
 
 // app
 const app = express()
@@ -58,4 +74,8 @@ const startServer = async () => {
     // console.debug('SQLite  :', __basedir + '/' + process.env.DS_FILE, '\x1b[0m')
   })
 }
+
 startServer()
+
+// eof
+

@@ -1,13 +1,12 @@
-import Node from '../models/Node.js'
-import Element2Node from '../models/Element2Node.js'
+// import Element2Node from '../models/Element2Node.js'
+import Container from '../models/Container.js'
+import getContainers from './helpers/get_containers.js'
 import axios from 'axios'
-import getNodes from './helpers/get_nodes.js'
 
 const build_url = 'http://localhost:8088/_m8/cegenerator/build'
 const delete_url = 'http://localhost:8088/_m8/cegenerator/delete'
 
-const ceNodes = {
-
+const ceContainers = {
   list: function (req, res) {
     // GET list
     let ce_template = 'm8/ce/containers/index.ejs'
@@ -15,17 +14,17 @@ const ceNodes = {
     locals.nav_active_containers = 'active'
     locals.title = 'List of containers'
     locals.content = ''
-    Node.findAll({
-        where: {
-          type: "container"
-        },
+    Container.findAll({
+        // where: {
+        //   type: "container"
+        // },
       order: [
         ['parentid', 'ASC'],
         ['num', 'ASC'],
         ['path', 'ASC']
     ],
     }).then(all_nodes => {
-      let sorted_nodes = getNodes.getList(null, all_nodes, {})
+      let sorted_nodes = getContainers.getList(null, all_nodes, {})
       locals.all_nodes = all_nodes
       // locals.all_nodes = sorted_nodes
       locals.page = {}
@@ -39,10 +38,10 @@ const ceNodes = {
     let locals = {}
     locals.node = {}
     locals.nav_active_nodes = 'active'
-    locals.node.title = 'new page title'
+    locals.node.title = 'new container title'
     locals.title = 'create new container'
-    locals.formaction = '/_m8/ce/nodes/createsave'
-    let ce_template = 'm8/ce/nodes/create.ejs'
+    locals.formaction = '/_m8/ce/containers/createsave'
+    let ce_template = 'm8/ce/containers/create.ejs'
     res.render(ce_template, locals)
   },
 
@@ -54,9 +53,9 @@ const ceNodes = {
     locals.title = 'save new container'
     locals.node.id = req.body.nodeid;
     req.body.id = undefined
-    Node.create(req.body).then(result => {
+    Container.create(req.body).then(result => {
       locals.content = JSON.stringify(result, null, 2)
-      res.render('m8/ce/nodes/created.ejs', locals)
+      res.render('m8/ce/containers/created.ejs', locals)
     })
     // build file
     axios.get(build_url + req.body.path).then(resp => {
@@ -98,7 +97,7 @@ const ceNodes = {
     locals.node = {}
     locals.title = 'update container'
     let nodeid = req.body.nodeid;
-    Node.findByPk(nodeid).then( thisNode => {
+    Container.findByPk(nodeid).then( thisNode => {
       // ord
       let myOrd = req_body.num
       myOrd = parseInt(myOrd)
@@ -176,4 +175,4 @@ const ceNodes = {
   }
 }
 
-export default ceNodes
+export default ceContainers
